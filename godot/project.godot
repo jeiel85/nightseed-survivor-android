@@ -39,6 +39,10 @@ window/handheld/orientation=1
 
 enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg")
 
+[gui]
+
+theme/custom_font="res://assets/fonts/Pretendard-Regular.otf"
+
 [input]
 
 move_up={

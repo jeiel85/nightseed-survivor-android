@@ -16,6 +16,10 @@ var unlocked_stages: Array = ["forest"]
 var difficulty: String = "normal"
 var language: String = "auto"
 
+# Transient (not saved): current run elapsed seconds, set by GameRoot each frame.
+# EnemyBase reads this to apply time-based scaling (HP/speed/damage grow over time).
+var run_elapsed: float = 0.0
+
 const UPGRADE_COSTS: Array = [100, 200, 350, 550, 800, 1100, 1500, 2000, 2600, 3300]
 const UPGRADE_MAX_LEVEL: int = 10
 const SAVE_PATH: String = "user://save_data.json"

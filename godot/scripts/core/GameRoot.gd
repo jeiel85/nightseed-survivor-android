@@ -58,6 +58,7 @@ func _process(delta: float) -> void:
 	if _is_game_over or _is_victory:
 		return
 	_survival_time += delta
+	GameData.run_elapsed = _survival_time
 	wave_manager.update(delta)
 	hud.set_time(_total_time - _survival_time)
 	if _survival_time >= _total_time:

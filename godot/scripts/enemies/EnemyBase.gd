@@ -22,9 +22,18 @@ var _flash_timer: float = 0.0
 
 func _ready() -> void:
 	var d: Dictionary = Difficulty.get_data(GameData.difficulty)
-	max_hp = int(max_hp * float(d["hp_mult"]))
-	contact_damage = int(contact_damage * float(d["dmg_mult"]))
-	xp_reward = int(xp_reward * float(d["reward_mult"]))
+	# Time-based escalation: enemies grow stronger as the run progresses.
+	# At 5 min: ~2.0x HP, 1.20x speed, 1.50x damage, 1.50x XP reward.
+	# At 10 min: ~3.0x HP, 1.40x speed, 2.00x damage, 2.00x XP reward.
+	var minutes: float = max(GameData.run_elapsed, 0.0) / 60.0
+	var hp_t: float = 1.0 + minutes * 0.20
+	var spd_t: float = 1.0 + minutes * 0.04
+	var dmg_t: float = 1.0 + minutes * 0.10
+	var xp_t: float = 1.0 + minutes * 0.10
+	max_hp = int(max_hp * float(d["hp_mult"]) * hp_t)
+	contact_damage = int(contact_damage * float(d["dmg_mult"]) * dmg_t)
+	xp_reward = int(xp_reward * float(d["reward_mult"]) * xp_t)
+	move_speed = move_speed * spd_t
 	current_hp = max_hp
 	add_to_group("enemies")
 	hit_area.body_entered.connect(_on_hit_area_body_entered)
