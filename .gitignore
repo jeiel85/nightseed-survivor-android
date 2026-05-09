@@ -13,9 +13,10 @@ godot/android/build/build/
 godot/android/build/.gradle/
 godot/android/build/.gradletasks/
 godot/android/build/.cxx/
+godot/android/build/assets/
 
-# Build artifacts
-build/
+# Build artifacts (root-level only — godot/android/build/ is the gradle template, NOT this)
+/build/
 *.apk
 
 # Secrets (keystores, passwords) - upload to GitHub Secrets instead
