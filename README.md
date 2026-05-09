@@ -6,7 +6,14 @@
 
 ## 다운로드
 
-최신 APK는 [Releases](https://github.com/jeiel85/nightseed-survivor/releases) 페이지에서 받을 수 있습니다.
+| 플랫폼 | 자산 / 링크 |
+|---|---|
+| **🌐 웹** | https://jeiel85.github.io/nightseed-survivor/ — 브라우저에서 바로 플레이 |
+| **🤖 안드로이드** | [APK 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
+| **🪟 윈도우** | [.exe 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
+| **🐧 리눅스** | [.x86_64 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
+
+> ⚠️ 웹 페이지를 처음 활성화하려면 저장소 **Settings → Pages → Source**에서 `Branch: gh-pages / (root)`로 설정 (CI가 처음 푸시한 뒤 한 번만).
 
 ## 폰에 설치하기
 

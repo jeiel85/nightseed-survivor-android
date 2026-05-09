@@ -1,4 +1,4 @@
-name: Build (Android + Windows)
+name: Build (Android + Windows + Linux + Web)
 
 on:
   push:
@@ -139,6 +139,42 @@ jobs:
           path: build/nightseed-survivor.exe
           retention-days: 30
 
+      - name: Build Linux release
+        run: |
+          ~/godot-bin/godot --headless --path godot --export-release "Linux/X11" "${{ github.workspace }}/build/nightseed-survivor.x86_64"
+          chmod +x build/nightseed-survivor.x86_64
+          ls -la build/nightseed-survivor.x86_64
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightseed-survivor-linux
+          path: build/nightseed-survivor.x86_64
+          retention-days: 30
+
+      - name: Build Web release
+        run: |
+          mkdir -p build/web
+          ~/godot-bin/godot --headless --path godot --export-release "Web" "${{ github.workspace }}/build/web/index.html"
+          ls -la build/web/
+
+      - name: Upload Web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightseed-survivor-web
+          path: build/web/
+          retention-days: 30
+
+      - name: Deploy Web to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "deploy: web build for ${{ github.sha }}"
+
       - name: Attach assets to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
@@ -146,3 +182,4 @@ jobs:
           files: |
             build/nightseed-survivor-release.apk
             build/nightseed-survivor.exe
+            build/nightseed-survivor.x86_64
