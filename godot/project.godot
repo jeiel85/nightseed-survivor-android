@@ -21,6 +21,8 @@ GameData="*res://scripts/core/GameData.gd"
 TouchInput="*res://scripts/core/TouchInput.gd"
 Stages="*res://scripts/core/Stages.gd"
 AudioManager="*res://scripts/core/AudioManager.gd"
+GodotPlayGameServices="*res://addons/GodotPlayGameServices/scripts/autoloads/godot_play_game_services.gd"
+LeaderboardManager="*res://scripts/core/LeaderboardManager.gd"
 
 [display]
 
@@ -32,12 +34,9 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 
-[rendering]
+[editor_plugins]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
-textures/vram_compression/import_etc2_astc=true
-textures/canvas_textures/default_texture_filter=0
+enabled=PackedStringArray("res://addons/GodotPlayGameServices/plugin.cfg")
 
 [input]
 
@@ -65,3 +64,10 @@ move_right={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194321,"key_label":0,"unicode":0,"echo":false,"script":null)
 ]
 }
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

@@ -14,7 +14,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,6 +38,16 @@ jobs:
             ~/godot-bin
             ~/.local/share/godot/export_templates
           key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('godot/android/build/build.gradle', 'godot/android/build/config.gradle', 'godot/android/build/settings.gradle') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
 
       - name: Download Godot binary
         if: steps.cache-godot.outputs.cache-hit != 'true'
@@ -80,6 +90,12 @@ jobs:
           mkdir -p secrets
           echo "$KEYSTORE_BASE64" | base64 -d > secrets/release.keystore
           ls -la secrets/release.keystore
+
+      - name: Restore Android build template libs (regenerable, not committed)
+        run: |
+          cd godot/android/build
+          unzip -q -o ~/.local/share/godot/export_templates/4.2.2.stable/android_source.zip 'libs/*' -d .
+          ls -lh libs/debug libs/release
 
       - name: Import project (build .godot cache, 2 passes for class_name resolution)
         run: |

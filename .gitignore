@@ -6,6 +6,14 @@ Godot_v*.exe.zip
 # Godot generated/cache files
 godot/.godot/
 
+# Android gradle build artifacts and large prebuilt libs
+# (libs/ AARs are regenerated in CI from android_source.zip; gradle outputs are local-only)
+godot/android/build/libs/
+godot/android/build/build/
+godot/android/build/.gradle/
+godot/android/build/.gradletasks/
+godot/android/build/.cxx/
+
 # Build artifacts
 build/
 *.apk

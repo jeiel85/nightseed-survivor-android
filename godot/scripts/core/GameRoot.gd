@@ -126,6 +126,13 @@ func _show_result(victory: bool) -> void:
 	if player.weapon_manager.weapons.size() >= 4:
 		_try_unlock("combo_master")
 	GameData.add_gold(player.session_gold)
+	LeaderboardManager.submit_run(
+		GameData.selected_stage,
+		player.kill_count,
+		player.session_gold,
+		int(_survival_time),
+		GameData.difficulty,
+	)
 	result_panel.visible = true
 	if victory:
 		result_title.text = "VICTORY!"
