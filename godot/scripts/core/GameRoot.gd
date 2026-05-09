@@ -1,7 +1,5 @@
 extends Node2D
 
-const TOTAL_TIME: float = 600.0
-
 const XP_GEM_SCENE := preload("res://scenes/pickups/XPGem.tscn")
 const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 
@@ -17,15 +15,25 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
 
 var _survival_time: float = 0.0
+var _total_time: float = 600.0
 var _is_game_over: bool = false
 var _is_victory: bool = false
+
+var _run_damage_taken_at_lv5: bool = false
+var _run_lv5_locked: bool = false
+var _run_evolved: bool = false
+var _run_boss_killed: bool = false
+var _last_seen_hp: int = -1
+var _newly_unlocked_achievements: Array = []
 
 func _ready() -> void:
 	randomize()
 	enemy_spawner.setup(player)
-	wave_manager.setup(enemy_spawner)
+	wave_manager.setup(enemy_spawner, GameData.selected_stage)
+	_total_time = wave_manager.get_total_time()
 
 	player.hp_changed.connect(hud.set_hp)
+	player.hp_changed.connect(_on_hp_changed_track)
 	player.xp_changed.connect(_on_player_xp_changed)
 	player.leveled_up.connect(_on_player_leveled_up)
 	player.gold_changed.connect(hud.set_gold)
@@ -41,7 +49,7 @@ func _ready() -> void:
 	result_panel.visible = false
 
 	hud.set_hp(player.current_hp, player.max_hp)
-	hud.set_time(TOTAL_TIME)
+	hud.set_time(_total_time)
 	hud.set_level(1)
 	hud.set_kills(0)
 	hud.set_gold(0)
@@ -51,8 +59,8 @@ func _process(delta: float) -> void:
 		return
 	_survival_time += delta
 	wave_manager.update(delta)
-	hud.set_time(TOTAL_TIME - _survival_time)
-	if _survival_time >= TOTAL_TIME:
+	hud.set_time(_total_time - _survival_time)
+	if _survival_time >= _total_time:
 		_on_victory()
 
 func _on_player_xp_changed(current: int, needed: int) -> void:
@@ -61,9 +69,28 @@ func _on_player_xp_changed(current: int, needed: int) -> void:
 func _on_player_leveled_up(level: int) -> void:
 	hud.set_level(level)
 	level_up_ui.show_for_player(player)
+	if level == 5 and not _run_damage_taken_at_lv5:
+		_run_lv5_locked = true
+		_try_unlock("untouchable")
+	elif level == 5:
+		_run_lv5_locked = true
+	if level == 10 and _survival_time < 180.0:
+		_try_unlock("speed_runner")
+
+func _on_hp_changed_track(current: int, _max_val: int) -> void:
+	if _last_seen_hp >= 0 and current < _last_seen_hp and not _run_lv5_locked:
+		_run_damage_taken_at_lv5 = true
+	_last_seen_hp = current
+
+func _try_unlock(key: String) -> void:
+	if GameData.try_unlock_achievement(key):
+		_newly_unlocked_achievements.append(key)
 
 func _on_enemy_killed(xp: int, gold: int, pos: Vector2) -> void:
 	player.add_kill()
+	if xp >= 100:
+		_run_boss_killed = true
+		_try_unlock("boss_slayer")
 	var gem := XP_GEM_SCENE.instantiate() as XPGem
 	gem.xp_value = xp
 	gem.global_position = pos
@@ -85,6 +112,11 @@ func _on_victory() -> void:
 
 func _show_result(victory: bool) -> void:
 	get_tree().paused = true
+	if victory:
+		_try_unlock("first_survivor")
+	if player.kill_count >= 200:
+		_try_unlock("killer_instinct")
+	GameData.add_gold(player.session_gold)
 	result_panel.visible = true
 	if victory:
 		result_title.text = "VICTORY!"
@@ -93,11 +125,16 @@ func _show_result(victory: bool) -> void:
 		result_title.text = "GAME OVER"
 		result_title.modulate = Color(1.0, 0.3, 0.3)
 	var tm := int(_survival_time)
-	result_stats.text = "Survived:  %d:%02d\nKills:  %d\nGold earned:  %d" % [
+	var stats_text := "Survived:  %d:%02d\nKills:  %d\nGold earned:  %d" % [
 		tm / 60, tm % 60, player.kill_count, player.session_gold
 	]
+	if not _newly_unlocked_achievements.is_empty():
+		stats_text += "\n\n★ NEW ACHIEVEMENTS"
+		for key in _newly_unlocked_achievements:
+			var ach: Dictionary = Achievements.DATA[key]
+			stats_text += "\n%s  (+%d gold)" % [String(ach["name"]), int(ach["gold"])]
+	result_stats.text = stats_text
 	btn_restart.text = "Play Again" if victory else "Retry"
-	GameData.add_gold(player.session_gold)
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
@@ -114,6 +151,10 @@ func _on_upgrade_chosen(upgrade_id: String) -> void:
 		player.weapon_manager.upgrade_weapon(upgrade_id.substr(3))
 	elif upgrade_id.begins_with("passive:"):
 		player.weapon_manager.apply_passive(upgrade_id.substr(8))
+	elif upgrade_id.begins_with("evolve:"):
+		player.weapon_manager.evolve_weapon(upgrade_id.substr(7))
+		_run_evolved = true
+		_try_unlock("evolver")
 
 func _add_weapon(wname: String) -> void:
 	var w: WeaponBase = null

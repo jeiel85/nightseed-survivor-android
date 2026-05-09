@@ -81,8 +81,9 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 -d > secrets/release.keystore
           ls -la secrets/release.keystore
 
-      - name: Import project (build .godot cache)
+      - name: Import project (build .godot cache, 2 passes for class_name resolution)
         run: |
+          ~/godot-bin/godot --headless --path godot --editor --quit-after 200 || true
           ~/godot-bin/godot --headless --path godot --editor --quit-after 200 || true
 
       - name: Build release APK

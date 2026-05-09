@@ -20,6 +20,10 @@ var _flash_timer: float = 0.0
 @onready var visual_body: Polygon2D = $Visual/Body
 
 func _ready() -> void:
+	var d: Dictionary = Difficulty.get_data(GameData.difficulty)
+	max_hp = int(max_hp * float(d["hp_mult"]))
+	contact_damage = int(contact_damage * float(d["dmg_mult"]))
+	xp_reward = int(xp_reward * float(d["reward_mult"]))
 	current_hp = max_hp
 	add_to_group("enemies")
 	hit_area.body_entered.connect(_on_hit_area_body_entered)

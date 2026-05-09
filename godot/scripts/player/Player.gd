@@ -23,16 +23,30 @@ var _invincible_timer: float = 0.0
 @onready var weapon_manager: WeaponManager = $WeaponManager
 
 func _ready() -> void:
-	max_hp += GameData.get_hp_bonus()
-	move_speed += GameData.get_speed_bonus()
-	xp_radius += GameData.get_magnet_bonus()
-	weapon_manager._init_damage_mult = GameData.get_damage_multiplier()
-	weapon_manager._init_cooldown_mult = GameData.get_cooldown_multiplier()
+	var ch: Dictionary = Characters.get_data(GameData.selected_character)
+	max_hp = int(ch["max_hp"]) + GameData.get_hp_bonus()
+	move_speed = float(ch["move_speed"]) + GameData.get_speed_bonus()
+	xp_radius = float(ch["xp_radius"]) + GameData.get_magnet_bonus()
+	weapon_manager._init_damage_mult = float(ch["damage_mult"]) * GameData.get_damage_multiplier()
+	weapon_manager._init_cooldown_mult = float(ch["cooldown_mult"]) * GameData.get_cooldown_multiplier()
 	current_hp = max_hp
 	hp_changed.emit(current_hp, max_hp)
 	xp_changed.emit(0, get_xp_needed())
-	var dagger := MoonDagger.new()
-	weapon_manager.add_weapon(dagger)
+	var body := $Visual/Body
+	if body:
+		body.color = ch["color"]
+	var w := _create_starting_weapon(ch["starting_weapon"])
+	if w:
+		weapon_manager.add_weapon(w)
+
+func _create_starting_weapon(weapon_name: String) -> WeaponBase:
+	match weapon_name:
+		"Moon Dagger":  return MoonDagger.new()
+		"Spirit Orb":   return SpiritOrb.new()
+		"Fire Wisp":    return FireWisp.new()
+		"Thorn Ring":   return ThornRing.new()
+		"Star Needle":  return StarNeedle.new()
+	return MoonDagger.new()
 
 func _physics_process(delta: float) -> void:
 	var input := Input.get_vector("move_left", "move_right", "move_up", "move_down")

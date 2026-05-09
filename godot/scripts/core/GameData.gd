@@ -8,6 +8,12 @@ var permanent_upgrades: Dictionary = {
 	"battle_focus": 0,
 	"power_core": 0,
 }
+var selected_character: String = "vagrant"
+var unlocked_characters: Array = ["vagrant"]
+var achievements_unlocked: Array = []
+var selected_stage: String = "forest"
+var unlocked_stages: Array = ["forest"]
+var difficulty: String = "normal"
 
 const UPGRADE_COSTS: Array = [100, 200, 350, 550, 800, 1100, 1500, 2000, 2600, 3300]
 const UPGRADE_MAX_LEVEL: int = 10
@@ -31,14 +37,67 @@ func try_upgrade(key: String) -> bool:
 	save_data()
 	return true
 
+func is_character_unlocked(key: String) -> bool:
+	return unlocked_characters.has(key)
+
+func try_unlock_character(key: String, cost: int) -> bool:
+	if is_character_unlocked(key) or gold < cost:
+		return false
+	gold -= cost
+	unlocked_characters.append(key)
+	save_data()
+	return true
+
+func select_character(key: String) -> bool:
+	if not is_character_unlocked(key):
+		return false
+	selected_character = key
+	save_data()
+	return true
+
 func add_gold(amount: int) -> void:
 	gold += amount
 	save_data()
+
+func is_stage_unlocked(id: String) -> bool:
+	return unlocked_stages.has(id)
+
+func try_unlock_stage(id: String, cost: int) -> bool:
+	if is_stage_unlocked(id) or gold < cost:
+		return false
+	gold -= cost
+	unlocked_stages.append(id)
+	save_data()
+	return true
+
+func select_stage(id: String) -> bool:
+	if not is_stage_unlocked(id):
+		return false
+	selected_stage = id
+	save_data()
+	return true
+
+func has_achievement(key: String) -> bool:
+	return achievements_unlocked.has(key)
+
+func try_unlock_achievement(key: String) -> bool:
+	if has_achievement(key) or not Achievements.DATA.has(key):
+		return false
+	achievements_unlocked.append(key)
+	gold += int(Achievements.DATA[key]["gold"])
+	save_data()
+	return true
 
 func save_data() -> void:
 	var data: Dictionary = {
 		"gold": gold,
 		"permanent_upgrades": permanent_upgrades.duplicate(),
+		"selected_character": selected_character,
+		"unlocked_characters": unlocked_characters.duplicate(),
+		"achievements_unlocked": achievements_unlocked.duplicate(),
+		"selected_stage": selected_stage,
+		"unlocked_stages": unlocked_stages.duplicate(),
+		"difficulty": difficulty,
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file:
@@ -60,6 +119,33 @@ func load_data() -> void:
 	var saved: Dictionary = result.get("permanent_upgrades", {})
 	for key in permanent_upgrades:
 		permanent_upgrades[key] = saved.get(key, 0)
+	selected_character = result.get("selected_character", "vagrant")
+	var saved_chars = result.get("unlocked_characters", ["vagrant"])
+	if saved_chars is Array:
+		unlocked_characters = saved_chars.duplicate()
+	if not unlocked_characters.has("vagrant"):
+		unlocked_characters.append("vagrant")
+	if not unlocked_characters.has(selected_character):
+		selected_character = "vagrant"
+	var saved_achs = result.get("achievements_unlocked", [])
+	if saved_achs is Array:
+		achievements_unlocked = saved_achs.duplicate()
+	selected_stage = result.get("selected_stage", "forest")
+	var saved_stages = result.get("unlocked_stages", ["forest"])
+	if saved_stages is Array:
+		unlocked_stages = saved_stages.duplicate()
+	if not unlocked_stages.has("forest"):
+		unlocked_stages.append("forest")
+	if not unlocked_stages.has(selected_stage):
+		selected_stage = "forest"
+	difficulty = result.get("difficulty", "normal")
+	if not Difficulty.DATA.has(difficulty):
+		difficulty = "normal"
+
+func cycle_difficulty() -> String:
+	difficulty = Difficulty.next_key(difficulty)
+	save_data()
+	return difficulty
 
 func get_speed_bonus() -> float:
 	return permanent_upgrades.get("swift_boots", 0) * 12.0

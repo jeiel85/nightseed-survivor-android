@@ -9,6 +9,7 @@ var player: Node2D
 var level: int = 1
 var damage_multiplier: float = 1.0
 var cooldown_multiplier: float = 1.0
+var evolved: bool = false
 var _cooldown_timer: float = 0.0
 
 func _process(delta: float) -> void:
@@ -29,6 +30,11 @@ func upgrade() -> void:
 	level += 1
 	base_damage = int(base_damage * 1.25)
 	base_cooldown = maxf(base_cooldown * 0.88, 0.2)
+
+func evolve() -> void:
+	evolved = true
+	base_damage = int(base_damage * 1.4)
+	base_cooldown = maxf(base_cooldown * 0.85, 0.15)
 
 func find_nearest_enemy() -> Node2D:
 	var enemies := get_tree().get_nodes_in_group("enemies")

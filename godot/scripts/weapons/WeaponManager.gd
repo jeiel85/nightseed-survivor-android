@@ -31,6 +31,12 @@ func upgrade_weapon(wname: String) -> void:
 			w.upgrade()
 			return
 
+func evolve_weapon(wname: String) -> void:
+	for w in weapons:
+		if w.weapon_name == wname and not w.evolved:
+			w.evolve()
+			return
+
 func apply_passive(key: String) -> void:
 	passives[key] = passives.get(key, 0) + 1
 	var p := get_parent()

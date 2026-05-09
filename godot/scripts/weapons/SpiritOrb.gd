@@ -74,3 +74,10 @@ func upgrade() -> void:
 	if level % 2 == 0:
 		orb_count += 1
 		_rebuild_orbs()
+
+func evolve() -> void:
+	super()
+	orb_count = max(orb_count * 2, 6)
+	orbit_radius = 130.0
+	orbit_speed = 2.8
+	_rebuild_orbs()

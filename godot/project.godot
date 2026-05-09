@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.2")
 
 GameData="*res://scripts/core/GameData.gd"
 TouchInput="*res://scripts/core/TouchInput.gd"
+Stages="*res://scripts/core/Stages.gd"
 
 [display]
 

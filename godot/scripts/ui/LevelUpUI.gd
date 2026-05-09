@@ -48,7 +48,21 @@ func _show_next() -> void:
 
 func _generate_options() -> void:
 	var pool: Array = []
+	var priority: Array = []
 	var wm := _player.weapon_manager
+
+	# Evolution opportunities (priority - shown first when available)
+	for w in wm.weapons:
+		if w.evolved:
+			continue
+		if Evolutions.can_evolve(w.weapon_name, w.level, Callable(wm, "get_passive_level")):
+			var rule: Dictionary = Evolutions.RULES[w.weapon_name]
+			priority.append({
+				"id": "evolve:" + w.weapon_name,
+				"title": "★ EVOLVE: " + String(rule["evolved_name"]),
+				"desc": String(rule["desc"]),
+				"color": rule["color"],
+			})
 
 	for wname in WEAPON_DATA:
 		if not wm.has_weapon(wname):
@@ -60,6 +74,8 @@ func _generate_options() -> void:
 			})
 
 	for w in wm.weapons:
+		if w.evolved:
+			continue
 		var wname: String = w.weapon_name
 		if WEAPON_DATA.has(wname):
 			pool.append({
@@ -80,7 +96,8 @@ func _generate_options() -> void:
 			})
 
 	pool.shuffle()
-	_options = pool.slice(0, 3)
+	_options = priority + pool
+	_options = _options.slice(0, 3)
 
 	var fallback := {"id": "passive:iron_heart", "title": "Iron Heart", "desc": "Max HP +20", "color": Color(1.0, 0.35, 0.35)}
 	while _options.size() < 3:

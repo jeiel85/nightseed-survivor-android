@@ -13,16 +13,16 @@ anchor_bottom = 1.0
 color = Color(0.06, 0.06, 0.1, 1)
 
 [node name="VBox" type="VBoxContainer" parent="."]
-offset_left = 60.0
-offset_top = 240.0
-offset_right = -60.0
-offset_bottom = -120.0
+offset_left = 50.0
+offset_top = 110.0
+offset_right = -50.0
+offset_bottom = -50.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_constants/separation = 22
+theme_override_constants/separation = 14
 
 [node name="TitleLabel" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 100)
 text = "NIGHTSEED
 SURVIVOR"
 horizontal_alignment = 1
@@ -30,27 +30,49 @@ vertical_alignment = 1
 theme_override_font_sizes/font_size = 56
 
 [node name="Subtitle" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 36)
 text = "10-Minute Survival Action"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 22
 
 [node name="GoldLabel" type="Label" parent="VBox"]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 50)
 text = "Gold: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 28
 
+[node name="StatusLabel" type="Label" parent="VBox"]
+custom_minimum_size = Vector2(0, 36)
+text = "Vagrant  ·  Forest of Echoes  ·  Normal"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 18
+
 [node name="Spacer" type="Control" parent="VBox"]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 18)
 
 [node name="BtnPlay" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 110)
 text = "PLAY"
 theme_override_font_sizes/font_size = 40
 
+[node name="BtnCharacter" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 72)
+text = "CHARACTERS"
+theme_override_font_sizes/font_size = 22
+
+[node name="BtnStage" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 72)
+text = "STAGES"
+theme_override_font_sizes/font_size = 22
+
 [node name="BtnShop" type="Button" parent="VBox"]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 72)
 text = "SHOP"
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 22
+
+[node name="BtnDifficulty" type="Button" parent="VBox"]
+custom_minimum_size = Vector2(0, 64)
+text = "DIFFICULTY:  Normal"
+theme_override_font_sizes/font_size = 22
