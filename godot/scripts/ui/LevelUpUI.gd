@@ -51,21 +51,24 @@ func _show_next() -> void:
 	_animate_cards_in()
 
 func _animate_cards_in() -> void:
-	# Staggered slide-in + fade-in. Cards start ~40px lower and transparent.
+	# Staggered pop-in (scale + fade). We can't tween `position` because cards
+	# live inside a VBoxContainer that overrides positions every layout pass —
+	# tweening position causes all three to collapse to the same y. Scale and
+	# modulate are visual transforms that don't fight the container.
 	for i in range(_cards.size()):
 		var card: PanelContainer = _cards[i]
 		card.pivot_offset = card.size * 0.5
 		card.modulate.a = 0.0
-		card.position.y = 40.0
+		card.scale = Vector2(0.85, 0.85)
 		var delay := float(i) * 0.08
-		var tw := create_tween()
-		tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-		tw.tween_interval(delay)
-		tw.tween_property(card, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		var tw2 := create_tween()
-		tw2.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-		tw2.tween_interval(delay)
-		tw2.tween_property(card, "position:y", 0.0, 0.32).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		var tw_fade := create_tween()
+		tw_fade.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw_fade.tween_interval(delay)
+		tw_fade.tween_property(card, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		var tw_scale := create_tween()
+		tw_scale.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw_scale.tween_interval(delay)
+		tw_scale.tween_property(card, "scale", Vector2.ONE, 0.32).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _generate_options() -> void:
 	var pool: Array = []
