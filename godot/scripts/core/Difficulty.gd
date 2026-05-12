@@ -5,7 +5,7 @@ const DATA: Dictionary = {
 	"normal": {
 		"name": "Normal",
 		"name_key": "difficulty_normal",
-		"hp_mult": 1.0,
+		"hp_mult": 0.85,
 		"dmg_mult": 1.0,
 		"reward_mult": 1.0,
 		"color": Color(0.6, 0.85, 0.6),

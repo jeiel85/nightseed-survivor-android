@@ -11,7 +11,7 @@ class_name WaveManager
 @export var splitter_scene: PackedScene
 @export var miniboss_scene: PackedScene
 
-const MINI_BOSS_TIMES: Array = [120.0, 240.0, 360.0, 480.0]
+const MINI_BOSS_TIMES: Array = [80.0, 160.0, 240.0, 320.0]
 var _mini_boss_idx: int = 0
 
 var _elapsed: float = 0.0
@@ -21,8 +21,8 @@ var _spawner: EnemySpawner
 var _stage: Dictionary = {}
 var _waves: Array = []
 var _scene_map: Dictionary = {}
-var _boss_time: float = 570.0
-var _total_time: float = 600.0
+var _boss_time: float = 390.0
+var _total_time: float = 420.0
 
 func _ready() -> void:
 	_scene_map = {
@@ -46,8 +46,8 @@ func setup(spawner: EnemySpawner, stage_id: String = "") -> void:
 		push_error("WaveManager: stage '%s' not found" % stage_id)
 		return
 	_waves = _stage.get("waves", [])
-	_boss_time = float(_stage.get("boss_time", 570.0))
-	_total_time = float(_stage.get("total_time", 600.0))
+	_boss_time = float(_stage.get("boss_time", 390.0))
+	_total_time = float(_stage.get("total_time", 420.0))
 
 func get_total_time() -> float:
 	return _total_time

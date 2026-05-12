@@ -15,7 +15,7 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
 
 var _survival_time: float = 0.0
-var _total_time: float = 600.0
+var _total_time: float = 420.0
 var _is_game_over: bool = false
 var _is_victory: bool = false
 
@@ -77,7 +77,7 @@ func _on_player_leveled_up(level: int) -> void:
 		_try_unlock("untouchable")
 	elif level == 5:
 		_run_lv5_locked = true
-	if level == 10 and _survival_time < 180.0:
+	if level == 10 and _survival_time < 126.0:
 		_try_unlock("speed_runner")
 	if level >= 20:
 		_try_unlock("completionist")
