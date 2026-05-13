@@ -16,6 +16,7 @@ extends Control
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
+	_apply_button_styles()
 	_refresh()
 	btn_play.pressed.connect(_on_play_pressed)
 	btn_character.pressed.connect(_on_character_pressed)
@@ -29,6 +30,17 @@ func _ready() -> void:
 	btn_leaderboard.visible = LeaderboardManager.is_supported() or OS.get_name() == "Android"
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
+
+func _apply_button_styles() -> void:
+	ButtonStyles.apply(btn_play, ButtonStyles.PLAY)
+	ButtonStyles.apply(btn_character, ButtonStyles.CHARACTER)
+	ButtonStyles.apply(btn_stage, ButtonStyles.STAGE)
+	ButtonStyles.apply(btn_shop, ButtonStyles.SHOP)
+	ButtonStyles.apply(btn_difficulty, ButtonStyles.DIFFICULTY)
+	ButtonStyles.apply(btn_leaderboard, ButtonStyles.LEADERBOARD)
+	ButtonStyles.apply(btn_codex, ButtonStyles.CODEX)
+	ButtonStyles.apply(btn_language, ButtonStyles.LANGUAGE)
+	ButtonStyles.apply(btn_credits, ButtonStyles.CREDITS)
 
 func _refresh() -> void:
 	title_label.text = Localization.tr_key("app_title")

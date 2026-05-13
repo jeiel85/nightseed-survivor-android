@@ -189,6 +189,8 @@ func _show_result(victory: bool) -> void:
 	result_stats.text = "\n".join(lines)
 	btn_restart.text = Localization.tr_key("btn_play_again") if victory else Localization.tr_key("btn_retry")
 	btn_menu.text = Localization.tr_key("btn_main_menu")
+	ButtonStyles.apply(btn_restart, ButtonStyles.VICTORY if victory else ButtonStyles.DEFEAT)
+	ButtonStyles.apply(btn_menu, ButtonStyles.NEUTRAL)
 
 func _on_restart_pressed() -> void:
 	get_tree().paused = false
