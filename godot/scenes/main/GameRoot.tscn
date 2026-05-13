@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyCaster.tscn" id="17_ca"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemySplitter.tscn" id="18_sp"]
 [ext_resource type="PackedScene" path="res://scenes/enemies/EnemyMiniBoss.tscn" id="19_mb"]
+[ext_resource type="PackedScene" path="res://scenes/ui/StoryBanner.tscn" id="20_sb"]
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_gr")
@@ -85,6 +86,8 @@ miniboss_scene = ExtResource("19_mb")
 
 [node name="VirtualJoystick" parent="." instance=ExtResource("12_vj")]
 
+[node name="StoryBanner" parent="." instance=ExtResource("20_sb")]
+
 [node name="ResultPanel" type="CanvasLayer" parent="."]
 process_mode = 3
 layer = 20
@@ -111,6 +114,15 @@ text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 48
+
+[node name="Subtitle" type="Label" parent="ResultPanel/Panel/VBox"]
+custom_minimum_size = Vector2(0, 40)
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(0.82, 0.78, 1, 1)
 
 [node name="Stats" type="Label" parent="ResultPanel/Panel/VBox"]
 custom_minimum_size = Vector2(0, 200)

@@ -1,6 +1,8 @@
 extends Node
 class_name WaveManager
 
+signal boss_spawned
+
 @export var slime_scene: PackedScene
 @export var bat_scene: PackedScene
 @export var knight_scene: PackedScene
@@ -68,6 +70,7 @@ func update(delta: float) -> void:
 		_spawner.spawn_specific(bs)
 		AudioManager.play("boss_appear", 0.0)
 		AudioManager.play_bgm("boss")
+		boss_spawned.emit()
 
 func _check_wave_transitions() -> void:
 	if _waves.is_empty():

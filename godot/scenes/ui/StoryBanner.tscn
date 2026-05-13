@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/StoryBanner.gd" id="1_sb"]
+
+[node name="StoryBanner" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_sb")
+layer = 30
+
+[node name="Anchor" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Anchor"]
+offset_left = 36.0
+offset_top = 200.0
+offset_right = -36.0
+offset_bottom = 340.0
+anchor_right = 1.0
+mouse_filter = 2
+
+[node name="Backdrop" type="ColorRect" parent="Anchor/Panel"]
+color = Color(0, 0, 0, 0.55)
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Anchor/Panel"]
+theme_override_constants/separation = 6
+offset_left = 18.0
+offset_top = 12.0
+offset_right = -18.0
+offset_bottom = -12.0
+
+[node name="Speaker" type="Label" parent="Anchor/Panel/VBox"]
+text = ""
+horizontal_alignment = 0
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(0.82, 0.78, 1, 1)
+
+[node name="Line" type="Label" parent="Anchor/Panel/VBox"]
+text = ""
+horizontal_alignment = 0
+vertical_alignment = 1
+autowrap_mode = 3
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1, 1, 1, 1)

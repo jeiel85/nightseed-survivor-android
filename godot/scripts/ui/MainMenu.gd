@@ -10,6 +10,7 @@ extends Control
 @onready var btn_shop: Button = $VBox/BtnShop
 @onready var btn_difficulty: Button = $VBox/BtnDifficulty
 @onready var btn_leaderboard: Button = $VBox/BtnLeaderboard
+@onready var btn_codex: Button = $VBox/BtnCodex
 @onready var btn_language: Button = $VBox/BtnLanguage
 @onready var btn_credits: Button = $VBox/BtnCredits
 
@@ -22,6 +23,7 @@ func _ready() -> void:
 	btn_shop.pressed.connect(_on_shop_pressed)
 	btn_difficulty.pressed.connect(_on_difficulty_pressed)
 	btn_leaderboard.pressed.connect(_on_leaderboard_pressed)
+	btn_codex.pressed.connect(_on_codex_pressed)
 	btn_language.pressed.connect(_on_language_pressed)
 	btn_credits.pressed.connect(_on_credits_pressed)
 	btn_leaderboard.visible = LeaderboardManager.is_supported() or OS.get_name() == "Android"
@@ -45,6 +47,7 @@ func _refresh() -> void:
 	btn_difficulty.text = Localization.tr_key("btn_difficulty_fmt") % df_name
 	btn_difficulty.add_theme_color_override("font_color", df["color"])
 	btn_leaderboard.text = Localization.tr_key("btn_leaderboard")
+	btn_codex.text = Localization.tr_key("btn_codex")
 	btn_language.text = Localization.tr_key("btn_language_fmt") % Localization.current_label()
 	btn_credits.text = Localization.tr_key("btn_credits")
 
@@ -69,6 +72,9 @@ func _on_difficulty_pressed() -> void:
 
 func _on_credits_pressed() -> void:
 	Transition.change_scene("res://scenes/ui/CreditsUI.tscn")
+
+func _on_codex_pressed() -> void:
+	Transition.change_scene("res://scenes/ui/CodexUI.tscn")
 
 func _on_leaderboard_pressed() -> void:
 	if not LeaderboardManager.is_signed_in():

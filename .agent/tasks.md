@@ -9,8 +9,9 @@
 - [x] Add story UI copy guide
 - [x] Add glossary data in `godot/data/story_terms.json`
 - [x] Update stage descriptions with story copy
-- [ ] Add runtime story event UI
-- [ ] Add codex/glossary UI for story terms
+- [x] Add runtime story event UI (StoryBanner + stage intro / boss warning / boss intro / clear lines)
+- [x] Add codex/glossary UI for story terms
+- [x] Wire boss warning + fragment-recovered subtitle into result flow
 
 ### Infrastructure & Deployment
 - [x] Refactor GitHub Pages structure (Branding page at root, game at `/live/`)
@@ -63,4 +64,3 @@
 - [ ] Add permanent upgrades
 - [ ] Add virtual joystick
 - [ ] Add Android export
-- [ ] Add boss warning and clear subtitle copy to result flow

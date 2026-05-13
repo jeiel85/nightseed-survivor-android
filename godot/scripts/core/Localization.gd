@@ -25,6 +25,7 @@ const STRINGS: Dictionary = {
 	"btn_difficulty_fmt":  {"en": "DIFFICULTY:  %s", "ko": "난이도:  %s"},
 	"btn_leaderboard":     {"en": "★ LEADERBOARDS", "ko": "★ 순위표"},
 	"btn_credits":         {"en": "Credits & Licenses", "ko": "크레딧 / 라이선스"},
+	"btn_codex":           {"en": "CODEX", "ko": "용어집"},
 	"btn_language_fmt":    {"en": "Language:  %s", "ko": "언어:  %s"},
 	"lang_ko_label":       {"en": "한국어", "ko": "한국어"},
 	"lang_en_label":       {"en": "English", "ko": "English"},
@@ -43,6 +44,8 @@ const STRINGS: Dictionary = {
 	# --- Result ---
 	"result_victory":      {"en": "VICTORY!", "ko": "승리!"},
 	"result_gameover":     {"en": "GAME OVER", "ko": "게임 오버"},
+	"result_fragment_recovered": {"en": "A fragment of memory has returned.", "ko": "기억의 조각을 되찾았습니다."},
+	"boss_warning":        {"en": "A WARDEN OF THE SEAL AWAKENS", "ko": "봉인의 파수꾼이 깨어납니다"},
 	"result_survived_fmt": {"en": "Survived:  %d:%02d", "ko": "생존:  %d:%02d"},
 	"result_kills_fmt":    {"en": "Kills:  %d", "ko": "처치:  %d"},
 	"result_gold_fmt":     {"en": "Gold earned:  %d", "ko": "획득 골드:  %d"},
@@ -147,6 +150,11 @@ const STRINGS: Dictionary = {
 	"ach_hard_mode_clear_desc":{"en": "Win on Hard or Nightmare difficulty", "ko": "어려움/악몽 난이도 클리어"},
 	"ach_completionist_name":  {"en": "Completionist", "ko": "완벽주의자"},
 	"ach_completionist_desc":  {"en": "Reach Level 20 in one run", "ko": "한 판에 레벨 20 도달"},
+
+	# --- Codex ---
+	"codex_title":         {"en": "CODEX", "ko": "용어집"},
+	"codex_hint":          {"en": "Select a term to read.", "ko": "용어를 선택해 읽어보세요."},
+	"codex_safe_label":    {"en": "Used as", "ko": "이렇게 표현됩니다"},
 }
 
 var current_lang: String = DEFAULT_LANG

@@ -3,6 +3,36 @@
 ## 2026-05-13
 
 - 날짜: 2026-05-13
+- 작업: Nightseed 런타임 스토리 연결 (StoryBanner + CodexUI)
+- 변경 파일:
+  - godot/data/story_dialogues.json (신규)
+  - godot/scripts/core/Story.gd (신규 autoload)
+  - godot/scripts/ui/StoryBanner.gd (신규)
+  - godot/scenes/ui/StoryBanner.tscn (신규)
+  - godot/scripts/ui/CodexUI.gd (신규)
+  - godot/scenes/ui/CodexUI.tscn (신규)
+  - godot/project.godot (Story autoload 등록)
+  - godot/scripts/core/WaveManager.gd (`boss_spawned` 시그널 추가)
+  - godot/scripts/core/GameRoot.gd (스테이지 인트로/보스 등장/승리 자막 연결)
+  - godot/scenes/main/GameRoot.tscn (StoryBanner 노드, Result 부제 라벨 추가)
+  - godot/scripts/ui/MainMenu.gd (CODEX 버튼 연결)
+  - godot/scenes/ui/MainMenu.tscn (CODEX 버튼 추가)
+  - godot/scripts/core/Localization.gd (codex_*, boss_warning, result_fragment_recovered 등 키 추가)
+  - .agent/tasks.md, .agent/progress.md, .agent/decisions.md, CHANGELOG.md (수정)
+- 검증:
+  - `godot/data/story_dialogues.json` JSON 문법 검사 통과
+  - 정적 코드 리뷰로 노드 경로/시그널/Localization 키 일치 확인
+  - 로컬 환경에서 `godot` 실행 파일이 PATH에 없어 Godot headless 검증은 미실행 — Godot 설치 환경에서 한 판 플레이 검증 필요
+- 결과:
+  - 게임 시작 시 스테이지 인트로, 보스 등장 시 경고 + 보스 대사, 승리 시 클리어 대사가 비차단 자막으로 흐름
+  - 메인 메뉴 → CODEX 진입 가능, KO/EN 토글 동기화
+- 후속 작업:
+  - 반복 플레이 시 인트로를 반복 힌트로 대체하는 분기
+  - 용어 잠금/해금 (스테이지 클리어 시 추가 용어 노출)
+
+## 2026-05-13
+
+- 날짜: 2026-05-13
 - 작업: Nightseed 스토리 기반 문서화 및 스테이지 문구 반영
 - 변경 파일:
   - docs/story/README.md (신규)

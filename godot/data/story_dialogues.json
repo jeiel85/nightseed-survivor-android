@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "speakers": {
+    "vagrant":          {"ko": "방랑자", "en": "Vagrant"},
+    "forest_warden":    {"ko": "숲의 파수꾼", "en": "Forest Warden"},
+    "frostbound_guard": {"ko": "결빙의 수호자", "en": "Frostbound Guard"},
+    "twilight_keeper":  {"ko": "황혼의 문지기", "en": "Twilight Keeper"},
+    "ashen_guardian":   {"ko": "잿빛 수호자", "en": "Ashen Guardian"},
+    "last_warden":      {"ko": "마지막 파수꾼", "en": "Last Warden"},
+    "unknown_voice":    {"ko": "이름 없는 목소리", "en": "Unknown Voice"}
+  },
+  "stages": {
+    "forest": {
+      "intro": [
+        {"speaker": "vagrant",
+         "ko": "달빛이 또 다시 나를 부른다... 이 숲은 어떤 이름을 기억하고 있는가.",
+         "en": "Moonlight calls me again... What name does this forest still remember?"}
+      ],
+      "boss_intro": [
+        {"speaker": "forest_warden",
+         "ko": "밤의 씨앗은 아직 잠들어야 한다.",
+         "en": "The Nightseed must remain asleep."},
+        {"speaker": "vagrant",
+         "ko": "그렇다면 왜 숲이 먼저 나를 불렀지?",
+         "en": "Then why did the forest call me first?"}
+      ],
+      "clear": [
+        {"speaker": "vagrant",
+         "ko": "기억의 조각이 손끝에 남았다.",
+         "en": "A fragment of memory lingers at my fingertips."}
+      ]
+    },
+    "frozen_wastes": {
+      "intro": [
+        {"speaker": "vagrant",
+         "ko": "이 얼음은 단지 추위가 아니다. 잊힌 약속이 굳어 있다.",
+         "en": "This ice is no mere cold — it is frozen promises."}
+      ],
+      "boss_intro": [
+        {"speaker": "frostbound_guard",
+         "ko": "맹세를 잊은 자는 이 문을 넘지 못한다.",
+         "en": "Those who forgot their oath shall not pass this gate."},
+        {"speaker": "vagrant",
+         "ko": "맹세라... 내가 무엇을 지켰지?",
+         "en": "An oath... what did I once swear to keep?"}
+      ],
+      "clear": [
+        {"speaker": "vagrant",
+         "ko": "맹세의 결이 검 끝에서 다시 빛난다.",
+         "en": "The shape of an oath glints again at my blade's edge."}
+      ]
+    },
+    "twilight_sanctum": {
+      "intro": [
+        {"speaker": "vagrant",
+         "ko": "황혼은 낮도 밤도 아니다. 봉인이 흔들리는 시간이다.",
+         "en": "Twilight is neither day nor night — the hour when seals waver."}
+      ],
+      "boss_intro": [
+        {"speaker": "twilight_keeper",
+         "ko": "너는 봉인을 지킨 자이자, 연 자다.",
+         "en": "You are both the one who sealed it, and the one who opened it."},
+        {"speaker": "vagrant",
+         "ko": "둘 다 사실일 수는 없다.",
+         "en": "Both cannot be true at once."}
+      ],
+      "clear": [
+        {"speaker": "vagrant",
+         "ko": "잠긴 문 하나가 다시 닫혔다.",
+         "en": "One unlocked door has closed once more."}
+      ]
+    },
+    "inferno_chasm": {
+      "intro": [
+        {"speaker": "vagrant",
+         "ko": "불꽃 너머에 무엇이 잠들어 있는가.",
+         "en": "What slumbers beyond this flame?"}
+      ],
+      "boss_intro": [
+        {"speaker": "ashen_guardian",
+         "ko": "씨앗을 태우려 하지 마라. 깨어날 뿐이다.",
+         "en": "Do not try to burn the seed — it will only wake."},
+        {"speaker": "vagrant",
+         "ko": "그럼 무엇을 해야 하지?",
+         "en": "Then what must I do?"}
+      ],
+      "clear": [
+        {"speaker": "vagrant",
+         "ko": "잿더미 속에서 뿌리 하나가 빛났다.",
+         "en": "A single root gleamed within the ash."}
+      ]
+    },
+    "cursed_tomb": {
+      "intro": [
+        {"speaker": "vagrant",
+         "ko": "이 무덤에는 누구의 이름이 적혀 있는가.",
+         "en": "Whose name lies recorded in this tomb?"}
+      ],
+      "boss_intro": [
+        {"speaker": "last_warden",
+         "ko": "너는 문을 닫은 마지막 기사였다.",
+         "en": "You were the last knight to seal the door."},
+        {"speaker": "last_warden",
+         "ko": "그리고 다시 열 수 있는 유일한 열쇠다.",
+         "en": "And the only key that can open it again."}
+      ],
+      "clear": [
+        {"speaker": "vagrant",
+         "ko": "내가 지킨 건 세계였나, 진실이었나.",
+         "en": "Was it the world I guarded — or the truth?"},
+        {"speaker": "unknown_voice",
+         "ko": "밤의 씨앗은 아직 하나가 아니다.",
+         "en": "The Nightseed is not yet only one."}
+      ]
+    }
+  },
+  "repeat_hints": [
+    {"ko": "밤의 씨앗은 어둠이 아니라, 잊힌 맹세가 자라난 흔적이다.",
+     "en": "The Nightseed is not darkness — but the growth of forgotten oaths."},
+    {"ko": "검의 금은 상처가 아니라, 봉인의 지도를 그리고 있다.",
+     "en": "The cracks in the blade are not wounds — they trace the seal's map."},
+    {"ko": "이름을 잃은 자만이 이름을 봉인할 수 있었다.",
+     "en": "Only one who lost a name could ever seal a name away."}
+  ]
+}

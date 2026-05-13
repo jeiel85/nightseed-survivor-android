@@ -8,8 +8,10 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
 @onready var wave_manager: WaveManager = $WaveManager
 @onready var level_up_ui: LevelUpUI = $LevelUpUI
+@onready var story_banner: StoryBanner = $StoryBanner
 @onready var result_panel: CanvasLayer = $ResultPanel
 @onready var result_title: Label = $ResultPanel/Panel/VBox/Title
+@onready var result_subtitle: Label = $ResultPanel/Panel/VBox/Subtitle
 @onready var result_stats: Label = $ResultPanel/Panel/VBox/Stats
 @onready var btn_restart: Button = $ResultPanel/Panel/VBox/BtnRestart
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
@@ -43,17 +45,39 @@ func _ready() -> void:
 
 	enemy_spawner.enemy_killed.connect(_on_enemy_killed)
 	level_up_ui.upgrade_chosen.connect(_on_upgrade_chosen)
+	wave_manager.boss_spawned.connect(_on_boss_spawned)
 
 	btn_restart.pressed.connect(_on_restart_pressed)
 	btn_menu.pressed.connect(_on_menu_pressed)
 
 	result_panel.visible = false
+	result_subtitle.text = ""
 
 	hud.set_hp(player.current_hp, player.max_hp)
 	hud.set_time(_total_time)
 	hud.set_level(1)
 	hud.set_kills(0)
 	hud.set_gold(0)
+
+	_play_stage_intro()
+
+func _play_stage_intro() -> void:
+	if not is_instance_valid(story_banner):
+		return
+	var lines: Array = Story.get_stage_lines(GameData.selected_stage, "intro")
+	if lines.is_empty():
+		var hint: String = Story.get_repeat_hint()
+		if hint.is_empty():
+			return
+		lines = [{"speaker": "", "text": hint}]
+	story_banner.play_lines(lines)
+
+func _on_boss_spawned() -> void:
+	if not is_instance_valid(story_banner):
+		return
+	var lines: Array = [{"speaker": "", "text": Localization.tr_key("boss_warning")}]
+	lines.append_array(Story.get_stage_lines(GameData.selected_stage, "boss_intro"))
+	story_banner.play_lines(lines)
 
 func _process(delta: float) -> void:
 	if _is_game_over or _is_victory:
@@ -139,10 +163,15 @@ func _show_result(victory: bool) -> void:
 	if victory:
 		result_title.text = Localization.tr_key("result_victory")
 		result_title.modulate = Color(0.95, 0.9, 0.2)
+		result_subtitle.text = Localization.tr_key("result_fragment_recovered")
 		AudioManager.play("victory", 0.0)
+		var clear_lines: Array = Story.get_stage_lines(GameData.selected_stage, "clear")
+		if is_instance_valid(story_banner) and not clear_lines.is_empty():
+			story_banner.play_lines(clear_lines)
 	else:
 		result_title.text = Localization.tr_key("result_gameover")
 		result_title.modulate = Color(1.0, 0.3, 0.3)
+		result_subtitle.text = ""
 		AudioManager.play("defeat", 0.0)
 	var tm := int(_survival_time)
 	var lines: Array = [
