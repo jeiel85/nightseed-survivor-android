@@ -172,21 +172,38 @@ jobs:
 
       - name: Build Web release
         run: |
-          mkdir -p build/web
-          ~/godot-bin/godot --headless --path godot --export-release "Web" "${{ github.workspace }}/build/web/index.html"
-          # Inject COI service worker so Godot's SharedArrayBuffer check passes on GitHub Pages
-          # (GitHub Pages can't send COOP/COEP headers; coi-serviceworker patches them client-side)
-          cp godot/web_extras/coi-serviceworker.js build/web/
-          sed -i 's|<head>|<head>\n\t<script src="coi-serviceworker.js"></script>|' build/web/index.html
-          # Ship the privacy policy alongside the game (Play Store requires a hosted URL)
-          cp godot/web_extras/privacy.html build/web/
-          ls -la build/web/
+          # 1. Prepare gh-pages root structure
+          mkdir -p build/gh-pages-root/live
+          mkdir -p build/gh-pages-root/assets
+
+          # 2. Export Godot web build to /live/
+          ~/godot-bin/godot --headless --path godot --export-release "Web" "${{ github.workspace }}/build/gh-pages-root/live/index.html"
+          
+          # 3. Inject COI service worker and copy extras to /live/
+          cp godot/web_extras/coi-serviceworker.js build/gh-pages-root/live/
+          sed -i 's|<head>|<head>\n\t<script src="coi-serviceworker.js"></script>|' build/gh-pages-root/live/index.html
+          cp godot/web_extras/privacy.html build/gh-pages-root/live/
+
+          # 4. Set up branding page at root
+          cp branding/index.html build/gh-pages-root/
+          
+          # 5. Copy branding assets (icons, screenshots)
+          cp play_store/icon_512.png build/gh-pages-root/assets/icon.png
+          cp play_store/feature_graphic_1024x500.png build/gh-pages-root/assets/feature_graphic.png
+          cp play_store/screenshot_1_menu.png build/gh-pages-root/assets/screenshot_1.png
+          cp play_store/screenshot_2_gameplay.png build/gh-pages-root/assets/screenshot_2.png
+          cp play_store/screenshot_3_levelup.png build/gh-pages-root/assets/screenshot_3.png
+          cp play_store/screenshot_4_boss.png build/gh-pages-root/assets/screenshot_4.png
+          cp play_store/screenshot_5_victory.png build/gh-pages-root/assets/screenshot_5.png
+
+          ls -la build/gh-pages-root/
+          ls -la build/gh-pages-root/live/
 
       - name: Upload Web artifact
         uses: actions/upload-artifact@v4
         with:
           name: nightseed-survivor-web
-          path: build/web/
+          path: build/gh-pages-root/
           retention-days: 30
 
       - name: Deploy Web to GitHub Pages
@@ -194,10 +211,10 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build/web
+          publish_dir: ./build/gh-pages-root
           publish_branch: gh-pages
           force_orphan: true
-          commit_message: "deploy: web build for ${{ github.sha }}"
+          commit_message: "deploy: web build and branding page for ${{ github.sha }}"
 
       - name: Resolve release notes
         if: startsWith(github.ref, 'refs/tags/v')
