@@ -54,6 +54,13 @@
 - gradle build template: `godot/android/build/` 소스만 커밋, `libs/`·`build/`·`assets/`·`.gradle/`는 .gitignore (CI에서 재추출)
 - `gradlew` 실행 권한: `git update-index --chmod=+x` 로 100755 보존
 
+## R8 / Play Console 디오뷰스케이션 파일
+
+- Release AAB는 `minifyEnabled=true`로 R8 통과 ([godot/android/build/build.gradle](godot/android/build/build.gradle), [godot/android/build/proguard-rules.pro](godot/android/build/proguard-rules.pro))
+- 빌드 산출물: `build/nightseed-survivor-release.mapping.txt` — CI가 자동 수집 + GitHub Release에 첨부
+- Play Console 업로드 시: **Release dashboard → 해당 AAB → "Add deobfuscation file"** 에 `mapping.txt` 업로드 (또는 App bundle explorer → Native debug symbols/ProGuard 탭). AAB 업로드 직후 한 번만 하면 됨
+- proguard-rules.pro는 Godot 엔진 + PGS + Google Play Services를 전부 keep하는 보수적 룰. 빌드 후 게임이 실제 단말에서 안 켜지면 1) 이 룰에 클래스 추가 또는 2) `minifyEnabled=false`로 잠시 롤백
+
 ## 미해결/대기 항목
 
 - **Play Games Services**: 코드는 완비, placeholder ID 상태. 사용자가 [docs/PLAY_GAMES_SERVICES_SETUP.md](docs/PLAY_GAMES_SERVICES_SETUP.md) 따라 Play Console 설정 + APP_ID/6 leaderboard ID 회수하면 활성화

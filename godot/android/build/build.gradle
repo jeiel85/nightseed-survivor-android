@@ -173,6 +173,12 @@ android {
             } else {
                 signingConfig null
             }
+            // R8 code shrinking + mapping.txt for Play Console deobfuscation.
+            // shrinkResources stays off — Godot's res/ contains placeholder
+            // resources referenced indirectly via manifest meta-data.
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

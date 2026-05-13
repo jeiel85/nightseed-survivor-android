@@ -164,11 +164,28 @@ jobs:
           ~/godot-bin/godot --headless --path godot --export-release "Android AAB" "${{ github.workspace }}/build/nightseed-survivor-release.aab"
           ls -lh build/nightseed-survivor-release.aab
 
+      - name: Collect R8 mapping.txt (deobfuscation file for Play Console)
+        run: |
+          # R8 emits mapping.txt to godot/android/build/build/outputs/mapping/release/mapping.txt
+          # when minifyEnabled=true. Bundle the AAB build output here for upload.
+          MAPPING_SRC="godot/android/build/build/outputs/mapping/release/mapping.txt"
+          if [ -f "$MAPPING_SRC" ]; then
+            cp "$MAPPING_SRC" "build/nightseed-survivor-release.mapping.txt"
+            ls -lh build/nightseed-survivor-release.mapping.txt
+            echo "✓ mapping.txt captured ($(wc -l < build/nightseed-survivor-release.mapping.txt) lines)"
+          else
+            echo "::warning::R8 mapping.txt not found at $MAPPING_SRC — was minifyEnabled set?"
+            # Create empty placeholder so downstream steps don't fail
+            : > build/nightseed-survivor-release.mapping.txt
+          fi
+
       - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
           name: nightseed-survivor-aab
-          path: build/nightseed-survivor-release.aab
+          path: |
+            build/nightseed-survivor-release.aab
+            build/nightseed-survivor-release.mapping.txt
           retention-days: 30
 
       - name: Build Windows release
@@ -271,5 +288,6 @@ jobs:
           files: |
             build/nightseed-survivor-release.apk
             build/nightseed-survivor-release.aab
+            build/nightseed-survivor-release.mapping.txt
             build/nightseed-survivor.exe
             build/nightseed-survivor.x86_64
