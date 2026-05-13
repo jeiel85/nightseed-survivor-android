@@ -116,15 +116,15 @@ const STRINGS: Dictionary = {
 
 	# --- Stages (id matches data/stages.json id) ---
 	"stage_forest_name": {"en": "Forest of Echoes", "ko": "메아리의 숲"},
-	"stage_forest_desc": {"en": "Where it all began", "ko": "모든 것이 시작된 곳"},
+	"stage_forest_desc": {"en": "A forest where moonlight calls a lost name.", "ko": "달빛이 잃어버린 이름을 부르는 숲."},
 	"stage_frozen_wastes_name": {"en": "Frozen Wastes", "ko": "얼어붙은 황무지"},
-	"stage_frozen_wastes_desc": {"en": "Bats and hounds dominate the cold", "ko": "박쥐와 사냥개가 추위를 지배한다"},
+	"stage_frozen_wastes_desc": {"en": "A frozen land where broken oaths sleep below.", "ko": "깨어진 맹세가 얼음 아래 잠든 땅."},
 	"stage_twilight_sanctum_name": {"en": "Twilight Sanctum", "ko": "황혼의 성소"},
-	"stage_twilight_sanctum_desc": {"en": "Balanced trial of all foes", "ko": "모든 적의 균형잡힌 시련"},
+	"stage_twilight_sanctum_desc": {"en": "A twilight chamber that sealed memories away.", "ko": "기억을 봉인한 황혼의 방."},
 	"stage_inferno_chasm_name": {"en": "Inferno Chasm", "ko": "화염의 협곡"},
-	"stage_inferno_chasm_desc": {"en": "Knights and hounds in waves of fire", "ko": "기사와 사냥개가 불의 파도로"},
+	"stage_inferno_chasm_desc": {"en": "A chasm where the seed must be revealed, not burned.", "ko": "씨앗을 태우는 대신 비춰야 하는 심연."},
 	"stage_cursed_tomb_name": {"en": "Cursed Tomb", "ko": "저주받은 무덤"},
-	"stage_cursed_tomb_desc": {"en": "Endless undead tide. For the fearless.", "ko": "끝없는 언데드의 파도. 두려움 없는 자에게."},
+	"stage_cursed_tomb_desc": {"en": "A tomb that records the last knight's name.", "ko": "마지막 기사의 이름이 기록된 무덤."},
 
 	# --- Achievements ---
 	"ach_first_survivor_name":   {"en": "First Survivor", "ko": "첫 생존자"},

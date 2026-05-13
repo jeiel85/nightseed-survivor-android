@@ -1,5 +1,24 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-13
+
+### Added
+- `docs/story/` 스토리 기준 문서 세트 추가
+- Nightseed 용어 정의, 단계별 대사 공개 기준, UI 카피 기준 추가
+- 향후 용어집/도감 UI를 위한 `godot/data/story_terms.json` 추가
+
+### Changed
+- 스테이지 설명 문구를 Nightseed 세계관 기준으로 갱신
+- 원본 스토리 설계서 패키지를 `docs/story/source/nightseed-lore-story-update/`로 정리
+
+### Documentation
+- `docs/GAME_SPEC.md`, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md`에 스토리 기반 작업 기준 반영
+- `.agent/tasks.md`, `.agent/progress.md`, `.agent/decisions.md`, `HISTORY.md` 갱신
+
+### Verification
+- `stages.json`, `story_terms.json` JSON 문법 검사 통과
+- 로컬 Godot headless 검증은 `godot` 실행 파일이 PATH에 없어 미실행
+
 ## v0.2.0 - 2026-05-07
 
 ### Added

@@ -3,6 +3,36 @@
 ## 2026-05-13
 
 - 날짜: 2026-05-13
+- 작업: Nightseed 스토리 기반 문서화 및 스테이지 문구 반영
+- 변경 파일:
+  - docs/story/README.md (신규)
+  - docs/story/STORY_FINAL_SPEC.md (신규)
+  - docs/story/STORY_NIGHTSEED_LORE.md (신규)
+  - docs/story/STORY_STAGE_DIALOGUE.md (신규)
+  - docs/story/STORY_UI_COPY.md (신규)
+  - docs/story/source/nightseed-lore-story-update/ (원본 설계서 이동)
+  - godot/data/story_terms.json (신규)
+  - godot/data/stages.json (수정)
+  - godot/scripts/core/Localization.gd (수정)
+  - docs/GAME_SPEC.md (수정)
+  - docs/ARCHITECTURE.md (수정)
+  - docs/ROADMAP.md (수정)
+  - .agent/tasks.md (수정)
+  - .agent/progress.md (수정)
+  - .agent/decisions.md (수정)
+  - CHANGELOG.md (수정)
+- 검증:
+  - `godot/data/stages.json`, `godot/data/story_terms.json` JSON 문법 검사 통과
+  - `godot --headless --path godot --quit` 실행 시도
+  - 로컬 환경에서 `godot` 실행 파일을 찾을 수 없어 Godot headless 검증은 미실행
+- 결과:
+  - 스토리 기준 문서와 기반 데이터 추가 완료. 런타임 실행 검증은 CI 또는 Godot 설치 환경에서 확인 필요.
+- 후속 작업:
+  - 런타임 스토리 이벤트 UI 구현
+
+## 2026-05-13
+
+- 날짜: 2026-05-13
 - 작업: GitHub Pages 배포 구조 개편 및 브랜딩 페이지 적용
 - 변경 파일:
   - branding/index.html (신규)

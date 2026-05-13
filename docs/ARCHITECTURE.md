@@ -26,6 +26,12 @@ nightseed-survivor/
     ROADMAP.md
     BALANCE.md
     RELEASE_CHECKLIST.md
+    story/
+      README.md
+      STORY_FINAL_SPEC.md
+      STORY_NIGHTSEED_LORE.md
+      STORY_STAGE_DIALOGUE.md
+      STORY_UI_COPY.md
 
   godot/
     project.godot
@@ -303,4 +309,7 @@ godot/data/
   passives.json
   enemies.json
   waves.json
+  story_terms.json
 ```
+
+`story_terms.json`은 향후 용어집, 도감, 툴팁 UI에서 사용할 스토리 용어 데이터다. 런타임 UI 연결 전까지는 문서 기준을 코드와 공유하기 위한 기반 데이터로 유지한다.

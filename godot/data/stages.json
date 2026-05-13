@@ -4,7 +4,7 @@
     {
       "id": "forest",
       "name": "Forest of Echoes",
-      "desc": "Where it all began",
+      "desc": "A forest where moonlight calls a lost name.",
       "name_key": "stage_forest_name",
       "desc_key": "stage_forest_desc",
       "total_time": 420,
@@ -29,7 +29,7 @@
     {
       "id": "frozen_wastes",
       "name": "Frozen Wastes",
-      "desc": "Bats and hounds dominate the cold",
+      "desc": "A frozen land where broken oaths sleep below.",
       "name_key": "stage_frozen_wastes_name",
       "desc_key": "stage_frozen_wastes_desc",
       "total_time": 420,
@@ -50,7 +50,7 @@
     {
       "id": "twilight_sanctum",
       "name": "Twilight Sanctum",
-      "desc": "Balanced trial of all foes",
+      "desc": "A twilight chamber that sealed memories away.",
       "name_key": "stage_twilight_sanctum_name",
       "desc_key": "stage_twilight_sanctum_desc",
       "total_time": 420,
@@ -72,7 +72,7 @@
     {
       "id": "inferno_chasm",
       "name": "Inferno Chasm",
-      "desc": "Knights and hounds in waves of fire",
+      "desc": "A chasm where the seed must be revealed, not burned.",
       "name_key": "stage_inferno_chasm_name",
       "desc_key": "stage_inferno_chasm_desc",
       "total_time": 420,
@@ -94,7 +94,7 @@
     {
       "id": "cursed_tomb",
       "name": "Cursed Tomb",
-      "desc": "Endless undead tide. For the fearless.",
+      "desc": "A tomb that records the last knight's name.",
       "name_key": "stage_cursed_tomb_name",
       "desc_key": "stage_cursed_tomb_desc",
       "total_time": 480,

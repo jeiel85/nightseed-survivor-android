@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "terms": [
+    {
+      "id": "nightseed",
+      "name_ko": "밤의 씨앗",
+      "name_en": "Nightseed",
+      "short_ko": "세계에 밤을 자라나게 만드는 봉인된 기억의 씨앗.",
+      "short_en": "A sealed seed of memory that grows night across the world.",
+      "long_ko": "어둠 그 자체가 아니라, 잊힌 맹세와 기억이 뭉쳐 생긴 위험한 봉인의 핵이다.",
+      "long_en": "Not darkness itself, but a dangerous sealed core formed from forgotten oaths and memories.",
+      "safe_usage": [
+        "봉인된 기억의 핵",
+        "잊힌 맹세의 씨앗",
+        "이름을 잃게 만드는 밤",
+        "기억을 먹는 그림자"
+      ],
+      "avoid_usage": [
+        "악마의 씨앗",
+        "제물 의식",
+        "피의 봉인",
+        "숭배",
+        "계약"
+      ]
+    },
+    {
+      "id": "moonlight",
+      "name_ko": "달빛",
+      "name_en": "Moonlight",
+      "short_ko": "잊힌 이름과 기억을 되살리는 빛.",
+      "short_en": "The light that recalls forgotten names and memories."
+    },
+    {
+      "id": "vagrant_blade",
+      "name_ko": "방랑자의 검",
+      "name_en": "Vagrant's Blade",
+      "short_ko": "Nightseed의 봉인을 닫았던 열쇠이자, 잃어버린 기억의 지도.",
+      "short_en": "The key that sealed the Nightseed and the map of lost memory."
+    }
+  ]
+}

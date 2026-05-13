@@ -198,3 +198,29 @@ Completion criteria:
 - [ ] 터치 조이스틱으로 이동 가능
 - [ ] UI가 작은 화면에서도 깨지지 않음
 - [ ] GitHub Actions에서 APK가 생성됨
+
+---
+
+## Milestone 8: Story Foundation
+
+Goal:
+
+- Nightseed 세계관을 정식 문서와 데이터로 고정한다.
+- 컷신 없이도 스테이지 설명과 짧은 UI 문구에서 스토리 방향이 드러나게 한다.
+
+Tasks:
+
+- [x] Add `docs/story/` story document set
+- [x] Add Nightseed lore definition
+- [x] Add staged dialogue reveal guide
+- [x] Add UI copy guide
+- [x] Add `godot/data/story_terms.json`
+- [x] Update stage descriptions with story copy
+- [ ] Add runtime story event/codex UI
+- [ ] Add boss warning and clear subtitle UI copy
+
+Completion criteria:
+
+- [x] Nightseed의 의미와 금지 표현이 문서화됨
+- [x] 스테이지 설명이 세계관 문구와 연결됨
+- [ ] 플레이 중 스토리 이벤트가 짧은 UI로 표시됨

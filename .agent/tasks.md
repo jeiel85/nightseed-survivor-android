@@ -2,6 +2,16 @@
 
 ## Current Priority
 
+### Story Foundation
+- [x] Add canonical story document folder under `docs/story/`
+- [x] Add Nightseed lore definition
+- [x] Add staged dialogue guide
+- [x] Add story UI copy guide
+- [x] Add glossary data in `godot/data/story_terms.json`
+- [x] Update stage descriptions with story copy
+- [ ] Add runtime story event UI
+- [ ] Add codex/glossary UI for story terms
+
 ### Infrastructure & Deployment
 - [x] Refactor GitHub Pages structure (Branding page at root, game at `/live/`)
 - [x] Add branding page source in `branding/`
@@ -53,3 +63,4 @@
 - [ ] Add permanent upgrades
 - [ ] Add virtual joystick
 - [ ] Add Android export
+- [ ] Add boss warning and clear subtitle copy to result flow
