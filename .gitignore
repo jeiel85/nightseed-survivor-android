@@ -14,6 +14,9 @@ godot/android/build/.gradle/
 godot/android/build/.gradletasks/
 godot/android/build/.cxx/
 godot/android/build/assets/
+# assetPacks gradle outputs: build.gradle is committed, build/ and src/ are regenerated
+godot/android/build/assetPacks/*/build/
+godot/android/build/assetPacks/*/src/
 
 # Build artifacts (root-level only — godot/android/build/ is the gradle template, NOT this)
 /build/
