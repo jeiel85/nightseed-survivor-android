@@ -1,5 +1,17 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-14 (상용화 개선 분석)
+
+### Documentation
+- `docs/COMMERCIALIZATION_ANALYSIS.md` 추가
+  - 현재 구현 상태를 기준으로 디자인, 전투 체감, 데이터화, 성능, 저장/플랫폼 QA, 출시 패키징 개선 방향 정리
+  - Google Play Games, Google Play 광고 정책, PGS 통계, 2026년 모바일 게임 시장 리뷰, Survivors-like 장르 개요 참고 링크 기록
+- `.agent/tasks.md`에 Product Polish 후속 작업 추가
+- `.agent/progress.md`, `HISTORY.md` 작업 이력 갱신
+
+### Verification
+- 문서 변경만 수행하여 Godot headless 검증은 생략
+
 ## Unreleased - 2026-05-13 (런타임 스토리 연결)
 
 ### Added

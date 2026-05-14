@@ -1,5 +1,24 @@
 # HISTORY.md
 
+## 2026-05-14
+
+- 날짜: 2026-05-14
+- 작업: 상용화 개선 분석 보고서 작성
+- 변경 파일:
+  - docs/COMMERCIALIZATION_ANALYSIS.md (신규)
+  - .agent/tasks.md (수정)
+  - .agent/progress.md (수정)
+  - CHANGELOG.md (수정)
+- 검증:
+  - 저장소 문서, 실제 Godot 스크립트/씬/데이터, 스토어 스크린샷 확인
+  - Google Play Games Level Up, Google Play 광고 정책, PGS 통계, GameRefinery 2026년 4월 시장 리뷰, Survivors-like 장르 개요 확인
+  - 문서 변경만 수행하여 Godot headless 실행은 생략
+- 결과:
+  - 디자인 리워크, 전투 체감, 데이터화, 성능, 저장/플랫폼 QA, 출시 패키징 우선순위를 정리한 보고서 추가 완료
+- 후속 작업:
+  - 메인 메뉴/HUD/레벨업/결과 화면 Product Polish 착수
+  - 저장 데이터 schema_version 도입 여부 결정 및 마이그레이션 계획 작성
+
 ## 2026-05-13
 
 - 날짜: 2026-05-13

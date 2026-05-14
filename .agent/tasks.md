@@ -2,6 +2,9 @@
 
 ## Current Priority
 
+### Commercialization Analysis
+- [x] 현재 구현/문서/스토어 자산 기준 상용화 개선 보고서 작성
+
 ### Story Foundation
 - [x] Add canonical story document folder under `docs/story/`
 - [x] Add Nightseed lore definition
@@ -40,15 +43,22 @@
 
 ## Next Priority
 
+### Product Polish
+- [ ] 메인 메뉴 정보 구조 및 버튼 위계 개선
+- [ ] HUD 크기/배치/가독성 개선
+- [ ] 레벨업 카드에 실제 효과/태그/현재 레벨 정보 강화
+- [ ] 결과 화면 보상 연출 및 다음 목표 표시 개선
+- [ ] 무기/패시브/캐릭터/적 수치 데이터화 설계
+
 ### Milestone 2: Combat Loop
 
-- [ ] Add WeaponManager
-- [ ] Add WeaponBase
-- [ ] Add Moon Dagger
-- [ ] Add projectile collision
-- [ ] Add enemy HP
-- [ ] Add enemy death
-- [ ] Add kill counter
+- [x] Add WeaponManager
+- [x] Add WeaponBase
+- [x] Add Moon Dagger
+- [x] Add projectile collision
+- [x] Add enemy HP
+- [x] Add enemy death
+- [x] Add kill counter
 - [ ] Add simple object pool for projectiles
 
 ---
