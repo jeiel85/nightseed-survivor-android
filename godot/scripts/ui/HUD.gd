@@ -10,7 +10,7 @@ class_name HUD
 @onready var kill_label: Label = $TopBar/StatsRow/KillCell/KillLabel
 @onready var gold_label: Label = $TopBar/StatsRow/GoldCell/GoldLabel
 
-const TOP_BAR_BASE_HEIGHT: float = 140.0
+const TOP_BAR_BASE_HEIGHT: float = 210.0
 
 const HP_COLOR_FULL: Color = Color(0.36, 0.84, 0.42, 1.0)   # green
 const HP_COLOR_WARN: Color = Color(0.95, 0.78, 0.25, 1.0)   # amber

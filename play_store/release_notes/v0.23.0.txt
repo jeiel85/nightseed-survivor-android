@@ -1,0 +1,36 @@
+<ko-KR>
+🔎 폰트 대확대 — 모바일 가독성 최종 보정
+
+v0.22의 폰트 +4가 여전히 작다는 피드백 반영. 메인 메뉴와 HUD의 모든 글자를 ~1.7배 수준으로 재조정.
+
+메인 메뉴
+• 타이틀 58→76, PLAY 48→76
+• 1차/2차 버튼 22→36, 부제 24→36
+• 골드 30→46, 상태 20→30
+• 코너 (언어/크레딧) 17→24
+
+HUD
+• 시간 34→56, 스탯 20→34, HP 라벨 18→28
+• 아이콘 26→40, HP 바 두께 28→42
+• top bar 140→210px
+
+게임플레이는 그대로.
+</ko-KR>
+<en-US>
+🔎 Big font pass — final mobile readability tune
+
+Following feedback that v0.22's +4 bump still felt cramped on phones, all main-menu and HUD fonts bumped ~1.7×.
+
+Main menu
+• Title 58→76, PLAY 48→76
+• Primary/secondary buttons 22→36
+• Subtitle 24→36, Gold 30→46
+• Corner (Language/Credits) 17→24
+
+HUD
+• Time 34→56, stats 20→34, HP label 18→28
+• Icons 26→40, HP bar height 28→42
+• Top bar 140→210px
+
+No gameplay changes.
+</en-US>

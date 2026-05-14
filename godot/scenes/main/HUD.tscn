@@ -12,7 +12,7 @@ layer = 2
 [node name="TopBar" type="Control" parent="."]
 anchor_right = 1.0
 offset_top = 0.0
-offset_bottom = 140.0
+offset_bottom = 210.0
 mouse_filter = 2
 
 [node name="Backdrop" type="ColorRect" parent="TopBar"]
@@ -25,26 +25,26 @@ anchor_left = 0.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -2.0
-color = Color(0.32, 0.36, 0.52, 0.8)
+offset_top = -3.0
+color = Color(0.32, 0.36, 0.52, 0.85)
 
 [node name="TimeLabel" type="Label" parent="TopBar"]
 offset_left = 16.0
-offset_top = 6.0
+offset_top = 8.0
 offset_right = -16.0
-offset_bottom = 50.0
+offset_bottom = 78.0
 anchor_right = 1.0
 text = "5:00"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 56
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 
 [node name="StatsRow" type="HBoxContainer" parent="TopBar"]
 offset_left = 16.0
-offset_top = 52.0
+offset_top = 82.0
 offset_right = -16.0
-offset_bottom = 84.0
+offset_bottom = 132.0
 anchor_right = 1.0
 alignment = 1
 theme_override_constants/separation = 24
@@ -52,10 +52,10 @@ theme_override_constants/separation = 24
 [node name="LevelCell" type="HBoxContainer" parent="TopBar/StatsRow"]
 size_flags_horizontal = 3
 alignment = 1
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
 [node name="LevelIcon" type="TextureRect" parent="TopBar/StatsRow/LevelCell"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(40, 40)
 texture = ExtResource("2_xp")
 expand_mode = 1
 stretch_mode = 5
@@ -64,16 +64,16 @@ modulate = Color(0.7, 0.95, 1.0, 1.0)
 [node name="LevelLabel" type="Label" parent="TopBar/StatsRow/LevelCell"]
 text = "Lv  1"
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
 
 [node name="KillCell" type="HBoxContainer" parent="TopBar/StatsRow"]
 size_flags_horizontal = 3
 alignment = 1
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
 [node name="KillIcon" type="TextureRect" parent="TopBar/StatsRow/KillCell"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(40, 40)
 texture = ExtResource("4_kill")
 expand_mode = 1
 stretch_mode = 5
@@ -82,16 +82,16 @@ modulate = Color(1.0, 0.7, 0.55, 1.0)
 [node name="KillLabel" type="Label" parent="TopBar/StatsRow/KillCell"]
 text = "Kills  0"
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 theme_override_colors/font_color = Color(1, 0.85, 0.78, 1)
 
 [node name="GoldCell" type="HBoxContainer" parent="TopBar/StatsRow"]
 size_flags_horizontal = 3
 alignment = 1
-theme_override_constants/separation = 6
+theme_override_constants/separation = 8
 
 [node name="GoldIcon" type="TextureRect" parent="TopBar/StatsRow/GoldCell"]
-custom_minimum_size = Vector2(26, 26)
+custom_minimum_size = Vector2(40, 40)
 texture = ExtResource("3_gold")
 expand_mode = 1
 stretch_mode = 5
@@ -99,14 +99,14 @@ stretch_mode = 5
 [node name="GoldLabel" type="Label" parent="TopBar/StatsRow/GoldCell"]
 text = "Gold  0"
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 theme_override_colors/font_color = Color(1, 0.92, 0.55, 1)
 
 [node name="HPBar" type="ProgressBar" parent="TopBar"]
 offset_left = 16.0
-offset_top = 88.0
+offset_top = 138.0
 offset_right = -16.0
-offset_bottom = 116.0
+offset_bottom = 180.0
 anchor_right = 1.0
 max_value = 100.0
 value = 100.0
@@ -114,23 +114,23 @@ show_percentage = false
 
 [node name="HPLabel" type="Label" parent="TopBar"]
 offset_left = 16.0
-offset_top = 88.0
+offset_top = 138.0
 offset_right = -16.0
-offset_bottom = 116.0
+offset_bottom = 180.0
 anchor_right = 1.0
 text = "HP  100 / 100"
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 28
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 0.75)
-theme_override_constants/outline_size = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 5
 
 [node name="XPBar" type="ProgressBar" parent="TopBar"]
 offset_left = 16.0
-offset_top = 118.0
+offset_top = 184.0
 offset_right = -16.0
-offset_bottom = 134.0
+offset_bottom = 206.0
 anchor_right = 1.0
 max_value = 9.0
 value = 0.0

@@ -1,5 +1,24 @@
 # HISTORY.md
 
+## 2026-05-14 (v0.23.0: 폰트 대확대 — 모바일 가독성 최종 보정)
+
+- 날짜: 2026-05-14
+- 작업: v0.22의 +4 폭이 여전히 "답답하다"는 피드백. 메인 메뉴 / HUD 폰트 ~1.7배로 재조정
+- 변경 파일:
+  - godot/scenes/ui/MainMenu.tscn (모든 폰트 + 컨테이너 높이 일괄)
+  - godot/scenes/main/HUD.tscn (모든 폰트 + 아이콘 + 바 두께 + top bar 높이)
+  - godot/scripts/ui/HUD.gd (TOP_BAR_BASE_HEIGHT 140 → 210)
+  - godot/export_presets.cfg (0.22.0 → 0.23.0, code 23 → 24)
+  - CHANGELOG.md, docs/releases/v0.23.0.md, play_store/release_notes/v0.23.0.txt
+- 검증:
+  - `godot --headless` MainMenu / HUD 씬 로드 에러 없음
+- 결과:
+  - PLAY 48→76, 시간 34→56, 스탯 20→34, HP 18→28 등 대확대
+  - 컨테이너 높이도 같이 키워서 폰트 잘림 없음
+  - 레벨업 카드는 v0.22에서 충분히 크다고 판단, 손대지 않음
+- 후속 작업:
+  - 폰 실기 검증 (이번엔 폰트 충분히 보이는지)
+
 ## 2026-05-14 (v0.22.0: 폰트 가독성 + HUD 아이콘 + 스토리 메뉴)
 
 - 날짜: 2026-05-14
