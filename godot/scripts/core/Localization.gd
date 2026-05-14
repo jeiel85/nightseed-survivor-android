@@ -84,6 +84,8 @@ const STRINGS: Dictionary = {
 	"btn_play_again":      {"en": "Play Again", "ko": "다시 플레이"},
 	"btn_main_menu":       {"en": "Main Menu", "ko": "메인 메뉴"},
 	"btn_retry":           {"en": "Retry", "ko": "재시도"},
+	"btn_revive_ad":       {"en": "▶ Revive  (Watch ad)", "ko": "▶ 부활하기  (광고 시청)"},
+	"btn_double_gold_ad":  {"en": "▶ Double Gold  (Watch ad)", "ko": "▶ 골드 2배  (광고 시청)"},
 
 	# --- Selects / shared ---
 	"choose_character":    {"en": "CHOOSE CHARACTER", "ko": "캐릭터 선택"},

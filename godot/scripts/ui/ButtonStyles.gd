@@ -15,6 +15,7 @@ const CREDITS     := Color(0.26, 0.26, 0.34)   # graphite
 const VICTORY     := Color(0.86, 0.55, 0.20)   # amber (=PLAY)
 const DEFEAT      := Color(0.82, 0.32, 0.32)   # red
 const NEUTRAL     := Color(0.34, 0.42, 0.52)   # slate (back-to-menu, secondary)
+const REWARD_AD   := Color(0.48, 0.30, 0.72)   # violet — rewarded-ad CTA
 
 static func apply(button: Button, base: Color) -> void:
 	button.add_theme_stylebox_override("normal",   _box(base, 0.0))

@@ -126,6 +126,14 @@ func apply_damage(amount: int) -> void:
 	if current_hp <= 0:
 		died.emit()
 
+# Called by GameRoot after a rewarded-ad revive grant. Heals to half max
+# and grants a longer-than-normal invincibility window so the player can
+# re-orient before re-engaging.
+func revive(hp_ratio: float = 0.5, invincibility_seconds: float = 3.0) -> void:
+	current_hp = maxi(int(float(max_hp) * hp_ratio), 1)
+	_invincible_timer = invincibility_seconds
+	hp_changed.emit(current_hp, max_hp)
+
 func add_xp(amount: int) -> void:
 	current_xp += amount
 	var needed := get_xp_needed()

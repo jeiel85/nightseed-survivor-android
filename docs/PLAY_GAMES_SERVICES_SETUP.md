@@ -12,11 +12,15 @@
 |---|---|
 | 패키지명 | `com.nightseed.survivor` |
 | 앱 이름 | `Nightseed Survivor` |
-| 릴리즈 키스토어 SHA-1 | `37:55:17:57:07:7D:48:6E:1D:A1:0C:C2:64:CB:A0:F4:0B:02:92:44` |
-| 릴리즈 키스토어 SHA-256 | `B8:18:CF:6A:71:C8:D9:DE:E7:B8:30:78:E0:5E:F8:8E:F1:63:2B:E9:3C:6C:4D:71:EF:07:02:3B:00:E9:71:05` |
+| **App Signing SHA-1** ⭐ | `DA:65:E3:75:98:2B:4D:6D:B2:26:7C:D5:A8:E7:89:15:F2:AB:EF:FB` |
+| App Signing SHA-256 | `F4:9E:C7:CE:09:EB:FE:42:62:90:74:68:8A:E9:8C:44:64:78:A4:FF:1A:4B:9A:EE:25:16:72:16:5A:FD:8B:9F` |
+| App Signing MD5 | `1E:7B:B0:8D:26:3B:90:61:4E:C5:6B:A0:F5:6E:20:58` |
+| 업로드 키스토어 SHA-1 (참고) | `37:55:17:57:07:7D:48:6E:1D:A1:0C:C2:64:CB:A0:F4:0B:02:92:44` |
 | 디버그 키스토어 SHA-1 | `35:55:F3:D9:81:59:8B:72:FB:93:98:08:BA:D7:AF:6C:4A:CC:2F:FA` |
 
-> ⚠ **Google Play App Signing**을 사용하시면 Play Console이 자체 키로 다시 서명합니다. 그 경우 SHA-1 fingerprint는 위 값이 아니라 Play Console에 표시되는 "App signing key certificate" 값이 됩니다. **App signing 사용 여부 알려주세요** — 그에 맞는 SHA-1을 등록해야 합니다.
+> ✅ **Play App Signing 사용 중.** OAuth client 등록 시에는 **App Signing SHA-1** (⭐ 표시) 을 쓰세요. 업로드 키스토어 SHA-1은 OAuth에 등록할 필요 없습니다 — Play가 자체 키로 다시 서명하기 때문에 최종 APK는 App Signing 키로 검증됩니다.
+>
+> 디버그 키스토어 SHA-1 은 개발 중 본인 폰에서 PGS 로그인을 테스트하려면 별도 OAuth client에 등록하면 됩니다 (선택).
 
 ---
 
@@ -53,10 +57,9 @@
    - Google Cloud Console로 이동 → 새 OAuth client 생성
    - **Application type**: Android
    - **Package name**: `com.nightseed.survivor`
-   - **SHA-1**: `37:55:17:57:07:7D:48:6E:1D:A1:0C:C2:64:CB:A0:F4:0B:02:92:44` (위 표 값)
-   - 만약 Play App Signing 쓰면 그쪽 SHA-1 추가로 등록
+   - **SHA-1**: `DA:65:E3:75:98:2B:4D:6D:B2:26:7C:D5:A8:E7:89:15:F2:AB:EF:FB` ← **App Signing SHA-1** 사용
 4. 만든 OAuth client를 PGS 자격 증명에 연결
-5. **디버그용도 추가**: 같은 방식으로 `Nightseed Survivor (Debug)` 자격 증명 만들고 디버그 SHA-1 등록 (개발 중 테스트용)
+5. **디버그용도 추가 (선택)**: 같은 방식으로 `Nightseed Survivor (Debug)` 자격 증명 만들고 디버그 SHA-1 (`35:55:F3:D9:81:59:8B:72:FB:93:98:08:BA:D7:AF:6C:4A:CC:2F:FA`) 등록
 
 ---
 
@@ -132,10 +135,9 @@ LEADERBOARD_TWILIGHT_SANCTUM = CgkI...AQ
 LEADERBOARD_INFERNO_CHASM = CgkI...AQ
 LEADERBOARD_CURSED_TOMB = CgkI...AQ
 LEADERBOARD_TOTAL_KILLS = CgkI...AQ
-
-(추가) Play App Signing 사용 여부: yes/no
-(yes면) Play App Signing SHA-1: AA:BB:...
 ```
+
+(App Signing SHA-1은 위 사전 정보 표에 이미 박혀 있으므로 별도 회신 불필요)
 
 받으면 바로 코드에 꽂아넣고 v0.6.0 APK로 내부 테스트 트랙 업로드 → 폰에서 동작 확인 가능합니다.
 

@@ -9,6 +9,8 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var wave_manager: WaveManager = $WaveManager
 @onready var level_up_ui: LevelUpUI = $LevelUpUI
 @onready var story_banner: StoryBanner = $StoryBanner
+@onready var background_rect: ColorRect = $Background
+@onready var ground_tiler: BackgroundTiler = $GroundTiler
 @onready var result_panel: CanvasLayer = $ResultPanel
 @onready var result_backdrop: ColorRect = $ResultPanel/Backdrop
 @onready var result_title: Label = $ResultPanel/Panel/VBox/Title
@@ -16,6 +18,8 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var result_stats: Label = $ResultPanel/Panel/VBox/Stats
 @onready var result_next_goal: Label = $ResultPanel/Panel/VBox/NextGoal
 @onready var result_achievements: Label = $ResultPanel/Panel/VBox/Achievements
+@onready var btn_revive: Button = $ResultPanel/Panel/VBox/BtnRevive
+@onready var btn_double_gold: Button = $ResultPanel/Panel/VBox/BtnDoubleGold
 @onready var btn_restart: Button = $ResultPanel/Panel/VBox/BtnRestart
 @onready var btn_menu: Button = $ResultPanel/Panel/VBox/BtnMenu
 
@@ -31,9 +35,16 @@ var _run_boss_killed: bool = false
 var _last_seen_hp: int = -1
 var _newly_unlocked_achievements: Array = []
 
+# Rewarded-ad gates — each is one-shot per run so the player can't
+# repeatedly farm a single ad slot for free progress.
+var _revive_used: bool = false
+var _double_gold_used: bool = false
+var _displayed_session_gold: int = 0  # what we showed on the result panel
+
 func _ready() -> void:
 	AudioManager.play_bgm("game")
 	randomize()
+	_apply_stage_background()
 	enemy_spawner.setup(player)
 	wave_manager.setup(enemy_spawner, GameData.selected_stage)
 	_total_time = wave_manager.get_total_time()
@@ -52,6 +63,12 @@ func _ready() -> void:
 
 	btn_restart.pressed.connect(_on_restart_pressed)
 	btn_menu.pressed.connect(_on_menu_pressed)
+	btn_revive.pressed.connect(_on_revive_pressed)
+	btn_double_gold.pressed.connect(_on_double_gold_pressed)
+	if AdManager:
+		AdManager.rewarded_granted.connect(_on_rewarded_granted)
+		AdManager.rewarded_failed.connect(_on_rewarded_failed)
+		AdManager.rewarded_dismissed.connect(_on_rewarded_dismissed)
 
 	result_panel.visible = false
 	result_subtitle.text = ""
@@ -63,6 +80,21 @@ func _ready() -> void:
 	hud.set_gold(0)
 
 	_play_stage_intro()
+
+func _apply_stage_background() -> void:
+	var stage: Dictionary = Stages.get_stage(GameData.selected_stage)
+	if stage.is_empty():
+		return
+	var tone = stage.get("bg", null)
+	if not (tone is Dictionary) or tone.is_empty():
+		return
+	if is_instance_valid(ground_tiler):
+		ground_tiler.apply_tone(tone)
+	if is_instance_valid(background_rect) and tone.has("void"):
+		var arr = tone["void"]
+		if arr is Array and arr.size() >= 3:
+			var a: float = float(arr[3]) if arr.size() >= 4 else 1.0
+			background_rect.color = Color(float(arr[0]), float(arr[1]), float(arr[2]), a)
 
 func _play_stage_intro() -> void:
 	if not is_instance_valid(story_banner):
@@ -154,15 +186,11 @@ func _show_result(victory: bool) -> void:
 		_try_unlock("wealthy")
 	if player.weapon_manager.weapons.size() >= 4:
 		_try_unlock("combo_master")
-	GameData.add_gold(player.session_gold)
-	LeaderboardManager.submit_run(
-		GameData.selected_stage,
-		player.kill_count,
-		player.session_gold,
-		int(_survival_time),
-		GameData.difficulty,
-	)
+	# Gold + leaderboard submission are deferred to the Restart/Menu press,
+	# so the rewarded-ad "Double Gold" CTA can still re-render the result
+	# panel before we commit any meta-progress. See _commit_run_results().
 	result_panel.visible = true
+	_refresh_ad_buttons(victory)
 	if is_instance_valid(result_backdrop):
 		result_backdrop.color = Color(0.22, 0.12, 0.04, 0.82) if victory else Color(0.18, 0.04, 0.04, 0.84)
 	if victory:
@@ -195,6 +223,8 @@ func _show_result(victory: bool) -> void:
 	btn_menu.text = Localization.tr_key("btn_main_menu")
 	ButtonStyles.apply(btn_restart, ButtonStyles.VICTORY if victory else ButtonStyles.DEFEAT)
 	ButtonStyles.apply(btn_menu, ButtonStyles.NEUTRAL)
+	ButtonStyles.apply(btn_revive, ButtonStyles.REWARD_AD)
+	ButtonStyles.apply(btn_double_gold, ButtonStyles.REWARD_AD)
 
 # Quick scale-pop on the result title so victory/defeat reads as an event, not
 # a static label. Runs even while the tree is paused.
@@ -231,9 +261,13 @@ func _render_stats_with_gold(g: int, time_seconds: int) -> void:
 	]
 	result_stats.text = "\n".join(lines)
 
-# After banking the session gold, show how much more is needed for the next
-# permanent upgrade — or "all upgrades maxed" if every track is at 10.
+# How much more gold is needed for the cheapest unmaxed permanent upgrade.
+# Result-panel call site shows a *projected* total (current bank + this
+# session, doubled if the Double Gold rewarded-ad was watched) so the line
+# stays accurate even though we haven't banked the session yet.
 func _result_next_goal_text() -> String:
+	var session_multiplier: int = 2 if _double_gold_used else 1
+	var expected_total: int = GameData.gold + player.session_gold * session_multiplier
 	var cheapest: int = -1
 	for key in GameData.permanent_upgrades.keys():
 		var cost: int = GameData.get_upgrade_cost(key)
@@ -243,9 +277,12 @@ func _result_next_goal_text() -> String:
 			cheapest = cost
 	if cheapest < 0:
 		return Localization.tr_key("menu_next_goal_maxed")
-	if GameData.gold >= cheapest:
+	if expected_total >= cheapest:
 		return Localization.tr_key("result_next_goal_ready")
-	return Localization.tr_key("result_next_goal_fmt") % (cheapest - GameData.gold)
+	return Localization.tr_key("result_next_goal_fmt") % (cheapest - expected_total)
+
+func _result_next_goal_text_with_extra(_ignored: int) -> String:
+	return _result_next_goal_text()
 
 func _format_new_achievements() -> String:
 	if _newly_unlocked_achievements.is_empty():
@@ -258,12 +295,99 @@ func _format_new_achievements() -> String:
 	return "  ·  ".join(parts)
 
 func _on_restart_pressed() -> void:
+	_commit_run_results()
 	get_tree().paused = false
 	Transition.change_scene("res://scenes/main/GameRoot.tscn")
 
 func _on_menu_pressed() -> void:
+	_commit_run_results()
 	get_tree().paused = false
 	Transition.change_scene("res://scenes/ui/MainMenu.tscn")
+
+# Banks the session into meta progress and submits to leaderboards. Called
+# from the Restart/Menu press so the rewarded-ad Double Gold CTA can mutate
+# the banked value before commit, and so a revive doesn't double-bank.
+func _commit_run_results() -> void:
+	var banked: int = player.session_gold
+	if _double_gold_used:
+		banked = banked * 2
+	GameData.add_gold(banked)
+	# Submit using the raw run stats (kills/gold/time/difficulty). Score
+	# formula lives in LeaderboardManager and is the same per submission;
+	# Play's "best score" mode means re-submission is safe if the user
+	# revived earlier.
+	LeaderboardManager.submit_run(
+		GameData.selected_stage,
+		player.kill_count,
+		player.session_gold,
+		int(_survival_time),
+		GameData.difficulty,
+	)
+
+func _refresh_ad_buttons(victory: bool) -> void:
+	# Revive only makes sense on defeat and only the first time per run.
+	# Double Gold is offered on both outcomes (capped to one use).
+	var revive_visible: bool = (not victory) and (not _revive_used) and AdManager.is_rewarded_ready()
+	var double_visible: bool = (not _double_gold_used) and player.session_gold > 0 and AdManager.is_rewarded_ready()
+	btn_revive.visible = revive_visible
+	btn_double_gold.visible = double_visible
+	btn_revive.text = Localization.tr_key("btn_revive_ad")
+	btn_double_gold.text = Localization.tr_key("btn_double_gold_ad")
+
+func _on_revive_pressed() -> void:
+	if _revive_used:
+		return
+	btn_revive.disabled = true
+	AdManager.show_rewarded(AdManager.REWARD_TAG_REVIVE)
+
+func _on_double_gold_pressed() -> void:
+	if _double_gold_used:
+		return
+	btn_double_gold.disabled = true
+	AdManager.show_rewarded(AdManager.REWARD_TAG_DOUBLE_GOLD)
+
+func _on_rewarded_granted(tag: String) -> void:
+	if tag == AdManager.REWARD_TAG_REVIVE:
+		_do_revive()
+	elif tag == AdManager.REWARD_TAG_DOUBLE_GOLD:
+		_double_gold_used = true
+		btn_double_gold.visible = false
+		# Re-render the gold count-up with the doubled amount.
+		_start_gold_count_up(player.session_gold * 2, int(_survival_time))
+		result_next_goal.text = _result_next_goal_text_with_extra(player.session_gold)
+
+func _on_rewarded_failed(_tag: String, _reason: String) -> void:
+	btn_revive.disabled = false
+	btn_double_gold.disabled = false
+
+func _on_rewarded_dismissed(_tag: String) -> void:
+	btn_revive.disabled = false
+	btn_double_gold.disabled = false
+
+func _do_revive() -> void:
+	_revive_used = true
+	_is_game_over = false
+	result_panel.visible = false
+	get_tree().paused = false
+	player.revive(0.5, 3.0)
+	# Clear nearby threats so revive doesn't immediately re-kill the player
+	# from the same pack that just downed them.
+	var clear_radius_sq: float = 280.0 * 280.0
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(e):
+			continue
+		if e.global_position.distance_squared_to(player.global_position) <= clear_radius_sq:
+			if e.has_method("queue_free"):
+				e.queue_free()
+	# Outward "revived" ring on the player.
+	var burst := DeathBurst.new()
+	burst.global_position = player.global_position
+	burst.burst_color = Color(0.95, 0.95, 0.4, 1.0)
+	burst.particle_count = 18
+	burst.spread = 160.0
+	burst.lifetime = 0.55
+	add_child(burst)
+	_last_seen_hp = player.current_hp
 
 func _on_upgrade_chosen(upgrade_id: String) -> void:
 	if upgrade_id.begins_with("new:"):
