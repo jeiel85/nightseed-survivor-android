@@ -1,5 +1,29 @@
 # HISTORY.md
 
+## 2026-05-15 (v0.24.0 릴리즈 준비 — UI 리워크 1차 + AdMob SDK)
+
+- 날짜: 2026-05-15
+- 작업: v0.23.0 이후 누적된 UI 비주얼 리워크 1차 + AdMob 보상형 SDK 통합 + 문서·밸런스 정리를 v0.24.0으로 묶음. export_presets.cfg versionCode 24→25, versionName 0.23.0→0.24.0. minSdkVersion 21→24 (AdMob aar 요구로 인한 강제 상승, Android 5.x~6.x 단말 제외).
+- 변경 파일:
+  - godot/export_presets.cfg (versionCode/Name + min_sdk 24)
+  - CHANGELOG.md (Unreleased × 4 → v0.24.0 통합)
+  - docs/releases/v0.24.0.md (신규, GitHub Release 본문)
+  - play_store/release_notes/v0.24.0.txt (신규, 다국어 KO/EN, 500자 이하)
+  - HISTORY.md, .agent/progress.md, .agent/tasks.md
+  - build/nightseed-survivor-release.aab (산출물)
+  - build/nightseed-survivor-release.mapping.txt (R8 deobfuscation)
+- 검증:
+  - 로컬 AAB 빌드 + 키스토어 서명 (nightseed alias) 통과
+  - mapping.txt 생성 확인
+  - 폰 실기 검증은 사용자 직접 (이번 릴리즈가 비주얼 확인용)
+- 결과:
+  - 폰 설치 가능한 AAB + 다국어 노트가 바탕화면에 준비됨
+  - 태그 푸시는 사용자 폰 검증 후 결정하도록 보류
+- 후속 작업:
+  - 사용자 폰에서 UI 확인 → OK면 태그 푸시(`git tag -a v0.24.0 && git push origin v0.24.0`) → CI 자동 GitHub Release
+  - 추가 애셋 필요 여부 결정
+  - Phase UI-3 이후 진행
+
 ## 2026-05-15 (메인 메뉴 Nightseed 비주얼 리워크 1차)
 
 - 날짜: 2026-05-15

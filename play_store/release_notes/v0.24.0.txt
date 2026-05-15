@@ -1,0 +1,39 @@
+<ko-KR>
+🌙 메인 메뉴 Nightseed 리워크 1차 + 보상형 광고 SDK
+
+새 이미지 없이 메인 메뉴 분위기를 밤숲 톤으로 재구성. 게임플레이는 손대지 않음.
+
+메인 메뉴
+• 배경: 단색 → 절차 야경 레이어 (그라데이션, 별, 달, 안개, 트리, 반딧불)
+• 캐릭터 쇼케이스: 선택한 캐릭터 + 달빛 후광 + 봉인 링
+• PLAY: 달빛 CTA (창백한 배경 + 짙은 남색 텍스트)
+• 1차 메뉴(캐릭터/스테이지/난이도): 강조색 석판
+• 2차 메뉴(상점/스토리/순위표/언어/크레딧): 조용한 석판
+• 타이틀/부제 외곽선 추가
+
+보상형 광고
+• Google 공식 테스트 광고 ID로 SDK 통합 — 부활 / 골드 2배 버튼에 테스트 광고 표시
+• 실제 광고 ID는 다음 릴리즈에 교체
+
+밸런스
+• Normal 피해 배율 1.0 → 0.9
+• 메아리의 숲 중후반 웨이브 완화
+</ko-KR>
+<en-US>
+🌙 Main menu rework (pass 1) + rewarded ad SDK
+
+Main menu
+• Night-forest layers (gradient, stars, moon, mist, trees, fireflies)
+• Character showcase with moon halo
+• PLAY: moonlight CTA
+• Primary stone tiles (chars/stages/diff)
+• Secondary stone tiles (shop/story/leaders)
+
+Rewarded ads
+• AdMob SDK on Google test IDs — revive / double-gold play test ads
+• Real IDs to follow
+
+Balance
+• Normal damage 1.0 → 0.9
+• Forest of Echoes late waves eased
+</en-US>

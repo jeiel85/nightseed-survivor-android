@@ -1,5 +1,30 @@
 # Progress
 
+## 2026-05-15 — v0.24.0 릴리즈 준비
+
+### Status
+
+v0.23.0 이후 누적된 작업 4건(UI 비주얼 리워크 1차 + AdMob SDK 통합 + 문서 정리 + 밸런스 보정)을 v0.24.0 한 릴리즈로 묶음. 사용자가 폰에서 비주얼을 직접 확인한 뒤 태그 푸시 여부를 결정.
+
+### Completed
+
+- 버전 번호 갱신
+  - `godot/export_presets.cfg` versionCode 24→25, versionName 0.23.0→0.24.0 (preset.0 + preset.4 동시)
+  - `min_sdk` 21→24 (Poing AdMob aar가 minSdk 24 요구 — Android 5.x/6.x 단말 제외)
+- 릴리즈 노트 작성
+  - `docs/releases/v0.24.0.md` — GitHub Release 본문 (한국어 마크다운)
+  - `play_store/release_notes/v0.24.0.txt` — Play Console 다국어 (KO 430자 / EN 445자, 500자 이내)
+- CHANGELOG.md — 누적 Unreleased 4섹션 → v0.24.0 한 섹션으로 통합
+- 로컬 AAB 빌드 + R8 키 서명 — `build/nightseed-survivor-release.aab` + mapping.txt
+- 바탕화면 복사 (`C:\Users\jeiel\OneDrive\바탕 화면\nightseed-survivor-v0.24.0.aab/.txt`)
+- main 브랜치 커밋 + push
+
+### Not Yet Done
+
+- 폰 실기 검증 — 메인 메뉴 비주얼 리워크 / AdMob 테스트 광고 재생 / minSdk 24 호환성 확인
+- 태그 푸시 — 사용자 확인 후 진행 (`git tag -a v0.24.0 -m "..."` && `git push origin v0.24.0`)
+- 사용자 확인 OK 이후: Play Console 비공개 트랙 업로드 + mapping.txt deobfuscation 업로드
+
 ## 2026-05-15 — 메인 메뉴 Nightseed 비주얼 리워크 1차 (Phase UI-1 + UI-2)
 
 ### Status
