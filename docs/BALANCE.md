@@ -24,7 +24,19 @@
 
 ---
 
-## 3. XP Formula
+## 3. Difficulty
+
+| Difficulty | HP Mult | Damage Mult | Reward Mult |
+|---|---:|---:|---:|
+| Normal | 0.85 | 0.9 | 1.0 |
+| Hard | 1.5 | 1.3 | 1.3 |
+| Nightmare | 2.5 | 1.7 | 1.7 |
+
+Normal은 첫 스테이지 기준으로 접촉 피해 부담을 낮춰, 첫 플레이어가 빌드 선택과 보스 흐름을 확인할 여유를 갖도록 한다.
+
+---
+
+## 4. XP Formula
 
 ```text
 required_xp = 5 + current_level * 4
@@ -42,7 +54,7 @@ Examples:
 
 ---
 
-## 4. Enemy Limits
+## 5. Enemy Limits
 
 | Stat | Value |
 |---|---:|
@@ -54,7 +66,7 @@ Examples:
 
 ---
 
-## 5. Spawn
+## 6. Spawn
 
 | Stat | Value |
 |---|---:|
@@ -65,7 +77,7 @@ Examples:
 
 ---
 
-## 6. Enemy Values
+## 7. Enemy Values
 
 | Enemy | HP | Damage | Speed | XP |
 |---|---:|---:|---:|---:|
@@ -77,7 +89,7 @@ Examples:
 
 ---
 
-## 7. Gold Drop
+## 8. Gold Drop
 
 | Source | Value |
 |---|---:|
@@ -87,7 +99,7 @@ Examples:
 
 ---
 
-## 8. Permanent Upgrade Base Costs
+## 9. Permanent Upgrade Base Costs
 
 | Upgrade | Base Cost |
 |---|---:|
@@ -105,7 +117,7 @@ cost = base_cost * current_level * current_level
 
 ---
 
-## 9. Initial Weapon Values
+## 10. Initial Weapon Values
 
 ### Moon Dagger
 
@@ -119,10 +131,10 @@ cost = base_cost * current_level * current_level
 
 ---
 
-## 10. Balance Notes
+## 11. Balance Notes
 
 - 첫 레벨업이 30초보다 늦으면 초반 적 XP 또는 스폰 수를 올린다.
 - 2분 전에 사망이 잦으면 초기 적 피해량 또는 스폰 간격을 완화한다.
-- 6분 이후 위기감이 약하면 spawn_count 또는 Rot Hound 비중을 올린다.
+- 3분 이후 위기감이 약하면 spawn_count 또는 Rot Hound 비중을 올린다.
 - 5분 클리어율이 너무 낮으면 보스 체력보다 일반 적 밀도를 먼저 조정한다.
 - 모바일 프레임 저하가 있으면 적 수, 픽업 수, 투사체 수 순으로 제한한다.

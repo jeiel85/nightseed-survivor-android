@@ -1,5 +1,15 @@
 # ROADMAP
 
+## Current Status - 2026-05-15
+
+현재 `Nightseed Survivor`는 초기 MVP 마일스톤을 넘어 상용화 후보 폴리시 단계에 있다.
+
+- 기본 플레이 시간은 5분이며, 최종 스테이지 `Cursed Tomb`은 5분 30초다.
+- 캐릭터 5종, 스테이지 5종, 난이도 3단계, 무기 5종, 진화 2종, 적 10종+보스, 영구 강화, 업적, 스토리 배너/스토리 메뉴, PGS 리더보드, 멀티플랫폼 CI 빌드가 구현되어 있다.
+- 다음 우선순위는 신규 기능 대량 추가가 아니라 데이터화, 저장 마이그레이션 준비, 성능 안정화, 출시 패키징 QA다.
+
+---
+
 ## Milestone 0: Repository Setup
 
 - [ ] Create GitHub repository `nightseed-survivor`
@@ -115,8 +125,8 @@ Tasks:
 - [ ] Add 4 enemy types
 - [ ] Add WaveDirector
 - [ ] Add boss
-- [ ] Add 10-minute clear condition
-- [ ] Add clear screen
+- [x] Add 5-minute clear condition
+- [x] Add clear screen
 
 Completion criteria:
 
@@ -124,8 +134,8 @@ Completion criteria:
 - [ ] 패시브 효과가 능력치에 반영됨
 - [ ] 최대 레벨 제한이 적용됨
 - [ ] 시간에 따라 적 종류와 수가 달라짐
-- [ ] 9분 30초에 보스 등장
-- [ ] 10분 생존 시 클리어 화면 표시
+- [x] 마지막 30초에 보스 등장
+- [x] 5분 생존 시 클리어 화면 표시
 
 ---
 
@@ -216,11 +226,31 @@ Tasks:
 - [x] Add UI copy guide
 - [x] Add `godot/data/story_terms.json`
 - [x] Update stage descriptions with story copy
-- [ ] Add runtime story event/codex UI
-- [ ] Add boss warning and clear subtitle UI copy
+- [x] Add runtime story event/codex UI
+- [x] Add boss warning and clear subtitle UI copy
 
 Completion criteria:
 
 - [x] Nightseed의 의미와 금지 표현이 문서화됨
 - [x] 스테이지 설명이 세계관 문구와 연결됨
-- [ ] 플레이 중 스토리 이벤트가 짧은 UI로 표시됨
+- [x] 플레이 중 스토리 이벤트가 짧은 UI로 표시됨
+
+---
+
+## Milestone 9: Commercialization Foundation
+
+Goal:
+
+- 현재 구현된 기능을 출시 후보 수준으로 안정화한다.
+- 밸런스와 콘텐츠 수정을 코드 수정 없이 반복하기 쉬운 구조로 옮긴다.
+
+Tasks:
+
+- [ ] 무기/패시브/캐릭터/적 수치 데이터화
+- [ ] 저장 데이터 `schema_version` 도입 및 마이그레이션 계획 작성
+- [ ] 투사체/XP 보석/골드 object pool 1차 적용
+- [ ] 적 탐색 캐시 도입
+- [ ] QA용 로컬 run summary 저장
+- [ ] Android 실기기 성능 체크리스트 작성
+- [ ] PGS 로그인 실패·오프라인 모드 QA
+- [ ] GitHub Actions 산출물 검증 자동화 강화

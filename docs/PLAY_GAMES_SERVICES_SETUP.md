@@ -153,6 +153,6 @@ multiplier = Normal 1.0 / Hard 1.5 / Nightmare 2.5
 score = floor(base × multiplier)
 ```
 
-승리(10분 풀생존)이든 사망이든 매 런 끝에 자동 제출. 리더보드는 "Larger is better" 모드라 최고 기록만 갱신.
+승리(기본 스테이지 5분 풀생존, Cursed Tomb 5분 30초)이든 사망이든 매 런 끝에 자동 제출. 리더보드는 "Larger is better" 모드라 최고 기록만 갱신.
 
 `Total Kills`는 누적 모드(cumulative): 매 런마다 그 판 킬수만 increment 제출 → Play가 누적 합산.

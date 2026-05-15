@@ -25,14 +25,14 @@
         {"time": 0,   "interval": 1.3,  "count": 3, "types": ["slime"]},
         {"time": 20,  "interval": 1.05, "count": 3, "types": ["slime", "slime", "bat"]},
         {"time": 45,  "interval": 0.9,  "count": 3, "types": ["slime", "bat"]},
-        {"time": 75,  "interval": 0.85, "count": 3, "types": ["slime", "bat", "knight"]},
-        {"time": 110, "interval": 0.8,  "count": 4, "types": ["slime", "bat", "dasher"]},
-        {"time": 135, "interval": 0.75, "count": 4, "types": ["slime", "bat", "knight", "dasher"]},
-        {"time": 165, "interval": 0.7,  "count": 4, "types": ["bat", "knight", "splitter"]},
-        {"time": 195, "interval": 0.65, "count": 4, "types": ["bat", "knight", "hound", "caster"]},
-        {"time": 225, "interval": 0.6,  "count": 4, "types": ["knight", "hound", "caster", "splitter"]},
-        {"time": 255, "interval": 0.55, "count": 5, "types": ["bat", "hound", "dasher", "caster"]},
-        {"time": 270, "interval": 0.65, "count": 4, "types": ["bat", "hound", "splitter"]}
+        {"time": 75,  "interval": 0.95, "count": 3, "types": ["slime", "bat", "knight"]},
+        {"time": 110, "interval": 0.9,  "count": 3, "types": ["slime", "bat", "dasher"]},
+        {"time": 135, "interval": 0.85, "count": 4, "types": ["slime", "bat", "knight", "dasher"]},
+        {"time": 165, "interval": 0.8,  "count": 4, "types": ["bat", "knight", "splitter"]},
+        {"time": 195, "interval": 0.75, "count": 4, "types": ["bat", "knight", "hound", "caster"]},
+        {"time": 225, "interval": 0.7,  "count": 4, "types": ["knight", "hound", "caster", "splitter"]},
+        {"time": 255, "interval": 0.65, "count": 4, "types": ["bat", "hound", "dasher", "caster"]},
+        {"time": 270, "interval": 0.75, "count": 4, "types": ["bat", "hound", "splitter"]}
       ]
     },
     {

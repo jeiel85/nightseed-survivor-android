@@ -1,5 +1,28 @@
 # HISTORY.md
 
+## 2026-05-15 (기준 문서 정리 + UI/Normal 완화)
+
+- 날짜: 2026-05-15
+- 작업: 현재 실제 구현 상태에 맞춰 5분 러닝타임 기준을 문서에 반영하고, 모바일 UI 피드백 3건 및 Normal 첫 스테이지 난이도 완화 반영
+- 변경 파일:
+  - AGENTS.md, README.md
+  - docs/GAME_SPEC.md, docs/BALANCE.md, docs/ROADMAP.md, docs/COMMERCIALIZATION_ANALYSIS.md, docs/PLAY_GAMES_SERVICES_SETUP.md
+  - .agent/tasks.md, .agent/progress.md
+  - godot/scenes/ui/StoryBanner.tscn, godot/scenes/ui/MainMenu.tscn, godot/scenes/ui/LevelUpUI.tscn
+  - godot/scripts/core/Difficulty.gd
+  - godot/data/stages.json
+  - CHANGELOG.md
+- 검증:
+  - 빌드 환경이 아니므로 Godot 실행/빌드는 생략
+  - `stages.json`, `story_dialogues.json`, `story_terms.json` 문법 확인
+  - 주요 문자열 및 변경 diff 정적 리뷰
+- 결과:
+  - 10분 기준으로 남아 있던 현재 문서를 5분/5분 30초 기준으로 정리
+  - 스토리 자막이 HUD 아래로 내려가고, 우상단 메뉴 버튼 여백 및 레벨업 카드 폰트 가독성 개선
+  - Normal 피해량과 Forest 웨이브 밀도를 낮춰 첫 스테이지 체감을 조금 느슨하게 조정
+- 후속 작업:
+  - 다음 빌드 가능 환경에서 Godot headless, Android 산출물, 실기 UI/난이도 확인
+
 ## 2026-05-14 (v0.23.0: 폰트 대확대 — 모바일 가독성 최종 보정)
 
 - 날짜: 2026-05-14

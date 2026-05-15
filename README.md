@@ -47,7 +47,7 @@ Forest of Echoes / Frozen Wastes / Twilight Sanctum / Inferno Chasm / Cursed Tom
 스테이지 데이터는 [`godot/data/stages.json`](godot/data/stages.json)에 정의 — 향후 서버 업데이트 가능 구조.
 
 ### 난이도 (3단계)
-Normal HP 0.85x / Hard (HP x1.5, DMG x1.3) / Nightmare (HP x2.5, DMG x1.7)
+Normal (HP x0.85, DMG x0.9) / Hard (HP x1.5, DMG x1.3) / Nightmare (HP x2.5, DMG x1.7)
 
 **시간 경과 스케일링**: 적이 분 단위로 강해짐. 5분차에 HP ~2.4x, 속도 ~1.28x, 데미지 ~1.7x → 자동 사냥 방지.
 

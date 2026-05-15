@@ -83,7 +83,7 @@
 - [ ] GitHub Actions 산출물 검증 자동화 강화
 
 ### 미해결 외부 의존
-- [ ] PGS App ID + 리더보드 6개 ID 수급 → `LeaderboardManager.LEADERBOARD_IDS`
-      및 `res/values/game_services_ids.xml` 채우기
+- [x] PGS App ID + 리더보드 6개 ID 수급 → `LeaderboardManager.LEADERBOARD_IDS`
+      및 `res/values/game_services_ids.xml` 반영 완료
 - [ ] AdMob 앱 ID + 보상형 광고 단위 ID 수급 → `AdManager` 활성화
 - [ ] iOS 빌드 (Mac + Apple Dev 계정 필요, 보류)

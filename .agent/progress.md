@@ -1,5 +1,25 @@
 # Progress
 
+## 2026-05-15 — 기준 문서 정리 + UI/Normal 완화
+
+### Status
+
+빌드 환경이 아닌 작업 환경에서 소스/문서만 수정. Godot 실행 검증은 다음 빌드 가능한 작업 루프에서 이어받는 전제로 생략.
+
+### Completed
+
+- 10분 MVP 기준으로 남아 있던 `GAME_SPEC`, `ROADMAP`, PGS 설정 문서를 현재 5분 러닝타임 기준으로 정리
+- `.agent/tasks.md`의 PGS App ID/리더보드 ID 대기 항목을 실제 완료 상태로 갱신
+- 스토리 자막 위치를 v0.23 HUD 아래로 이동하고 자막 폰트를 확대
+- 메인 메뉴 우상단 Language/Credits 버튼을 최상단에서 내려 안전 여백 확보
+- 레벨업 카드 폰트 확대: 제목/이름/레벨/수치/설명/태그/선택 버튼 전반
+- Normal 피해 배율 1.0→0.9, Forest of Echoes 중후반 웨이브 간격 완화
+
+### Not Yet Done
+
+- Godot headless / export 검증 (현재 환경에서는 빌드하지 않기로 함)
+- 폰 실기 확인: 스토리 자막 HUD 비겹침, 레벨업 카드 가독성, Normal 첫 스테이지 체감
+
 ## 2026-05-14 — v0.23.0 폰트 대확대
 
 ### Status

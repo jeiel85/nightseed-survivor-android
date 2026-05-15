@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-15 (기준 문서 정리 + UI/Normal 완화)
+
+### Changed
+- 현재 제품 기준을 5분 러닝타임(기본 스테이지 300초, Cursed Tomb 330초)으로 문서 정리
+- 스토리 자막 위치를 HUD 아래로 이동하고 자막 폰트 확대
+- 메인 메뉴 우상단 Language/Credits 버튼을 최상단에서 내려 여백 확보
+- 레벨업 보상 카드 폰트 전반 확대
+- Normal 피해 배율 1.0→0.9, Forest of Echoes 중후반 웨이브 밀도 완화
+
+### Documentation
+- `GAME_SPEC`, `ROADMAP`, `BALANCE`, PGS 설정 문서, 작업 목록의 오래된 10분/PGS 대기 기준 정리
+
+### Verification
+- 빌드 환경이 아니므로 Godot 실행/빌드는 생략
+- `stages.json`, `story_dialogues.json`, `story_terms.json` 문법 확인
+- 변경 diff 정적 리뷰
+
 ## v0.23.0 - 2026-05-14 (폰트 대확대 — 모바일 가독성 최종 보정)
 
 ### Changed
