@@ -1,5 +1,15 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-15 (UI 아트 디렉션 로드맵)
+
+### Documentation
+- `docs/UI_ART_DIRECTION_ROADMAP.md` 추가
+  - Nightseed UI 디자인 철학, 색/형태 언어, 공통 UI 키트, 메인 메뉴 리워크, 캐릭터 쇼케이스, 레벨업 카드, 결과 화면, 하위 화면 톤 맞추기 계획 정리
+- `docs/ROADMAP.md`, `.agent/tasks.md`에 UI Art Direction 마일스톤과 다음 작업 후보 연결
+
+### Verification
+- 문서 변경만 수행하여 Godot 실행/빌드 검증은 생략
+
 ## Unreleased - 2026-05-15 (기준 문서 정리 + UI/Normal 완화)
 
 ### Changed

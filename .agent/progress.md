@@ -1,5 +1,24 @@
 # Progress
 
+## 2026-05-15 — UI 아트 디렉션 로드맵 작성
+
+### Status
+
+사용자 피드백: 현재 UI는 가독성은 좋아졌지만, 메인 화면 배경/캐릭터/세계관 표현이 부족하고 네모 버튼 중심이라 모바일 게임 완성도 측면에서 아쉬움이 있음.
+
+### Completed
+
+- `docs/UI_ART_DIRECTION_ROADMAP.md` 추가
+- Nightseed UI 디자인 철학 정리: 밤, 달빛, 기억, 봉인, 숲, 위험
+- 공통 UI 키트, 메인 메뉴 비주얼 리워크, 캐릭터 쇼케이스, 레벨업 카드, 결과 화면, 하위 화면 톤 맞추기 순서로 작업 단계 정의
+- 다음 세션에서 바로 시작 가능한 `feat(ui): 메인 메뉴 Nightseed 비주얼 리워크 1차` 체크리스트 작성
+- `docs/ROADMAP.md`, `.agent/tasks.md`에 UI Art Direction 마일스톤/대기열 연결
+
+### Not Yet Done
+
+- 실제 UI 구현은 다음 세션에서 진행
+- 배경 이미지/캐릭터 portrait 실제 리소스 선정
+
 ## 2026-05-15 — 기준 문서 정리 + UI/Normal 완화
 
 ### Status

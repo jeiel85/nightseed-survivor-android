@@ -1,5 +1,22 @@
 # HISTORY.md
 
+## 2026-05-15 (UI 아트 디렉션 로드맵 작성)
+
+- 날짜: 2026-05-15
+- 작업: 현재 UI의 제품감/아트 방향 부족 문제를 해결하기 위한 단계별 작업 계획서 작성
+- 변경 파일:
+  - docs/UI_ART_DIRECTION_ROADMAP.md
+  - docs/ROADMAP.md
+  - .agent/tasks.md
+  - .agent/progress.md
+  - CHANGELOG.md
+- 검증:
+  - 문서 변경만 수행하여 Godot 실행/빌드 검증은 생략
+- 결과:
+  - Nightseed UI 디자인 철학과 메인 메뉴/레벨업/결과 화면 리워크 단계를 다음 세션에서 바로 작업 가능한 수준으로 정리
+- 후속 작업:
+  - `feat(ui): 메인 메뉴 Nightseed 비주얼 리워크 1차` 착수
+
 ## 2026-05-15 (기준 문서 정리 + UI/Normal 완화)
 
 - 날짜: 2026-05-15
