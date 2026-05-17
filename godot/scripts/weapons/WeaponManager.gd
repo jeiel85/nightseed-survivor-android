@@ -16,8 +16,12 @@ func add_weapon(weapon: WeaponBase) -> void:
 	weapon.player = get_parent()
 	weapon.damage_multiplier = _get_damage_mult()
 	weapon.cooldown_multiplier = _get_cooldown_mult()
-	weapons.append(weapon)
+	# add_child fires the weapon's _ready, which sets the canonical weapon_name
+	# (e.g. "Thorn Ring"). Append AFTER so has_weapon() never sees the default
+	# "Weapon" placeholder mid-insert — that race let "new:" cards re-add a
+	# starting weapon at Lv.1 alongside the existing upgraded one.
 	add_child(weapon)
+	weapons.append(weapon)
 
 func has_weapon(wname: String) -> bool:
 	for w in weapons:

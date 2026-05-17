@@ -403,6 +403,13 @@ func _on_upgrade_chosen(upgrade_id: String) -> void:
 		AudioManager.play("evolve", 0.0)
 
 func _add_weapon(wname: String) -> void:
+	# Guard: if the player somehow gets offered a "new:" card for a weapon
+	# they already own (e.g. levelup pool generated while a starting weapon's
+	# _ready hadn't yet set weapon_name), fall through to an upgrade instead of
+	# inserting a duplicate WeaponBase into wm.weapons.
+	if player.weapon_manager.has_weapon(wname):
+		player.weapon_manager.upgrade_weapon(wname)
+		return
 	var w: WeaponBase = null
 	match wname:
 		"Spirit Orb":  w = SpiritOrb.new()

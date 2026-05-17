@@ -135,10 +135,17 @@ func _generate_options() -> void:
 				"tag_color": TAG_NEW_COLOR,
 			})
 
+	# Defensive dedup: if wm.weapons ever contains two instances of the same
+	# weapon (root cause was fixed in WeaponManager.add_weapon, but keep the
+	# UI immune), show only one "up:" card per weapon name.
+	var seen_up := {}
 	for w in wm.weapons:
 		if w.evolved:
 			continue
 		var wname: String = w.weapon_name
+		if seen_up.has(wname):
+			continue
+		seen_up[wname] = true
 		if WEAPON_DATA.has(wname):
 			var wd2: Dictionary = WEAPON_DATA[wname]
 			var current_dmg: int = w.get_damage()

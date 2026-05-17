@@ -155,21 +155,29 @@ theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
 [node name="BtnRevive" type="Button" parent="ResultPanel/Panel/VBox"]
 visible = false
 custom_minimum_size = Vector2(0, 80)
+size_flags_horizontal = 3
 text = "Revive (Watch Ad)"
-theme_override_font_sizes/font_size = 24
+clip_text = true
+theme_override_font_sizes/font_size = 20
 
 [node name="BtnDoubleGold" type="Button" parent="ResultPanel/Panel/VBox"]
 visible = false
 custom_minimum_size = Vector2(0, 80)
+size_flags_horizontal = 3
 text = "Double Gold (Watch Ad)"
-theme_override_font_sizes/font_size = 24
+clip_text = true
+theme_override_font_sizes/font_size = 20
 
 [node name="BtnRestart" type="Button" parent="ResultPanel/Panel/VBox"]
 custom_minimum_size = Vector2(0, 100)
+size_flags_horizontal = 3
 text = "Retry"
-theme_override_font_sizes/font_size = 32
+clip_text = true
+theme_override_font_sizes/font_size = 26
 
 [node name="BtnMenu" type="Button" parent="ResultPanel/Panel/VBox"]
 custom_minimum_size = Vector2(0, 90)
+size_flags_horizontal = 3
 text = "Main Menu"
-theme_override_font_sizes/font_size = 28
+clip_text = true
+theme_override_font_sizes/font_size = 24
