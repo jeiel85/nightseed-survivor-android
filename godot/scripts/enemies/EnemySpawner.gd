@@ -3,7 +3,7 @@ class_name EnemySpawner
 
 signal enemy_killed(xp: int, gold: int, pos: Vector2)
 
-@export var max_enemies: int = 200
+@export var max_enemies: int = 280
 @export var spawn_radius: float = 750.0
 
 var player: Node2D

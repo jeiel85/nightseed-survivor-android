@@ -62,7 +62,7 @@ position_smoothing_speed = 8.0
 
 [node name="EnemySpawner" type="Node2D" parent="."]
 script = ExtResource("4_es")
-max_enemies = 200
+max_enemies = 280
 spawn_radius = 520.0
 
 [node name="SpawnTimer" type="Timer" parent="EnemySpawner"]
