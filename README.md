@@ -1,183 +1,172 @@
-# 밤의 씨앗: 서바이버 (Nightseed Survivor)
+# 잔불의 밤 (Nightseed Survivor)
 
-5분 생존 액션 — Vampire Survivors 스타일 모바일 게임 (Godot 4.2).
+Godot 4.2.2로 제작 중인 2D 오프라인 서바이버라이크. 이동만 조작하고, 자동 발사 무기와 레벨업 선택으로 5분 동안 몰려드는 적을 버팁니다.
 
 [![Build](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml/badge.svg)](https://github.com/jeiel85/nightseed-survivor/actions/workflows/android-build.yml)
 
 ![Nightseed Survivor key visual](docs/images/readme.png)
 
-> 밤의 씨앗이 깨어난 세계. 자동 발사 무기로 사방에서 몰려드는 군단을 베어내고, 레벨업 카드로 빌드를 골라가며 5분 끝의 보스를 처치하세요. 죽으면 메타 영구 패시브로 더 강해져서 돌아옵니다.
+> 밤의 씨앗이 깨어난 세계. 다섯 영웅 중 하나를 골라 자동 무기 빌드를 완성하고, 마지막 30초에 깨어나는 보스를 쓰러뜨리세요. 실패해도 골드와 영구 강화가 남아 다음 도전이 더 강해집니다.
 
-## 다운로드
+## 바로 플레이 / 다운로드
 
-| 플랫폼 | 자산 / 링크 |
+| 플랫폼 | 링크 |
 |---|---|
-| **▶️ Google Play** | [Play 스토어에서 받기](https://play.google.com/store/apps/details?id=com.nightseed.survivor) |
-| **🌐 웹** | https://jeiel85.github.io/nightseed-survivor/ — 브라우저에서 즉시 플레이 |
-| **🤖 Android (APK)** | [APK 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
-| **🪟 Windows** | [.exe 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
-| **🐧 Linux** | [.x86_64 다운로드](https://github.com/jeiel85/nightseed-survivor/releases/latest) |
+| Web | https://jeiel85.github.io/nightseed-survivor/ |
+| Google Play | https://play.google.com/store/apps/details?id=com.nightseed.survivor |
+| Android APK | https://github.com/jeiel85/nightseed-survivor/releases/latest |
+| Windows / Linux | https://github.com/jeiel85/nightseed-survivor/releases/latest |
 
-모든 빌드는 [태그 push](#릴리즈) 시 CI가 자동 생성합니다.
+GitHub Pages는 브랜딩 페이지와 웹 빌드를 함께 배포합니다. 실제 게임은 웹 페이지의 플레이 버튼 또는 `/live/` 경로에서 실행됩니다.
 
-## 게임 컨텐츠
+## 현재 상태
 
-### 무기 (5종 + 진화 2종)
-| 무기 | 효과 | 진화 조건 |
+초기 MVP 범위를 넘어 상용화 후보 폴리시 단계입니다.
+
+- 캐릭터 5종, 스테이지 5종, 난이도 3단계
+- 자동 공격 무기 5종, 진화 무기 2종
+- 적 10종, 미니보스, 최종 보스
+- 경험치 보석, 골드, 영구 강화, 로컬 저장
+- 레벨업 선택 UI, 결과 화면, 업적, 스토리 배너/스토리 메뉴
+- 한국어 / English 다국어 UI
+- 모바일 세로 화면, 터치 조이스틱, PC WASD/방향키 지원
+- Android, Windows, Linux, Web 빌드용 GitHub Actions 파이프라인
+
+최근 작업은 메인 메뉴 픽셀아트 리워크, 한국어 게임명 정리, LevelUp 카드 픽셀아트 패널, Galmuri 11 픽셀 폰트, 다국어 레이아웃 안전화입니다. 자세한 이력은 [CHANGELOG.md](CHANGELOG.md)와 [HISTORY.md](HISTORY.md)를 참고하세요.
+
+## 게임 구성
+
+### 캐릭터
+
+| 캐릭터 | 해금 | 시작 무기 | 특징 |
+|---|---:|---|---|
+| Vagrant | 기본 | Moon Dagger | 균형형 |
+| Spirit Sister | 200g | Spirit Orb | 자석 강화, 낮은 HP |
+| Hunter | 500g | Star Needle | 빠른 이동 |
+| Berserker | 1000g | Thorn Ring | 높은 HP와 피해량, 느린 이동 |
+| Pyromancer | 1500g | Fire Wisp | 위습 기반 광역 화력 |
+
+### 무기
+
+| 무기 | 역할 | 진화 |
 |---|---|---|
-| Moon Dagger | 가장 가까운 적에게 자동 발사 | + Battle Focus Lv3 → **Crescent Storm** (3방향 부채꼴) |
-| Spirit Orb | 공전하는 데미지 구체 | + Magnet Charm Lv3 → **Eternal Halo** (오브 2배, 큰 궤도) |
-| Fire Wisp | 무작위 지역 폭발 | — |
-| Thorn Ring | 방사형 가시 폭발 | — |
-| Star Needle | 퍼지는 침 일제 발사 | — |
+| Moon Dagger | 가까운 적 추적 투사체 | Crescent Storm |
+| Spirit Orb | 플레이어 주변 공전 방어선 | Eternal Halo |
+| Fire Wisp | 적 밀집 지역 폭발 | 예정 |
+| Thorn Ring | 포위 돌파용 방사형 가시 | 예정 |
+| Star Needle | 넓은 부채꼴 탄막 | 예정 |
 
-### 캐릭터 (5종, 골드로 해금)
-- **Vagrant** (기본): Moon Dagger 시작, 균형 잡힌 스탯
-- **Spirit Sister** (200g): Spirit Orb 시작, 자석 강화, HP 낮음
-- **Hunter** (500g): Star Needle 시작, 빠른 이속
-- **Berserker** (1000g): Thorn Ring 시작, 고HP·고데미지·느림
-- **Pyromancer** (1500g): Fire Wisp 시작, 시작부터 위습 충전
+### 스테이지 / 난이도
 
-### 적 (10종 + 보스)
-- **기본형**: Slime / Bat / Knight / Hound
-- **패턴형**: Dasher (텔레그래프 후 돌진) / Caster (원거리 핑크 투사체) / Splitter (사망 시 3마리 분열)
-- **보스**: MiniBoss (60초 간격 4회 자동 출현) / 최종 보스 (4분 30초 시점)
+- 스테이지: Forest of Echoes, Frozen Wastes, Twilight Sanctum, Inferno Chasm, Cursed Tomb
+- 기본 스테이지는 5분, Cursed Tomb은 5분 30초
+- 난이도: Normal, Hard, Nightmare
+- 미니보스는 60초 간격으로 등장하고, 최종 보스는 마지막 30초에 등장합니다.
 
-### 스테이지 (5종, JSON 정의)
-Forest of Echoes / Frozen Wastes / Twilight Sanctum / Inferno Chasm / Cursed Tomb (5분 30초)
+스테이지 데이터는 [godot/data/stages.json](godot/data/stages.json)에 정의되어 있습니다.
 
-스테이지 데이터는 [`godot/data/stages.json`](godot/data/stages.json)에 정의 — 향후 서버 업데이트 가능 구조.
+## 알려진 이슈
 
-### 난이도 (3단계)
-Normal (HP x0.85, DMG x0.9) / Hard (HP x1.5, DMG x1.3) / Nightmare (HP x2.5, DMG x1.7)
+- Godot 4.2 헤드리스 export 환경에서 Play Games Services / AdMob native `.aar`가 누락되는 문제가 있습니다. GUI 에디터 export 또는 Godot 업그레이드로 해결할 예정입니다.
+- Pyromancer의 Fire Wisp 공격 미동작 의심 보고가 있어 v0.26.1 이후 logcat 기반 진단 대상입니다.
+- 현재 AdMob은 테스트 ID 단계입니다. 실제 광고 ID 전환은 Play Console / AdMob 설정이 준비된 뒤 별도 진행합니다.
 
-**시간 경과 스케일링**: 적이 분 단위로 강해짐. 5분차에 HP ~2.4x, 속도 ~1.28x, 데미지 ~1.7x → 자동 사냥 방지.
+## 로컬 실행
 
-### 영구 패시브 (5종, 골드로 강화)
-Swift Boots (이속) / Magnet Charm (자석) / Iron Heart (HP) / Battle Focus (쿨다운) / Power Core (데미지) — 각 10레벨
-
-### 업적 (10종)
-First Survivor / Speed Runner / Killer Instinct / Untouchable / Evolver / Boss Slayer / Wealthy / Combo Master / Trial by Fire / Completionist
-
-## 기능
-
-- **다국어**: 한국어 / English. 시스템 로케일 자동 감지 + 메인 메뉴에서 토글. Pretendard 폰트 번들로 깨짐 없음
-- **터치 조작**: 화면 왼쪽 절반 어디든 터치 → 다이나믹 플로팅 가상 조이스틱. PC에선 WASD 또는 마우스 좌클릭+드래그
-- **세로 모바일 UI**: 540×960 윈도우 / 720×1280 캔버스
-- **절차 생성 사운드**: 외부 오디오 자산 없이 GDScript에서 사인/스윕/아르페지오 합성
-- **리더보드 (PGS)**: Play Games Services 통합 (Play Console 설정 후 활성화)
-
-## 폰에 설치하기
-
-### 옵션 A: APK 파일을 폰으로 옮긴 뒤 설치
-1. [Releases](https://github.com/jeiel85/nightseed-survivor/releases)에서 `nightseed-survivor-release.apk` 다운로드
-2. 카카오톡/이메일/USB로 폰에 전송
-3. 설정 → 보안 → "출처를 알 수 없는 앱 설치" 해당 앱에 허용
-4. 파일 매니저에서 APK 탭 → 설치
-
-### 옵션 B: ADB로 USB 설치 (개발자용)
-USB 디버깅 켠 뒤 (설정 → 휴대전화 정보 → 빌드번호 7회 탭 → 개발자 옵션 → USB 디버깅):
 ```powershell
-adb install -r build\nightseed-survivor-release.apk
+godot --path godot
 ```
-이전 버전이 다른 키스토어로 서명되어 있다면 먼저 `adb uninstall com.nightseed.survivor`.
 
-## 로컬 빌드
+빠른 스크립트 검증:
 
-### PC에서 바로 실행 (편집기 없이)
+```powershell
+godot --headless --path godot --quit
+```
+
+Windows에서 로컬 Godot 실행 파일을 직접 지정하는 경우:
+
 ```powershell
 .\Godot_v4.2.2-stable_win64.exe --path godot
 ```
 
-### 멀티플랫폼 빌드
+## 로컬 빌드
+
 ```powershell
 # Windows
-.\Godot_v4.2.2-stable_win64.exe --headless --path godot `
+godot --headless --path godot `
   --export-release "Windows Desktop" "build\nightseed-survivor.exe"
 
 # Linux
-.\Godot_v4.2.2-stable_win64.exe --headless --path godot `
+godot --headless --path godot `
   --export-release "Linux/X11" "build\nightseed-survivor.x86_64"
 
-# Web (build/web/index.html)
-.\Godot_v4.2.2-stable_win64.exe --headless --path godot `
+# Web
+godot --headless --path godot `
   --export-release "Web" "build\web\index.html"
 
-# Android (키스토어 + 환경변수 필요)
+# Android APK
+godot --headless --path godot `
+  --export-release "Android" "build\nightseed-survivor-release.apk"
+```
+
+Android 릴리즈 빌드는 keystore 환경 변수가 필요합니다.
+
+```powershell
 $env:GODOT_ANDROID_KEYSTORE_RELEASE_PATH = "$PWD\secrets\release.keystore"
 $env:GODOT_ANDROID_KEYSTORE_RELEASE_USER = "nightseed"
 $env:GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD = "<password>"
-.\Godot_v4.2.2-stable_win64.exe --headless --path godot `
-  --export-release "Android" "build\nightseed-survivor-release.apk"
 ```
 
 ## CI / 릴리즈
 
-[`.github/workflows/android-build.yml`](.github/workflows/android-build.yml)이 자동 처리:
+[.github/workflows/android-build.yml](.github/workflows/android-build.yml)이 멀티플랫폼 빌드와 Pages 배포를 처리합니다.
 
 | 트리거 | 동작 |
 |---|---|
-| `main` 푸시 | 4 플랫폼 빌드 (APK / EXE / Linux / Web) + 웹 → GitHub Pages 자동 배포 |
-| `v*` 태그 푸시 | 빌드 + GitHub 릴리즈 자동 생성 + APK·EXE·Linux 첨부 |
+| `main` push | Android / Windows / Linux / Web 빌드, GitHub Pages 배포 |
+| `v*` tag push | 빌드 후 GitHub Release 생성 및 산출물 첨부 |
 
-### 새 릴리즈 만들기
+릴리즈 생성:
+
 ```powershell
-git tag -a v0.X.Y -m "메모"
+git tag -a v0.X.Y -m "릴리즈 메모"
 git push origin v0.X.Y
 ```
-끝. CI가 알아서 모든 플랫폼 빌드 + 릴리즈 생성 + 자산 첨부 + 자동 릴리즈 노트.
-
-### GitHub Secrets
-- `ANDROID_RELEASE_KEYSTORE_BASE64` — 키스토어를 `base64 -w 0`로 인코딩
-- `ANDROID_RELEASE_KEYSTORE_PASSWORD` — 키스토어 비밀번호
-
-## 자산 라이선스
-
-- **스프라이트**: [Kenney Tiny Dungeon](https://kenney.nl/assets/tiny-dungeon) (CC0 1.0 Public Domain)
-- **폰트**: [Pretendard](https://github.com/orioncactus/pretendard) (SIL Open Font License)
-- **엔진**: [Godot Engine 4.2.2](https://godotengine.org/) (MIT)
-- **PGS 플러그인**: [godot-sdk-integrations/godot-play-game-services](https://github.com/godot-sdk-integrations/godot-play-game-services) v3.1.0 (MIT)
-- **COI 서비스 워커**: [gzuidhof/coi-serviceworker](https://github.com/gzuidhof/coi-serviceworker) (MIT, 웹 SharedArrayBuffer 우회)
-- **오디오**: 절차 생성 (외부 자산 없음)
 
 ## 프로젝트 구조
 
+```text
+godot/
+  addons/                  # PGS, AdMob 등 Godot 플러그인
+  android/                 # Android build template
+  assets/                  # 폰트, 아이콘, 스프라이트, UI 자산
+  data/                    # 스테이지/스토리 JSON
+  scenes/                  # Godot 씬
+  scripts/                 # GDScript 코드
+  web_extras/              # Web 빌드 보조 파일
+branding/                  # GitHub Pages 소개 페이지
+docs/                      # 설계, 로드맵, 출시/플랫폼 문서
+play_store/                # 스토어 등록정보와 릴리즈 노트
+.agent/                    # 에이전트 작업/진행/판단 기록
+.github/workflows/         # CI
 ```
-godot/                       # Godot 프로젝트 루트
-  addons/
-    GodotPlayGameServices/   # Android Play Games Services 플러그인
-  android/
-    build/                   # Android Build Template (gradle 모드용)
-  assets/
-    fonts/                   # Pretendard
-    icons/                   # 앱 아이콘 (런처/어댑티브)
-    sprites/                 # 캐릭터/적/픽업/무기/패시브/배경 데코
-  data/
-    stages.json              # 스테이지 정의 (i18n 키 포함)
-  scenes/
-    enemies/                 # 10종 적 + 발사체 + 미니보스
-    main/                    # GameRoot, HUD
-    pickups/                 # XP 보석, 골드 코인
-    player/                  # Player
-    ui/                      # 메인메뉴, 캐릭터/스테이지/상점/레벨업/크레딧
-    weapons/                 # Projectile 베이스
-  scripts/
-    core/                    # GameData, Localization, Stages, Characters,
-                             # Difficulty, Achievements, Evolutions,
-                             # WaveManager, AudioManager, LeaderboardManager
-    enemies/                 # 기본형 + 패턴형(Dasher/Caster/Splitter) + 미니보스
-    fx/                      # BackgroundTiler, Starfield, DeathBurst
-    pickups/                 # XPGem, GoldCoin
-    player/                  # Player.gd
-    ui/                      # 화면별 컨트롤러
-    weapons/                 # 무기 5종 + 베이스
-  web_extras/
-    coi-serviceworker.js     # Web 빌드 COI 우회용
-docs/
-  PLAY_GAMES_SERVICES_SETUP.md  # Play Console 설정 가이드
-play_store/                  # 스토어 자산 (아이콘 512, 피처그래픽, 스크린샷, 리스팅)
-.github/workflows/           # CI
-secrets/                     # 키스토어 (gitignored)
-tools/                       # rcedit-x64.exe (.exe 메타데이터 임베딩)
-build/                       # 빌드 결과 (gitignored)
-```
+
+## 주요 문서
+
+- [게임 명세](docs/GAME_SPEC.md)
+- [아키텍처](docs/ARCHITECTURE.md)
+- [로드맵](docs/ROADMAP.md)
+- [밸런스](docs/BALANCE.md)
+- [상용화 개선 분석](docs/COMMERCIALIZATION_ANALYSIS.md)
+- [UI 아트 디렉션 로드맵](docs/UI_ART_DIRECTION_ROADMAP.md)
+- [릴리즈 체크리스트](docs/RELEASE_CHECKLIST.md)
+
+## 라이선스 / 자산
+
+- 엔진: [Godot Engine 4.2.2](https://godotengine.org/) (MIT)
+- 스프라이트: [Kenney Tiny Dungeon](https://kenney.nl/assets/tiny-dungeon) (CC0 1.0)
+- 폰트: [Galmuri](https://github.com/quiple/galmuri) (OFL), [Pretendard](https://github.com/orioncactus/pretendard) (OFL)
+- Play Games Services 플러그인: [godot-sdk-integrations/godot-play-game-services](https://github.com/godot-sdk-integrations/godot-play-game-services) (MIT)
+- AdMob 플러그인: [poing-studios/godot-admob-plugin](https://github.com/poing-studios/godot-admob-plugin)
+- Web COI 서비스 워커: [gzuidhof/coi-serviceworker](https://github.com/gzuidhof/coi-serviceworker) (MIT)
+- 오디오는 외부 음원 없이 GDScript 절차 생성 사운드를 사용합니다.

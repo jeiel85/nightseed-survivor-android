@@ -5,6 +5,8 @@
 ### Documentation
 - README 상단에 `docs/images/readme.png` 소개 배너 추가
 - GitHub Pages 소개 페이지의 히어로 배경, Open Graph, Twitter 공유 이미지를 `branding/assets/pages.png` 기반으로 변경
+- README 제목을 `잔불의 밤 (Nightseed Survivor)`로 정정하고, 현재 구현 상태/콘텐츠/알려진 이슈/빌드/릴리즈 설명을 v0.26 기준으로 재작성
+- GitHub repository description, homepage, topics 최신화
 
 ### Build / CI
 - GitHub Actions Pages 배포 단계에서 `branding/assets/pages.png`를 `assets/pages.png`로 복사하도록 추가
@@ -12,6 +14,9 @@
 ### Verification
 - 이미지 원본 크기 1672×941 확인
 - 정적 파일 경로 및 배포 복사 경로 확인
+- `gh repo view`로 저장소 메타데이터 확인
+- README diff 정적 리뷰
+- `git diff --check` 통과
 - 로컬 Godot headless 검증은 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
 
 ## v0.26.0 - 2026-05-16 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)

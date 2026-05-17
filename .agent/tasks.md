@@ -10,6 +10,12 @@
 - [x] `Downloads/pages.png`를 GitHub Pages 소개 페이지 히어로/공유 이미지로 추가
 - [x] GitHub Actions Pages 배포 자산 복사 목록에 `pages.png` 추가
 
+## 2026-05-17 완료 (GitHub README / 저장소 메타데이터 최신화)
+
+- [x] README 제목을 한국어 공개명 `잔불의 밤` + 영문 `Nightseed Survivor`로 정리
+- [x] README 현재 상태, 콘텐츠 구성, 알려진 이슈, 빌드/릴리즈 설명을 v0.26 기준으로 재작성
+- [x] GitHub repository description, homepage, topics 최신화
+
 ## v0.26.0 완료 (LevelUp 픽셀아트 + Galmuri 폰트 + 다국어 layout)
 
 ### LevelUp Phase UI-4

@@ -1,5 +1,26 @@
 # HISTORY.md
 
+## 2026-05-17 (GitHub README / 저장소 메타데이터 최신화)
+
+- 날짜: 2026-05-17
+- 작업: GitHub 첫 화면에 표시되는 README와 저장소 description/topics를 현재 v0.26 상태에 맞춰 재정리.
+- 변경 파일:
+  - README.md
+  - .agent/tasks.md
+  - .agent/progress.md
+  - CHANGELOG.md
+- 검증:
+  - `gh repo view`로 기존 GitHub description/homepage/topics 확인
+  - README diff 정적 리뷰
+  - `git diff --check` 통과
+  - `godot --headless --path godot --quit` 실행 시도 — 로컬 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+- 결과:
+  - README 제목을 `잔불의 밤 (Nightseed Survivor)`로 정리
+  - 현재 구현 상태, 콘텐츠 구성, 알려진 이슈, 로컬 실행/빌드, CI/릴리즈, 주요 문서를 최신 기준으로 정리
+  - GitHub 저장소 설명과 토픽을 최신 프로젝트 상태에 맞춰 갱신
+- 후속 작업:
+  - push 후 GitHub Actions 상태 확인
+
 ## 2026-05-17 (README / GitHub Pages 소개 이미지 적용)
 
 - 날짜: 2026-05-17

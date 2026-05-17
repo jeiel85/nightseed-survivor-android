@@ -1,5 +1,30 @@
 # Progress
 
+## 2026-05-17 — GitHub README / 저장소 메타데이터 최신화
+
+### Status
+
+GitHub 첫 화면에서 보이는 README와 저장소 설명/토픽을 현재 제품 상태에 맞춰 정리했다. 한국어 공개명은 `잔불의 밤`, 영문 프로젝트명은 `Nightseed Survivor`로 유지했다.
+
+### Completed
+
+- README를 v0.26 기준으로 재작성
+  - 현재 구현 상태, 캐릭터/무기/스테이지 요약, 알려진 이슈, 로컬 실행/빌드, CI/릴리즈, 주요 문서, 라이선스 정리
+  - 이전 `밤의 씨앗: 서바이버` 제목을 `잔불의 밤 (Nightseed Survivor)`로 정정
+  - PGS/AdMob native 누락과 Pyromancer Fire Wisp 의심 이슈를 명시
+- GitHub repository description, homepage, topics 갱신
+
+### Verification
+
+- `gh repo view`로 기존 description/homepage/topics 확인
+- README diff 정적 리뷰
+- `git diff --check` 통과
+- `godot --headless --path godot --quit` 실행 시도 — 로컬 PATH에서 `godot` 실행 파일을 찾을 수 없어 미실행
+
+### Not Yet Done
+
+- push 후 GitHub Actions 문서 변경 빌드 상태 확인 필요
+
 ## 2026-05-17 — README / GitHub Pages 소개 이미지 적용
 
 ### Status
