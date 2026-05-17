@@ -9,6 +9,8 @@ signal enemy_killed(xp: int, gold: int, pos: Vector2)
 var player: Node2D
 var _enemy_pool: Array = []
 var _spawn_count: int = 2
+var _enemy_tint: Color = Color(1, 1, 1, 1)
+var _apply_tint: bool = false
 
 @onready var _timer: Timer = $SpawnTimer
 
@@ -20,6 +22,19 @@ func _ready() -> void:
 
 func setup(p: Node2D) -> void:
 	player = p
+	_cache_stage_tint()
+
+func _cache_stage_tint() -> void:
+	var stage: Dictionary = Stages.get_stage(GameData.selected_stage)
+	var tint_arr = stage.get("enemy_tint", null)
+	if tint_arr is Array and tint_arr.size() >= 3:
+		var a: float = float(tint_arr[3]) if tint_arr.size() >= 4 else 1.0
+		_enemy_tint = Color(float(tint_arr[0]), float(tint_arr[1]), float(tint_arr[2]), a)
+		# Forest 처럼 [1,1,1,1] 인 스테이지는 modulate 호출 자체를 스킵해서 분기 최소화.
+		_apply_tint = not _enemy_tint.is_equal_approx(Color(1, 1, 1, 1))
+	else:
+		_enemy_tint = Color(1, 1, 1, 1)
+		_apply_tint = false
 
 func set_wave(pool: Array, interval: float, count: int) -> void:
 	_enemy_pool = pool
@@ -57,8 +72,13 @@ func _do_spawn(scene: PackedScene) -> void:
 
 # Used by Splitter (and any other in-world spawner) to make sure offspring
 # kills also count toward enemy_killed → XP/gold/leaderboards.
+# Also applies the stage enemy_tint so splitterlings inherit the hue.
 func register_enemy(enemy: Node) -> void:
-	if enemy and enemy.has_signal("died"):
+	if enemy == null:
+		return
+	if _apply_tint and enemy is CanvasItem:
+		enemy.modulate = _enemy_tint
+	if enemy.has_signal("died"):
 		enemy.died.connect(func(xp: int, gold: int, pos: Vector2):
 			enemy_killed.emit(xp, gold, pos)
 		)
