@@ -26,6 +26,16 @@
 -keep class com.godot.plugin.** { *; }
 -keep class org.godotengine.plugin.** { *; }
 
+# Concrete plugin namespaces. R8 strips classes by FQN, so the wildcards
+# above don't help these — they live in third-party namespaces.
+# v0.29.1 fix: leaderboard / cloud-save / ads were silently broken in v0.28.x
+# because these classes were obfuscated → ClassNotFoundException at runtime
+# when GodotPluginRegistry.loadPlugins reflected on the manifest meta-data.
+-keep class com.jacobibanez.plugin.android.godotplaygameservices.** { *; }
+-dontwarn com.jacobibanez.plugin.android.godotplaygameservices.**
+-keep class com.poingstudios.godot.admob.** { *; }
+-dontwarn com.poingstudios.godot.admob.**
+
 # --- Application module ----------------------------------------------------
 -keep public class * extends android.app.Application
 -keep public class * extends android.app.Activity

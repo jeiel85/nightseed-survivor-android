@@ -1,5 +1,30 @@
 # CHANGELOG.md
 
+## v0.29.1 - 2026-05-18 (PGS·AdMob 플러그인 ClassNotFoundException 수정)
+
+### Fixed — v0.24.0 부터 누적된 리더보드/광고 미동작의 진짜 원인
+
+사용자 보고 "여전히 순위표가 동작 안 한다"를 폰 logcat 으로 직접 진단. 두 플러그인 모두 `GodotPluginRegistry.loadPlugins` 단계에서 reflection 실패:
+
+```
+W/GodotPluginRegistry: Unable to load Godot plugin GodotPlayGameServices
+  java.lang.ClassNotFoundException:
+  com.jacobibanez.plugin.android.godotplaygameservices.GodotAndroidPlugin
+
+W/GodotPluginRegistry: Unable to load Godot plugin PoingGodotAdMob
+  java.lang.ClassNotFoundException:
+  com.poingstudios.godot.admob.ads.PoingGodotAdMob
+```
+
+`proguard-rules.pro` 가 `com.godot.plugin.**` / `org.godotengine.plugin.**` 만 keep 했지만 실제 플러그인 코드는 **서드파티 namespace**에 있어 R8 이 stripping. v0.24.0 minifyEnabled 활성화 이후 모든 빌드에서 PGS/AdMob 이 silently 안 동작했음.
+
+- `proguard-rules.pro` 에 `-keep class com.jacobibanez.plugin.android.godotplaygameservices.** { *; }` 및 `-keep class com.poingstudios.godot.admob.** { *; }` 추가
+- mapping.txt 로 두 클래스 모두 원래 이름 그대로 보존 확인 (난독화 X)
+
+### Known
+
+- 로컬 install (upload cert `37:55:...`) 에서는 플러그인 로드만 성공하고 PGS sign-in 은 cert mismatch 로 여전히 실패함 — 정상. 완전 검증은 Play Store internal testing 트랙(Play App Signing cert `DA:65:...`)에서 진행.
+
 ## v0.29.0 - 2026-05-18 (이어하기 + Android Back + 클라우드 백업)
 
 GitHub Issues [#1](https://github.com/jeiel85/nightseed-survivor/issues/1) (게임 중 뒤로 가기로 앱 종료) / [#2](https://github.com/jeiel85/nightseed-survivor/issues/2) (게임 현황 저장) 대응.

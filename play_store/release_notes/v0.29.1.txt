@@ -1,0 +1,22 @@
+<ko-KR>
+🐛 리더보드·광고 미동작 수정
+
+원인
+• v0.24.0 부터 R8 코드 축소가 PGS·AdMob 플러그인 클래스를 제거하고 있었음
+• 그래서 순위표 로그인, 점수 제출, 광고 모두 silently 작동 안 함
+
+수정
+• proguard 룰에 두 플러그인 namespace 명시적으로 추가
+• 이번 빌드부터 두 클래스 모두 정상 로드
+</ko-KR>
+<en-US>
+🐛 Leaderboard / ads silently broken — fixed
+
+Root cause
+• Since v0.24.0, R8 code shrinker was stripping the PGS and AdMob plugin
+  classes, so sign-in, score submission and ads all silently no-op'd.
+
+Fix
+• proguard rules now explicitly -keep both plugin namespaces.
+• Both classes load correctly starting this build.
+</en-US>

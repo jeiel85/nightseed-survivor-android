@@ -1,5 +1,25 @@
 # Progress
 
+## 2026-05-18 — v0.29.1 패치 (PGS·AdMob 플러그인 ClassNotFoundException 수정)
+
+### Status
+
+v0.29.0 직후 사용자가 실기기 연결한 상태로 "여전히 순위표 동작 안 한다" 보고. logcat 직접 확인 후 v0.24.0 부터 누적된 진짜 원인(R8 가 서드파티 플러그인 namespace stripping) 발견 → v0.29.1 패치로 즉시 수정.
+
+### Completed
+
+- 실기기 (Galaxy S921N, Play Store 설치본 v0.28.0) 연결 → 앱 force-stop / 재시작 / logcat 캡처
+- `GodotPluginRegistry: Unable to load Godot plugin GodotPlayGameServices/PoingGodotAdMob` ClassNotFoundException 두 건 확인
+- proguard-rules.pro 에 `com.jacobibanez.plugin.android.godotplaygameservices.**` + `com.poingstudios.godot.admob.**` `-keep` 룰 추가
+- v0.29.1 / code 33 bump
+- mapping.txt 검증으로 두 클래스 원래 이름 보존 확인
+- 릴리즈 노트 (`docs/releases/v0.29.1.md` + `play_store/release_notes/v0.29.1.txt`, KO 185 / EN 316)
+
+### Next
+
+- 사용자가 v0.29.1 AAB 를 Play Console internal testing 트랙에 업로드 → Play App Signing cert 로 재서명 → PGS / AdMob 실제 동작 검증
+- 검증 항목: 메인 메뉴 "★ 순위표" 버튼 → sign-in 다이얼로그 → 점수 제출 → 광고 보상 (revive / double gold)
+
 ## 2026-05-18 — v0.29.0 릴리즈 (이어하기 + Android Back + PGS 클라우드)
 
 ### Status

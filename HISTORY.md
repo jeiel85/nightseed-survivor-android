@@ -1,5 +1,24 @@
 # HISTORY.md
 
+## 2026-05-18 (v0.29.1 — PGS·AdMob 플러그인 ClassNotFoundException 수정)
+
+- 날짜: 2026-05-18
+- 작업: v0.29.0 직후 사용자가 "여전히 순위표 동작 안 한다"고 보고. 실기기 (Galaxy S921N, Play Store 설치본 v0.28.0) 연결 후 logcat 으로 직접 진단.
+- 발견: **v0.24.0 minifyEnabled 활성화 이후 모든 빌드**에서 PGS / AdMob 플러그인이 silently 안 동작하고 있었음.
+  ```
+  W/GodotPluginRegistry: Unable to load Godot plugin GodotPlayGameServices
+    java.lang.ClassNotFoundException: com.jacobibanez.plugin.android.godotplaygameservices.GodotAndroidPlugin
+  W/GodotPluginRegistry: Unable to load Godot plugin PoingGodotAdMob
+    java.lang.ClassNotFoundException: com.poingstudios.godot.admob.ads.PoingGodotAdMob
+  ```
+  `proguard-rules.pro` 가 `com.godot.plugin.**` / `org.godotengine.plugin.**` 만 keep 했지만 실제 플러그인은 서드파티 namespace (`com.jacobibanez.**`, `com.poingstudios.**`) 에 있어 R8 이 stripping.
+- 수정: 두 namespace 명시적 `-keep` 룰 추가. mapping.txt 로 두 클래스 모두 원래 이름 보존 확인 (난독화 X).
+- 결정:
+  - 패치 수준 (v0.29.0 → v0.29.1) — proguard-rules.pro 한 줄 추가 수준의 정밀 fix, 기능 변경 없음
+  - 로컬 install 은 cert mismatch 로 sign-in 자체가 안 되므로 logcat 으로 "ClassNotFoundException 사라짐" 만 확인 가능. 완전 검증은 Play Store internal testing 트랙에서
+  - mapping.txt 로 fix 적용 확정 후 바로 릴리즈
+- 다음: 폰 실기 검증은 사용자가 Play Console internal testing 에 이번 AAB 업로드 후 진행
+
 ## 2026-05-18 (v0.29.0 — 이어하기 + Android Back + 클라우드 백업)
 
 - 날짜: 2026-05-18
