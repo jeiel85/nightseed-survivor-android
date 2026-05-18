@@ -150,8 +150,8 @@ func _generate_options() -> void:
 			var wd2: Dictionary = WEAPON_DATA[wname]
 			var current_dmg: int = w.get_damage()
 			var next_dmg: int = int(int(w.base_damage * 1.25) * w.damage_multiplier)
-			var current_cd: float = maxf(w.base_cooldown * w.cooldown_multiplier, 0.15)
-			var next_cd: float = maxf(maxf(w.base_cooldown * 0.88, 0.2) * w.cooldown_multiplier, 0.15)
+			var current_cd: float = w.get_display_cooldown()
+			var next_cd: float = w.get_display_next_cooldown()
 			pool.append({
 				"id": "up:" + wname,
 				"kind": "up",

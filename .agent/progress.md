@@ -1,5 +1,23 @@
 # Progress
 
+## 2026-05-18 — v0.28.1 패치 (정령의 구 CD 표시 / 레벨업 카드 오버플로 수정)
+
+### Status
+
+v0.28.0 직후 사용자 인게임 캡처로 레벨업 카드에서 "정령의 구" CD 가 `4575.54초 → 4026.48` 같은 비현실적인 값으로 표시되고 텍스트가 카드 폭 밖으로 튀어나오는 버그 발견. 같은 날 v0.28.1 패치 릴리즈.
+
+### Completed
+
+- 근본 원인 파악
+  - `SpiritOrb.base_cooldown = 9999.0` 은 `WeaponBase._process` 가 절대 발화하지 않게 하는 sentinel — 실제 데미지는 `DAMAGE_INTERVAL = 0.35` 별도 타이머로 처리
+  - 그러나 `LevelUpUI._generate_options()` 의 "up:" 카드 stats 표기는 모든 무기 공통으로 `w.base_cooldown × w.cooldown_multiplier` 를 그대로 출력 → 9999 sentinel 이 노출되어 4000초+ 숫자 + 카드 폭 오버플로
+- `WeaponBase` 에 `get_display_cooldown()` / `get_display_next_cooldown()` 가상 메서드 추가
+- `SpiritOrb` 가 두 메서드 override (DAMAGE_INTERVAL 기반)
+- `LevelUpUI._generate_options()` 가 새 메서드를 사용하도록 교체
+- `LevelUpUI.tscn` Card1/2/3 의 `Stats` Label 모두 `autowrap_mode = 3` 추가 (안전망)
+- 릴리즈 노트 작성 (`docs/releases/v0.28.1.md` + `play_store/release_notes/v0.28.1.txt`)
+- version 0.28.1 / code 31 bump
+
 ## 2026-05-18 — v0.28.0 릴리즈 (스테이지 차별화 Phase 1 — 팔레트 + 적 톤)
 
 ### Status

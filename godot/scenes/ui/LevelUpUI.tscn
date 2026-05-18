@@ -86,6 +86,7 @@ theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 [node name="Stats" type="Label" parent="Background/VBox/Card1/VBox"]
 custom_minimum_size = Vector2(0, 30)
 text = ""
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 30
@@ -165,6 +166,7 @@ theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 [node name="Stats" type="Label" parent="Background/VBox/Card2/VBox"]
 custom_minimum_size = Vector2(0, 30)
 text = ""
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 30
@@ -244,6 +246,7 @@ theme_override_colors/font_color = Color(0.82, 0.86, 1, 1)
 [node name="Stats" type="Label" parent="Background/VBox/Card3/VBox"]
 custom_minimum_size = Vector2(0, 30)
 text = ""
+autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 30

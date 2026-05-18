@@ -78,6 +78,15 @@ func _deal_orb_damage() -> void:
 func fire() -> void:
 	pass
 
+# Cooldown driven by DAMAGE_INTERVAL, not base_cooldown (which is parked at
+# 9999 so WeaponBase._process never fires). Upgrade doesn't change the tick
+# rate either — orb_count goes up instead — so next == current.
+func get_display_cooldown() -> float:
+	return maxf(DAMAGE_INTERVAL * cooldown_multiplier, 0.15)
+
+func get_display_next_cooldown() -> float:
+	return get_display_cooldown()
+
 func upgrade() -> void:
 	super()
 	if level % 2 == 0:

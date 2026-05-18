@@ -31,6 +31,18 @@ func fire() -> void:
 func get_damage() -> int:
 	return int(base_damage * damage_multiplier)
 
+# Cooldown shown in the level-up UI. Default: the actual fire interval used by
+# WeaponBase._process. Subclasses whose damage cadence is not driven by
+# base_cooldown (e.g. SpiritOrb's orbiting ticks) must override so the UI
+# doesn't surface a sentinel value like 9999.
+func get_display_cooldown() -> float:
+	return maxf(base_cooldown * cooldown_multiplier, 0.15)
+
+# Cooldown the weapon will have after upgrade(). Mirrors the * 0.88 in upgrade().
+# Subclasses that change cadence differently on upgrade should override too.
+func get_display_next_cooldown() -> float:
+	return maxf(maxf(base_cooldown * 0.88, 0.2) * cooldown_multiplier, 0.15)
+
 func upgrade() -> void:
 	level += 1
 	base_damage = int(base_damage * 1.25)

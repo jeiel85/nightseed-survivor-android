@@ -1,5 +1,19 @@
 # HISTORY.md
 
+## 2026-05-18 (v0.28.1 — 정령의 구 CD 표시 버그 + 레벨업 카드 오버플로 수정)
+
+- 날짜: 2026-05-18
+- 작업: v0.28.0 직후 사용자 인게임 캡처로 레벨업 카드의 "정령의 구" CD 텍스트가 `4575.54초 → 4026.48` 식으로 비현실적인 값이 나오고 화면 밖으로 튀어나오는 것을 발견. 같은 날 v0.28.1 패치로 수정.
+- 핵심 변경:
+  - `WeaponBase` 에 `get_display_cooldown()` / `get_display_next_cooldown()` 가상 메서드 추가. 기본 구현은 기존과 동일.
+  - `SpiritOrb` 가 두 메서드 override — `DAMAGE_INTERVAL × cooldown_multiplier` 반환, 업그레이드는 발사 간격을 바꾸지 않으므로 next == current
+  - `LevelUpUI._generate_options()` 가 `w.base_cooldown` 직접 곱셈 대신 새 메서드 호출하도록 교체
+  - `LevelUpUI.tscn` Card1/Card2/Card3 의 `Stats` Label 모두 `autowrap_mode = 3` (WORD_SMART) 추가 — 안전망
+- 결정:
+  - 패치 수준(v0.28.0 → v0.28.1) — 코드 4파일·씬 1파일 한정의 표시 버그 수정. 기능 추가 없음.
+  - 다른 무기는 모두 정상적인 `base_cooldown` 값(0.75~3.5)을 가지므로 영향 없음. SpiritOrb만 9999 sentinel을 쓰고 있어 단독 케이스.
+  - 표면 증상은 텍스트 오버플로지만 근본 원인은 잘못된 숫자 → 양쪽 다 고침 (잘못된 숫자 자체를 못 만들게 + 만약 만들어져도 카드 밖으로 안 튀어나가게)
+
 ## 2026-05-18 (v0.28.0 — 스테이지 차별화 Phase 1, 팔레트 + 적 톤)
 
 - 날짜: 2026-05-18

@@ -1,5 +1,18 @@
 # CHANGELOG.md
 
+## v0.28.1 - 2026-05-18 (정령의 구 CD 표시 버그 + 레벨업 카드 오버플로 수정)
+
+### Fixed — 정령의 구 CD 가 비현실적인 값(4575초 등)으로 표시되던 버그
+
+- `SpiritOrb`는 `WeaponBase._process`가 절대 발화되지 않도록 `base_cooldown = 9999.0` 으로 둔 상태에서 별도 `DAMAGE_INTERVAL = 0.35` 타이머로 데미지를 처리. 그런데 레벨업 카드는 모든 무기 공통으로 `base_cooldown × cooldown_multiplier` 를 화면에 그대로 출력해, 결과적으로 4000초가 넘는 숫자가 노출되고 카드 폭을 넘어버렸음.
+- `WeaponBase`에 `get_display_cooldown()` / `get_display_next_cooldown()` 가상 메서드 추가. 기본 구현은 기존 계산과 동일.
+- `SpiritOrb`가 두 메서드를 override 해 `DAMAGE_INTERVAL × cooldown_multiplier` 를 반환. 업그레이드는 발사 간격 대신 구체 수를 늘리므로 next == current.
+- `LevelUpUI._generate_options()` 가 새 메서드를 호출하도록 교체.
+
+### Fixed — 레벨업 카드 Stats 라벨 텍스트 오버플로 안전망
+
+- `LevelUpUI.tscn` Card1/Card2/Card3의 `Stats` Label 모두 `autowrap_mode = 3` (WORD_SMART) 추가. 향후 어떤 사유로든 stats 문자열이 길어져도 카드 폭을 넘어가지 않도록 보호.
+
 ## v0.28.0 - 2026-05-18 (스테이지 차별화 Phase 1 — 팔레트 + enemy tint)
 
 ### Changed — 5개 스테이지 bg 팔레트 hue 분리 (`godot/data/stages.json`, schema v7→v8)
