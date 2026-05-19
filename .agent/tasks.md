@@ -4,6 +4,15 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-19 완료 (스토리 한국어 문장 다듬기)
+
+### docs: 스토리 상세 장부 한국어 문장 윤문
+- [x] `story_chapters.json` 한국어 summary/body 문장 윤문
+- [x] `story_dialogues.json`의 관련 짧은 자막 표현 보정
+- [x] `STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md` 초안 문장 동기화
+- [x] JSON 문법 검사 및 Godot headless 확인
+- [x] `CHANGELOG.md`, `HISTORY.md`, `.agent/progress.md` 기록
+
 ## 2026-05-19 예정 (스토리 메뉴 상세 장부 분리)
 
 ### feat: 스토리 메뉴 상세 장부 데이터 분리

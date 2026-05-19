@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Changed — Story Korean Text Polish
+
+- StoryUI 상세 장부의 한국어 본문을 더 자연스럽게 다듬었습니다.
+- `잊힌 맹세/약속`처럼 압축되어 보이는 표현을 문맥에 맞게 풀고, 짧게 끊기던 문장을 더 부드러운 서사 흐름으로 연결했습니다.
+- Frozen Wastes 인게임 자막과 반복 힌트의 한국어 표현도 같은 톤으로 보정했습니다.
+
 ### Added — Story Chronicle 상세 장부 데이터
 
 - `godot/data/story_chapters.json` 추가. StoryUI에서 읽는 스테이지별 상세 장부 본문을 인게임 자막 데이터와 분리했습니다.

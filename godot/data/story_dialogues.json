@@ -33,7 +33,7 @@
     "frozen_wastes": {
       "intro": [
         {"speaker": "vagrant",
-         "ko": "이 얼음은 단지 추위가 아니다. 잊힌 약속이 굳어 있다.",
+         "ko": "이 얼음은 단지 추위가 아니다. 잊혀진 약속들이 굳어 있다.",
          "en": "This ice is no mere cold — it is frozen promises."}
       ],
       "boss_intro": [
@@ -115,7 +115,7 @@
     }
   },
   "repeat_hints": [
-    {"ko": "밤의 씨앗은 어둠이 아니라, 잊힌 맹세가 자라난 흔적이다.",
+    {"ko": "밤의 씨앗은 어둠이 아니라, 잊혀진 맹세가 자라난 흔적이다.",
      "en": "The Nightseed is not darkness — but the growth of forgotten oaths."},
     {"ko": "검의 금은 상처가 아니라, 봉인의 지도를 그리고 있다.",
      "en": "The cracks in the blade are not wounds — they trace the seal's map."},

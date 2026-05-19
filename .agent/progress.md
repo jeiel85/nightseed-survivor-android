@@ -1,5 +1,30 @@
 # Progress
 
+## 2026-05-19 — 스토리 한국어 문장 윤문
+
+### Status
+
+사용자 피드백에 따라 `story_chapters.json`의 한국어 상세 본문을 다시 읽고, 지나치게 짧거나 번역투처럼 보이는 문장을 자연스러운 한국어 서사 문장으로 다듬었다.
+
+### Completed
+
+- `잊힌 맹세/약속`처럼 압축되어 보이는 표현을 `잊혀진 맹세`, `지켜지지 못한 약속` 등으로 문맥에 맞춰 조정
+- 단문으로 끊겨 있던 문장을 모바일에서 읽기 좋은 범위 안에서 연결
+- Forest/Frozen/Twilight/Inferno/Cursed Tomb의 한국어 summary/body 전체를 가볍게 윤문
+- `story_dialogues.json`의 Frozen Wastes 인트로와 반복 힌트 표현도 같은 톤으로 보정
+- `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`의 초안 문장도 실제 JSON과 맞춰 갱신
+
+### Verification
+
+- Python JSON parse: `story_chapters.json`, `story_dialogues.json` 통과
+- `git diff --check` 통과
+- `Godot_v4.2.2-stable_win64_console.exe --headless --path godot --quit` 실행: 스크립트 에러 출력 없음, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1
+- `StoryUI.tscn --quit-after 5` 단독 로드: 스크립트 에러 출력 없음, 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1
+
+### Next
+
+- 장문이 늘어난 카드의 폰 실기 스크롤 가독성 확인
+
 ## 2026-05-19 — 스토리 메뉴 상세 장부 데이터 연결
 
 ### Status

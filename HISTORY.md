@@ -1,5 +1,30 @@
 # HISTORY.md
 
+## 2026-05-19 (스토리 한국어 문장 윤문)
+
+- 날짜: 2026-05-19
+- 작업: 사용자 피드백에 따라 상세 스토리의 한국어 문장이 너무 간결하거나 어색하게 끊기는 부분을 자연스럽게 다듬음.
+- 변경 파일:
+  - `godot/data/story_chapters.json`
+  - `godot/data/story_dialogues.json`
+  - `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
+  - `.agent/tasks.md`
+  - `.agent/progress.md`
+  - `HISTORY.md`
+  - `CHANGELOG.md`
+- 구현:
+  - `잊힌 맹세/약속`처럼 압축적으로 보이는 표현을 문맥에 따라 `잊혀진 맹세`, `지켜지지 못한 약속` 등으로 조정.
+  - 단문으로 끊겨 보이던 문장을 더 자연스러운 한국어 서사 흐름으로 연결.
+  - StoryUI용 상세 본문과 계획 문서의 초안을 같은 문장으로 동기화.
+- 검증:
+  - Python JSON parse: `story_chapters.json`, `story_dialogues.json` 통과.
+  - `git diff --check` 통과.
+  - Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 기존 StoryUI 검증 기록과 동일하게 종료 시 ObjectDB leak 경고로 exit code 1 반환.
+- 결과:
+  - StoryUI에서 읽히는 한국어 상세 본문이 이전보다 덜 번역투이고 문맥 연결이 부드러워짐.
+- 후속 작업:
+  - 폰 실기에서 늘어난 문장 길이에 따른 카드 스크롤/가독성 확인.
+
 ## 2026-05-19 (스토리 메뉴 상세 장부 데이터 연결)
 
 - 날짜: 2026-05-19
