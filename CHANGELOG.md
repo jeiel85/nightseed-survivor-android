@@ -1,5 +1,29 @@
 # CHANGELOG.md
 
+## Unreleased - 2026-05-19 (스토리 화면 리디자인)
+
+### Changed
+
+- StoryUI를 `D:\Project\story-design-guide`의 Story Chronicle redesign guide에 맞춰 "고대 장부" 톤으로 리디자인.
+- 해금된 스토리 카드는 양피지 표면, 금장 테두리, 챕터 라벨, 스테이지별 accent seal, 장식 구분선을 사용.
+- 잠긴 스토리 카드는 흐린 석판 표면과 중앙 LOCKED 표식으로 해금 카드와 명확히 분리.
+- 외부 폰트, 웹 텍스처, 새 이미지 자산 없이 Godot 기본 UI 스타일만 사용.
+- Story Chronicle 전용 생성 자산 목록과 ChatGPT 요청 프롬프트를 `docs/ASSETS_TO_GENERATE.md`에 추가.
+- `docs/UI_REDESIGN_SPEC.md`에 Story Chronicle 컴포넌트 카탈로그와 화면 분해를 보완.
+- 사용자가 생성한 ST-P0 자산 4종을 `godot/assets/sprites/ui/story/`에 추가하고 StoryUI texture fallback으로 연결.
+  - `panel_story_parchment.9.png`
+  - `panel_story_locked.9.png`
+  - `divider_story_diamond.png`
+  - `icon_story_lock.png`
+- 크로마키 재생성본 기준으로 녹색 배경과 잔여 green spill을 제거해 실제 투명 PNG로 정비.
+
+### Verification
+
+- Godot headless StoryUI 로드에서 스크립트 에러 없음. 단, 종료 시 ObjectDB leak 경고로 exit code 1 반환.
+- Godot headless import로 story PNG `.import` 파일 생성 확인. 단, Game Services 설정 로드 Error 7로 exit code 1 반환.
+- 최종 자산 검사: 4개 PNG 모두 corner alpha 0, chroma green leftover 0.
+- `git diff --check` 통과.
+
 ## v0.31.0 - 2026-05-19 (뒤로 가기 정비 + 설정 화면)
 
 이슈 [#3](https://github.com/jeiel85/nightseed-survivor/issues/3) 후속 — 모바일 게임 기본 UX 컨벤션 7가지 갭을 한 번에 메웠습니다.

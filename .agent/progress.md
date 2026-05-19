@@ -1,5 +1,50 @@
 # Progress
 
+## 2026-05-19 — 스토리 화면 고대 장부 리디자인
+
+### Status
+
+`D:\Project\story-design-guide`의 Story Chronicle redesign guide를 기준으로 StoryUI 1차 구현 완료. 기존 사용자 변경이 있는 파일은 보존하고 StoryUI 전용 화면/문서만 수정. Godot headless StoryUI 로드에서 스크립트 에러는 없었고, 종료 시 ObjectDB leak 경고로 exit code 1이 반환됨.
+
+### Completed
+
+- 디자인 가이드와 샘플 React 구현 확인
+- StoryUI를 "Ancient Ledger" 톤으로 변경
+  - deep midnight charcoal 배경 + 금빛 radial glow + 미세 입자
+  - 해금 스테이지 카드: aged parchment, gold border, chapter label, stage accent seal, manuscript divider
+  - 잠금 카드: desaturated slate, LOCKED 중앙 표식, faded 안내 문구
+- 외부 폰트/텍스처/이미지 추가 없이 Godot 기본 `StyleBoxFlat`, `Label`, `ColorRect`로 구현
+- Story Chronicle 전용 자산 프롬프트 보완
+  - `docs/ASSETS_TO_GENERATE.md` §2.1에 `ST-PANEL-01`, `ST-PANEL-02`, `ST-DIV-01`, `ST-LOCK-01`, 스테이지 seal 5종 등 추가
+  - `docs/UI_REDESIGN_SPEC.md`에 Story Chronicle 컴포넌트 카탈로그와 화면 분해 추가
+  - 향후 투명 PNG 자산 생성 시 `transparent background with real alpha channel`, `no checkerboard background`, `no white or gray check pattern` 조건을 공통 접미사와 Story 전용 톤 앵커에 추가
+  - 투명 배경 생성이 계속 실패할 때를 대비해 `#00FF00` 순수 녹색 크로마키 우회 프롬프트와 후처리 규칙을 추가
+  - 자산 요청 시 표의 원본 크기를 `Target asset size: ... px`로 프롬프트에 명시하도록 추가하고, Story 자산 프롬프트들에 목표 크기를 직접 반영
+- 사용자가 다운로드 폴더에 준비한 ST-P0 4종을 저장소에 배치
+  - `godot/assets/sprites/ui/story/panel_story_parchment.9.png`
+  - `godot/assets/sprites/ui/story/panel_story_locked.9.png`
+  - `godot/assets/sprites/ui/story/divider_story_diamond.png`
+  - `godot/assets/sprites/ui/story/icon_story_lock.png`
+- 체크무늬 배경을 투명 처리하고, 목표 크기(192×224 / 512×32 / 96×96)로 nearest 리사이즈
+- StoryUI에 `ResourceLoader.exists()` 기반 texture fallback 연결
+  - 패널: `StyleBoxTexture`
+  - divider: `TextureRect`
+  - lock: `TextureRect` + 기존 LOCKED 라벨
+- 재생성된 크로마키 배경 자산 4종을 다시 후처리
+  - 강한 녹색 배경 threshold 제거
+  - 잔여 olive/green spill 제거
+  - 최종 검사: 4개 모두 corner alpha 0, chroma green leftover 0
+- 다음 세션 인수인계 문서 작성
+  - `docs/STORY_CHRONICLE_ASSET_HANDOFF.md`
+  - 자산 경로, 후처리 기록, 현재 코드 연결 상태, 다음 세션 적용/검수 계획 정리
+
+### Next
+
+- 폰 실기에서 새 StoryUI 자산의 카드 늘림/가독성 확인
+- 필요 시 `STORY_PANEL_MARGIN` 24px 조정
+- 폰 실기에서 스토리 화면 스크롤/가독성 확인
+- StoryUI 변경 커밋/푸시 후 GitHub Actions 상태 확인
+
 ## 2026-05-18 — v0.30.0 (스테이지 첫 클리어 자동 해금)
 
 ### Status

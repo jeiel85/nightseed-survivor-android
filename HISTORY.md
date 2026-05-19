@@ -1,5 +1,39 @@
 # HISTORY.md
 
+## 2026-05-19 (스토리 화면 고대 장부 리디자인)
+
+- 날짜: 2026-05-19
+- 작업: 사용자가 준비한 `D:\Project\story-design-guide`의 Story Chronicle redesign guide를 읽고, StoryUI를 "Ancient Ledger" 방향으로 1차 리디자인.
+- 변경 파일:
+  - `godot/scripts/ui/StoryUI.gd`
+  - `godot/scenes/ui/StoryUI.tscn`
+  - `.agent/tasks.md`
+  - `.agent/progress.md`
+  - `HISTORY.md`
+  - `CHANGELOG.md`
+- 구현:
+  - StoryUI 배경을 deep midnight charcoal + 금빛 radial glow + 미세 입자 느낌의 절차 draw로 변경.
+  - 해금 스테이지 카드를 aged parchment 표면, 금장 테두리, 챕터 라벨, 스테이지별 accent seal, 중앙 장식 구분선으로 재구성.
+  - 잠금 스테이지 카드는 desaturated slate 표면과 중앙 LOCKED 표식으로 명확히 분리.
+  - 외부 웹 폰트/텍스처/React motion 의존성은 추가하지 않고 Godot 기본 `StyleBoxFlat`/Control 조합으로 구현.
+  - `docs/ASSETS_TO_GENERATE.md`에 Story Chronicle 전용 생성 자산과 ChatGPT 요청 프롬프트를 추가.
+  - `docs/UI_REDESIGN_SPEC.md`에 Story Chronicle 컴포넌트 카탈로그, 화면 분해, ST-P0 생성 후 적용 단계를 보완.
+  - 사용자가 다운로드 폴더에 준비한 ST-P0 자산 4종을 `godot/assets/sprites/ui/story/`에 배치.
+  - 생성 PNG의 체크무늬/크로마키 배경을 투명 처리하고 목표 크기로 nearest 리사이즈.
+  - 크로마키 재생성본 4종은 threshold로 녹색 배경을 제거한 뒤, 잔여 olive/green spill까지 추가 제거.
+  - StoryUI에 `ResourceLoader.exists()` 기반 texture fallback 적용.
+    - `panel_story_parchment.9.png` / `panel_story_locked.9.png` → `StyleBoxTexture`
+    - `divider_story_diamond.png` → 섹션 구분 `TextureRect`
+    - `icon_story_lock.png` → 잠금 카드 중앙 아이콘
+  - 다음 세션 인수인계용 `docs/STORY_CHRONICLE_ASSET_HANDOFF.md` 작성.
+- 검증:
+  - `C:\Users\jeiel\bin\Godot_v4.2.2-stable_win64_console.exe --headless --path godot res://scenes/ui/StoryUI.tscn --quit-after 5` 실행. 스크립트 에러는 없었으나 headless 종료 시 ObjectDB leak 경고로 exit code 1 반환.
+  - `C:\Users\jeiel\bin\Godot_v4.2.2-stable_win64_console.exe --headless --path godot --import` 실행. story PNG `.import` 파일 생성 확인. 다만 Game Services 설정 로드 Error 7로 exit code 1 반환.
+  - 최종 자산 검사: 4개 PNG 모두 corner alpha 0, chroma green leftover 0.
+  - `git diff --check` 통과.
+- 결과: 스토리 메뉴가 단순 리스트에서 물성 있는 필사본/장부 느낌의 카드 UI로 전환됨.
+- 후속 작업: 폰 실기에서 카드 9-slice margin, 스크롤, 한글/영문 가독성 확인.
+
 ## 2026-05-18 (v0.30.0 — 스테이지 첫 클리어 자동 해금)
 
 - 날짜: 2026-05-18

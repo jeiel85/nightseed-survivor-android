@@ -184,6 +184,20 @@
 |---|---|---|
 | LG-01 | `logo_nightseed_survivor.png` | 메인 메뉴 타이틀 영역 (장식만, 글자는 Label로) |
 
+### 5.9. Story Chronicle — Ancient Ledger
+| ID | 파일 | 용도 |
+|---|---|---|
+| ST-BG-01 | `ui/story/bg_story_ledger.png` | StoryUI 전용 어두운 장부 배경 |
+| ST-PANEL-01 | `ui/story/panel_story_parchment.9.png` | 해금 스토리 카드 양피지 패널 |
+| ST-PANEL-02 | `ui/story/panel_story_locked.9.png` | 잠금 스토리 카드 석판/봉인 패널 |
+| ST-FRAME-01 | `ui/story/frame_story_gold_inner.9.png` | 해금 카드 내부 금장 이중 테두리 overlay |
+| ST-DIV-01 | `ui/story/divider_story_diamond.png` | 섹션 사이 manuscript divider |
+| ST-LOCK-01 | `ui/story/icon_story_lock.png` | 잠금 카드 중앙 lock 심볼 |
+| ST-CHAIN-01 | `ui/story/pattern_story_chain.png` | 잠금 카드 edge chain pattern |
+| ST-SEAL-01~05 | `ui/story/seal_*.png` | 스테이지별 챕터 seal 아이콘 |
+| ST-ICON-01 | `ui/story/icon_story_book.png` | 용어집/스토리 버튼 보조 아이콘 |
+| ST-BTN-01 | `ui/story/button_story_wood.9.png` | StoryUI 하단 back 버튼 |
+
 ---
 
 ## 6. 화면별 컴포넌트 분해
@@ -267,6 +281,31 @@ BG-01
    PN-01 "Main Menu" (좌, 보조) | PN-03 "Try Again" (우, 강조)
 ```
 
+### 6.7. Story Chronicle
+```
+ST-BG-01 또는 코드 draw 배경
+├ Header
+│  ├ H2 "Story" / "스토리" (parchment color + dark outline)
+│  └ Stone secondary button "Glossary" / "용어집"
+├ Hint label (dim parchment)
+├ Scroll list
+│  ├ Unlocked chapter card
+│  │  ├ ST-PANEL-01 (fallback: StyleBoxFlat parchment)
+│  │  ├ Optional ST-FRAME-01 inner gold frame
+│  │  ├ Chapter label "CHAPTER 01"
+│  │  ├ Stage title + ST-SEAL-* stage icon
+│  │  ├ ST-DIV-01 between intro/boss/clear sections
+│  │  └ Story text labels (Godot Label, not baked into image)
+│  └ Locked chapter card
+│     ├ ST-PANEL-02 (fallback: StyleBoxFlat slate)
+│     ├ Optional ST-CHAIN-01 edge pattern
+│     ├ ST-LOCK-01 centered
+│     └ Locked hint label
+└ ST-BTN-01 or stone secondary "Back to Menu"
+```
+
+Story Chronicle의 핵심은 `글자는 모두 Label`, `장식은 PNG`, `자산 없으면 코드 fallback`이다. 현재 1차 구현은 fallback 상태이며, `docs/ASSETS_TO_GENERATE.md §2.1`의 `ST-PANEL-01`, `ST-PANEL-02`, `ST-DIV-01`, `ST-LOCK-01`부터 적용하면 된다.
+
 ---
 
 ## 7. 자산 생성 / 임포트 규칙
@@ -301,7 +340,8 @@ godot/assets/sprites/
 │  ├ icon_nav/  ← IC-NAV-01~06
 │  ├ icon_hud/  ← IC-HUD-01~05
 │  ├ icon_top/  ← IC-TOP-01~03
-│  └ icon_reward/ ← IC-REW-01~06
+│  ├ icon_reward/ ← IC-REW-01~06
+│  └ story/     ← ST-* Story Chronicle 자산
 └ logo/
    └ logo_nightseed_survivor.png
 ```
@@ -328,8 +368,9 @@ godot/assets/sprites/
 
 1. **P1**: `docs/ASSETS_TO_GENERATE.md` — 위 카탈로그 ID 별로 Nano Banana 프롬프트 1줄씩, 우선순위(P0/P1/P2), 픽셀 사이즈 표 작성
 2. **P2**: 너가 Nano Banana로 P0 우선순위만 생성 → 클로가 검수
-3. **P3**: `ButtonStyles.gd` 확장 + `MainMenu.tscn` 리워크
-4. **P4**: 화면별 순차 적용 (LevelUp → Results → CharSelect → Shop → BattleHUD)
-5. **P5**: 폴리시 (트랜지션/사운드/터치 피드백)
+3. **P2.5**: Story Chronicle 전용 `ST-P0` 4종 생성 → StoryUI에 texture fallback 적용
+4. **P3**: `ButtonStyles.gd` 확장 + `MainMenu.tscn` 리워크
+5. **P4**: 화면별 순차 적용 (LevelUp → Results → CharSelect → Shop → BattleHUD)
+6. **P5**: 폴리시 (트랜지션/사운드/터치 피드백)
 
 각 단계는 별도 PR로 분리. 자산이 마음에 안 들면 그 단계만 롤백.

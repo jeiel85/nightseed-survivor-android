@@ -23,6 +23,7 @@ python scripts\generate_missing_ui_assets.py
 - `OPENAI_API_KEY`는 프로세스 환경 변수 또는 Windows 사용자 환경 변수에서 읽는다.
 - 이미 존재하는 파일은 우선순위와 관계없이 건너뛰며, P0 ID는 항상 제외한다.
 - 생성 결과는 표의 원본 크기로 nearest-neighbor 리사이즈해 저장한다.
+- ChatGPT에 요청할 때도 표의 `원본 크기`를 `Target asset size: ... px`로 명시한다. 모델이 정확한 픽셀 크기로 출력하지 않더라도 구도와 비율을 맞추는 데 도움이 된다.
 
 ### 0. 세션 첫 메시지 — 톤 앵커링 (반드시)
 
@@ -48,7 +49,14 @@ python scripts\generate_missing_ui_assets.py
 ```
 
 ### 1. 자산별 요청
-참조 톤이 잡힌 뒤 한 번에 1개씩 아래 표의 **Prompt 본문**을 보낸다.
+참조 톤이 잡힌 뒤 한 번에 1개씩 아래 표의 **Prompt 본문**을 보낸다. 요청할 때는 표의 `원본 크기`를 프롬프트 첫 줄 또는 마지막 줄에 반드시 함께 적는다.
+
+예:
+
+```text
+Target asset size: 192×224 px.
+...
+```
 
 ### 2. 결과가 마음에 안 들면
 같은 채팅 안에서 자연어로 보정: "더 어둡게 / 안티에일리어싱 빼고 / 모서리 더 각지게 / 색을 더 푸르게 / 글자 빼고 다시" 등.
@@ -60,6 +68,34 @@ python scripts\generate_missing_ui_assets.py
 - ChatGPT 출력은 보통 1024×1024 또는 1024×1792 정사각/세로 → **picpick / Pixel Perfect / nearest 모드 리사이즈**로 표의 원본 크기로 다운샘플
 - 배경이 투명이 아니면 [remove.bg](https://remove.bg) 또는 GIMP/Photopea 알파 처리
 - 파일명/경로 정확히 맞춰 저장
+
+### 5. 투명 배경 실패 시 크로마키 우회
+
+ChatGPT가 `transparent background`를 요청해도 흰 배경이나 체크무늬를 실제 픽셀로 그리는 경우가 있다. 이때는 투명 배경을 계속 요구하지 말고 **순수 녹색 크로마키 배경**으로 다시 생성한다.
+
+자산 프롬프트 끝에 아래 문구를 붙인다:
+
+```text
+Use a pure chroma key background color #00FF00 outside the asset.
+Do not use green anywhere inside the asset.
+The background must be a flat solid #00FF00 color, not a checkerboard pattern.
+Do not add shadows, glow, texture, dust, or anti-aliasing onto the green background.
+Keep a clean hard edge between the asset and the #00FF00 background.
+```
+
+한국어로 같이 요청할 때:
+
+```text
+투명 배경 생성이 계속 실패하니, 배경은 실제 투명 대신 순수 크로마키 녹색 #00FF00 단색으로 만들어줘.
+자산 내부에는 녹색을 절대 쓰지 말고, 배경에는 그림자/글로우/질감/체크무늬를 넣지 마.
+```
+
+후처리 규칙:
+
+- `#00FF00` 또는 그 주변 녹색 픽셀만 알파 0으로 제거한다.
+- 자산 내부에 녹색 계열이 있으면 함께 제거될 수 있으므로 `Do not use green anywhere inside the asset`을 반드시 넣는다.
+- divider처럼 얇은 장식은 크로마키 방식이 가장 안정적이다.
+- 제거 후 모서리 알파가 0인지, 배경 투명 픽셀 비율이 충분한지 검사한다.
 
 ---
 
@@ -79,10 +115,13 @@ no border frame, transparent background, dark fantasy mobile game UI,
 moonlit color palette (deep navy #0B0E17, pale moonlight #DDEBFF,
 ember gold #F2C66A), Kenney Tiny Dungeon aesthetic, flat front view,
 centered subject, single subject only, 32x32 native pixel grid feel,
-no painterly shading, no illustration style
+no painterly shading, no illustration style,
+transparent background with real alpha channel, no checkerboard background,
+no white or gray check pattern, isolated asset only
 ```
 
 > 마지막 두 줄(`32x32 native pixel grid feel`, `no painterly shading, no illustration style`)이 ChatGPT가 일러스트로 드리프트하는 걸 막는 핵심이다. **빼지 말 것**.
+> 투명 PNG가 필요한 자산은 `transparent background with real alpha channel`, `no checkerboard background`, `no white or gray check pattern`을 반드시 포함한다. ChatGPT가 체크무늬를 실제 픽셀로 그려 넣는 경우가 있으므로, “투명 배경처럼 보이는 이미지”가 아니라 실제 알파 채널을 요구해야 한다.
 
 ---
 
@@ -170,6 +209,89 @@ Style:
 | PN-07 | P1 | `godot/assets/sprites/ui/panel/frame_card_glow_purple.9.png` | 144×176 | `transparent 9-slice card glow frame, bright magenta-purple neon outline #C45CFF with soft outer glow halo, hollow center fully transparent, thin 3px stroke on the inside edge, rounded corners, suitable to overlay on top of a darker card panel beneath it` |
 | PN-08 | P2 | `godot/assets/sprites/ui/panel/frame_card_glow_gold.9.png` | 144×176 | `transparent 9-slice card glow frame, warm ember gold neon outline #F2C66A with soft outer glow halo, hollow center fully transparent, thin 3px stroke on the inside edge, rounded corners` |
 | PN-09 | P1 | `godot/assets/sprites/ui/panel/banner_stage_clear.png` | 480×120 | `ornate horizontal trophy banner for game victory header, dark navy blue scroll plate with thin silver border and small golden trophy emblem in each top corner, decorative vines curving up at both ends, ember gold accents, center region is plain dark navy ready for text overlay on top, transparent background outside the banner shape` |
+
+---
+
+## 2.1. Story Chronicle / Ancient Ledger 전용 자산
+
+`D:\Project\story-design-guide\REDESIGN_GUIDE.md` 기준의 StoryUI 보강용 자산. 현재 StoryUI는 코드 기반 StyleBox로 1차 구현되어 있으므로, 아래 자산은 **2차 품질 향상용**이다. 우선순위는 `ST-P0`부터 진행한다.
+
+### 생성 전략
+
+- 이 섹션은 기존 픽셀아트 UI보다 조금 더 “양피지/필사본” 질감이 중요하다.
+- 그래도 게임 전체 톤과 맞추기 위해 **픽셀아트 질감, 글자 없음, 투명 배경** 원칙은 유지한다.
+- `ST-PANEL-01`, `ST-PANEL-02`는 9-slice용이다. 중앙은 거의 평평해야 하고, 장식은 가장자리와 코너에만 둔다.
+- 스테이지 seal 아이콘 5개(`ST-SEAL-*`)는 한 채팅에서 연속 생성해야 톤이 맞는다.
+
+### Story 자산 톤 앵커 첫 메시지
+
+새 ChatGPT 채팅에서 아래처럼 시작한다. 가능하면 현재 StoryUI 캡처 또는 `godot/assets/sprites/ui/icon_nav/icon_nav_story.png`를 함께 첨부한다.
+
+```
+Nightseed Survivor의 스토리 메뉴용 UI 자산을 만들 거야.
+톤은 medieval fantasy ancient ledger, candlelit manuscript, enchanted parchment.
+
+공통 규칙:
+- pixel art UI asset, crisp pixel edges, no anti-aliasing
+- no text, no letters, no numbers
+- transparent background with real alpha channel unless I explicitly ask for a full background
+- no checkerboard background, no white or gray check pattern
+- isolated asset only
+- dark fantasy mobile game UI
+- palette: deep midnight charcoal #0F1115, aged parchment #F2EBDC, ink #2C241F, antique gold #D4AF37
+- refined manuscript / tabletop RPG sheet feeling
+- not painterly, not realistic, not modern flat vector
+
+앞으로 요청하는 자산은 이 톤으로 만들어줘.
+```
+
+### Story 자산 표
+
+| ID | 우선 | 파일 경로 | 원본 크기 | Prompt 본문 |
+|---|---|---|---|---|
+| ST-BG-01 | ST-P1 | `godot/assets/sprites/ui/story/bg_story_ledger.png` | 720×1280 | `Target asset size: 720×1280 px. Vertical 9:16 mobile game background for a story chronicle screen, deep midnight charcoal #0F1115, subtle candlelight radial glow near upper center, faint dust motes, very subtle handmade paper grain over dark surface, bottom edge fades into near black, center area kept readable for parchment cards, no characters, no buildings, no text` |
+| ST-PANEL-01 | **ST-P0** | `godot/assets/sprites/ui/story/panel_story_parchment.9.png` | 192×224 | `Target asset size: 192×224 px. 9-slice parchment card panel for medieval fantasy story chronicle, aged cream parchment #F2EBDC, antique gold #D4AF37 double-line border, tiny corner florets only in the four corners, subtle paper grain, slightly darkened worn edges, center region plain and bright enough for dark text overlay, no text, no icon, viewed straight on` |
+| ST-PANEL-02 | **ST-P0** | `godot/assets/sprites/ui/story/panel_story_locked.9.png` | 192×224 | `Target asset size: 192×224 px. 9-slice locked story card panel, desaturated slate stone #2A2D35, dim antique metal border, faint chain pattern only along the outer edge, center region plain dark slate for overlay, slightly blurred and dusty feeling, no text, no lock icon inside, viewed straight on` |
+| ST-FRAME-01 | ST-P1 | `godot/assets/sprites/ui/story/frame_story_gold_inner.9.png` | 192×224 | `Target asset size: 192×224 px. Transparent 9-slice ornate inner frame overlay for parchment story card, thin antique gold double-line border #D4AF37, tiny manuscript corner florets, hollow center fully transparent, subtle candlelit glow, no background fill, no text` |
+| ST-DIV-01 | **ST-P0** | `godot/assets/sprites/ui/story/divider_story_diamond.png` | 512×32 | `Target asset size: 512×32 px. Horizontal manuscript divider ornament only, thin antique gold line stretching left and right with a small diamond node in the exact center, two tiny leaf flourishes near the center, transparent background with real alpha channel, no checkerboard background, no white or gray check pattern, no texture behind it, isolated asset only, no text, no letters` |
+| ST-LOCK-01 | **ST-P0** | `godot/assets/sprites/ui/story/icon_story_lock.png` | 96×96 | `Target asset size: 96×96 px. Large metallic padlock icon for locked story chapter, antique dark steel with muted gold highlights, simple readable silhouette, front view, no keyhole text, transparent background` |
+| ST-CHAIN-01 | ST-P2 | `godot/assets/sprites/ui/story/pattern_story_chain.png` | 128×32 | `Target asset size: 128×32 px. Seamless horizontal chain pattern strip, antique dark steel links with faint gold edge highlights, transparent background, tileable left to right, no lock, no text` |
+| ST-SEAL-01 | ST-P1 | `godot/assets/sprites/ui/story/seal_forest.png` | 64×64 | `Target asset size: 64×64 px. Small wax manuscript seal icon for Forest of Echoes, round antique gold and forest green seal, simple tree leaf emblem in the center, no text, transparent background` |
+| ST-SEAL-02 | ST-P1 | `godot/assets/sprites/ui/story/seal_frost.png` | 64×64 | `Target asset size: 64×64 px. Small wax manuscript seal icon for Frozen Wastes, round antique gold and frost blue seal, simple snowflake emblem in the center, no text, transparent background` |
+| ST-SEAL-03 | ST-P1 | `godot/assets/sprites/ui/story/seal_twilight.png` | 64×64 | `Target asset size: 64×64 px. Small wax manuscript seal icon for Twilight Sanctum, round antique gold and violet seal, simple star or crescent emblem in the center, no text, transparent background` |
+| ST-SEAL-04 | ST-P1 | `godot/assets/sprites/ui/story/seal_inferno.png` | 64×64 | `Target asset size: 64×64 px. Small wax manuscript seal icon for Inferno Chasm, round antique gold and ember red seal, simple flame emblem in the center, no text, transparent background` |
+| ST-SEAL-05 | ST-P1 | `godot/assets/sprites/ui/story/seal_tomb.png` | 64×64 | `Target asset size: 64×64 px. Small wax manuscript seal icon for Cursed Tomb, round antique gold and dark magenta seal, simple tomb gate or skull-like rune emblem in the center, no text, transparent background` |
+| ST-ICON-01 | ST-P2 | `godot/assets/sprites/ui/story/icon_story_book.png` | 64×64 | `Target asset size: 64×64 px. Small pixel art ancient closed book icon, dark leather cover with antique gold corner clasps, tiny moon sigil on cover, no text, transparent background` |
+| ST-BTN-01 | ST-P2 | `godot/assets/sprites/ui/story/button_story_wood.9.png` | 192×64 | `Target asset size: 192×64 px. 9-slice wide wooden button panel for back button, dark walnut wood texture, antique gold thin top and bottom edge lines, center plain enough for text overlay, no text, no icon, viewed straight on` |
+
+### Story 자산 우선 생성 묶음
+
+처음에는 아래 4개만 만들면 현재 코드 기반 StoryUI의 체감이 크게 올라간다.
+
+| 순서 | ID | 이유 |
+|---:|---|---|
+| 1 | `ST-PANEL-01` | 해금 카드의 양피지 물성 핵심 |
+| 2 | `ST-PANEL-02` | 잠금 카드가 “흐린 석판/봉인”처럼 보이게 함 |
+| 3 | `ST-DIV-01` | 현재 코드 구분선을 실제 필사본 장식으로 대체 |
+| 4 | `ST-LOCK-01` | 잠금 카드 중앙 LOCKED 텍스트를 이미지 심볼로 대체 가능 |
+
+### Story 자산 적용 계획
+
+1. `StoryUI.gd`에 `ResourceLoader.exists()` 가드로 `StyleBoxTexture` 경로 추가.
+2. `ST-PANEL-01`, `ST-PANEL-02`는 `_entry_style(stage_id)`에서 unlocked/locked 상태별로 적용.
+3. `ST-DIV-01`은 `_add_rule()`의 동적 `ColorRect + ◆` 구조를 `TextureRect`로 대체하되, 자산이 없으면 현재 코드 구분선을 유지.
+4. `ST-LOCK-01`은 `_add_locked_body()` 중앙 `LOCKED` 라벨 위 또는 대신 표시.
+5. `ST-SEAL-*`은 `_stage_icon(stage_id)` 대신 `TextureRect`로 표시. 자산 없으면 현재 문자 seal fallback 유지.
+
+### Story 자산 체크리스트
+
+- [ ] 9-slice 패널은 중앙에 문양이 없어야 한다.
+- [ ] 양피지 카드 위 검정/갈색 글자가 21px에서 충분히 읽혀야 한다.
+- [ ] 잠금 패널은 해금 카드보다 명도와 채도가 낮아야 한다.
+- [ ] lock/seal/divider에는 글자와 숫자가 없어야 한다.
+- [ ] 투명 배경 자산은 실제 알파 채널이어야 하며, 체크무늬가 픽셀로 들어가 있으면 재생성한다.
+- [ ] Godot import 후 filter=Nearest, mipmaps=Off 확인.
+- [ ] 720×1280 / 540×960에서 카드 폭 656px 기준으로 늘렸을 때 코너가 깨지지 않아야 한다.
 
 ---
 

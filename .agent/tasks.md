@@ -4,6 +4,24 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-19 진행 (스토리 화면 고대 장부 리디자인)
+
+### Story Chronicle redesign
+- [x] `D:\Project\story-design-guide\REDESIGN_GUIDE.md` 및 샘플 React 구현 확인
+- [x] StoryUI를 "Ancient Ledger" 방향으로 재구성
+  - 해금 카드: 양피지 배경, 금장 테두리, 챕터 라벨, 스테이지별 accent seal, 장식 구분선
+  - 잠금 카드: desaturated slate 표면, 중앙 LOCKED 마크, 흐린 안내 문구
+  - 배경: deep midnight charcoal + 촛불/금빛 radial glow + 미세 별/종이 입자
+- [x] 외부 폰트/텍스처/웹 motion 의존성 없이 Godot 기본 Control/StyleBox로 구현
+- [x] Godot headless StoryUI 로드 시도 — 스크립트 에러 없음, 종료 시 ObjectDB leak 경고로 exit code 1
+- [x] `git diff --check` 통과
+- [x] Story Chronicle 전용 생성 자산 목록/프롬프트를 `docs/ASSETS_TO_GENERATE.md`에 추가
+- [x] `docs/UI_REDESIGN_SPEC.md`에 Story Chronicle 컴포넌트/화면 분해/다음 단계 추가
+- [x] ST-P0 4종 생성 자산 배치: `ST-PANEL-01`, `ST-PANEL-02`, `ST-DIV-01`, `ST-LOCK-01`
+- [x] 생성 자산 StoryUI texture fallback 적용
+- [x] Godot import 파일 생성 확인
+- [x] StoryUI 관련 변경만 남은 상태 확인 후 커밋/푸시 진행
+
 ## 2026-05-18 완료 (v0.28.0 — 스테이지 차별화 Phase 1)
 
 ### Stage A (계획서 `docs/STAGE_DIFFERENTIATION_PLAN.md`)
