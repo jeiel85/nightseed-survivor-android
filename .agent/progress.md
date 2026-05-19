@@ -18,6 +18,13 @@
   - `StoryUI.gd`: 해금된 스테이지의 동일 자막을 다시 표시
 - 새 구현 계획 문서 추가
   - `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
+- 5개 스테이지 상세 스토리 초안 추가
+  - Forest of Echoes: Nightseed의 이름과 잃어버린 이름의 첫 암시
+  - Frozen Wastes: 잊힌 맹세와 얼어붙은 약속
+  - Twilight Sanctum: 봉인을 지킨 자이자 연 자라는 모순
+  - Inferno Chasm: 태울 수 없는 씨앗과 봉인의 길
+  - Cursed Tomb: 마지막 기사, 이름의 봉인, 후속 떡밥
+- 향후 상세 본문 확장/번역용 작가 프롬프트 추가
 - `.agent/tasks.md`에 다음 세션용 `feat: 스토리 메뉴 상세 장부 데이터 분리` 체크리스트 추가
 
 ### Next

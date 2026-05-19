@@ -9,6 +9,7 @@
 ### feat: 스토리 메뉴 상세 장부 데이터 분리
 - [x] 현재 구조 확인 — 인게임 `StoryBanner`와 StoryUI가 `story_dialogues.json`의 짧은 대사를 함께 사용 중
 - [x] 구현 계획 문서 작성: `docs/story/STORY_DETAIL_MENU_IMPLEMENTATION_PLAN.md`
+- [x] 5개 스테이지 상세 스토리 초안 및 확장용 프롬프트 추가
 - [ ] `godot/data/story_chapters.json` 신규 추가
 - [ ] `Story.gd`에 상세 챕터 로드/조회 API 추가
 - [ ] StoryUI에서 인게임 자막 재표시 중심 구조를 상세 챕터 표시 구조로 변경
