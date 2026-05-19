@@ -4,7 +4,7 @@
 
 ### Status
 
-StoryUI 상세 장부 데이터 연결과 한국어 문장 윤문을 새 배포 단위인 v0.33.0으로 정리 중이다.
+StoryUI 상세 장부 데이터 연결과 한국어 문장 윤문을 새 배포 단위인 v0.33.0으로 정리했다. main push, 태그 push, GitHub Actions, GitHub Release 산출물 확인까지 완료했다.
 
 ### Completed
 
@@ -25,11 +25,27 @@ StoryUI 상세 장부 데이터 연결과 한국어 문장 윤문을 새 배포 
 - Godot headless 기본 실행 / StoryUI 단독 로드 확인
   - 스크립트 에러 출력 없음
   - 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환
+- 커밋 / push
+  - `6ea0336 chore: v0.33.0 릴리즈 정리`
+  - `origin/main` push 완료
+- 태그
+  - `v0.33.0` 생성 및 `origin/v0.33.0` push 완료
+- CI
+  - main push `Build (Android + Windows + Linux + Web)` 성공
+  - tag push `Build (Android + Windows + Linux + Web)` 성공
+  - Pages deployment 성공
+- GitHub Release
+  - https://github.com/jeiel85/nightseed-survivor/releases/tag/v0.33.0
+  - `nightseed-survivor-release.aab` 61,278,654 bytes
+  - `nightseed-survivor-release.apk` 141,074,699 bytes
+  - `nightseed-survivor-release.mapping.txt` 16,320,122 bytes
+  - `nightseed-survivor.exe` 87,951,216 bytes
+  - `nightseed-survivor.x86_64` 80,448,096 bytes
 
 ### Next
 
-- 커밋 / push / 태그 push
-- GitHub Actions 성공 및 Release 산출물 확인
+- Play Console internal testing에 v0.33.0 AAB와 mapping.txt 업로드
+- 폰 실기에서 StoryUI 장문 스크롤과 한국어 가독성 확인
 
 ## 2026-05-19 — 스토리 한국어 문장 윤문
 

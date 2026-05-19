@@ -21,11 +21,21 @@
   - Python JSON parse: `story_chapters.json`, `story_dialogues.json` 통과.
   - `git diff --check` 통과.
   - Godot headless 기본 실행 및 StoryUI 단독 로드에서 스크립트 에러 출력 없음. 단, 기존과 동일하게 종료 시 ObjectDB leak 경고로 exit code 1 반환.
-  - CI 검증은 커밋 및 태그 push 후 확인.
+  - main push `Build (Android + Windows + Linux + Web)` 성공.
+  - tag push `Build (Android + Windows + Linux + Web)` 성공.
+  - Pages deployment 성공.
+  - GitHub Release `v0.33.0` 생성 확인.
+  - Release 산출물 확인:
+    - `nightseed-survivor-release.aab` 61,278,654 bytes
+    - `nightseed-survivor-release.apk` 141,074,699 bytes
+    - `nightseed-survivor-release.mapping.txt` 16,320,122 bytes
+    - `nightseed-survivor.exe` 87,951,216 bytes
+    - `nightseed-survivor.x86_64` 80,448,096 bytes
 - 결과:
-  - 스토리 상세 장부 기능과 한국어 문장 윤문을 새 버전 배포 단위로 묶을 준비 완료.
+  - 스토리 상세 장부 기능과 한국어 문장 윤문을 v0.33.0 새 버전으로 배포 완료.
 - 후속 작업:
-  - v0.33.0 태그 push 후 GitHub Actions 빌드 및 Release 산출물 확인.
+  - Play Console internal testing에 v0.33.0 AAB와 mapping.txt 업로드.
+  - 폰 실기에서 StoryUI 장문 스크롤과 한국어 가독성 확인.
 
 ## 2026-05-19 (스토리 한국어 문장 윤문)
 

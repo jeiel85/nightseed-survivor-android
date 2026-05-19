@@ -4,7 +4,7 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
-## 2026-05-19 진행 (v0.33.0 — 스토리 상세 장부 릴리즈)
+## 2026-05-19 완료 (v0.33.0 — 스토리 상세 장부 릴리즈)
 
 ### chore: v0.33.0 릴리즈 정리
 - [x] `export_presets.cfg` versionCode 36 → 37, versionName 0.32.0 → 0.33.0
@@ -12,8 +12,8 @@
 - [x] `docs/releases/v0.33.0.md` 작성
 - [x] `play_store/release_notes/v0.33.0.txt` 작성
 - [x] 릴리즈 노트 길이 / JSON / diff 검증
-- [ ] 커밋 / push / 태그 push
-- [ ] GitHub Actions 성공 및 Release 산출물 확인
+- [x] 커밋 / push / 태그 push
+- [x] GitHub Actions 성공 및 Release 산출물 확인
 
 ## 2026-05-19 완료 (스토리 한국어 문장 다듬기)
 
