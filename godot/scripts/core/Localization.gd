@@ -14,7 +14,7 @@ const DEFAULT_LANG: String = "en"
 
 const STRINGS: Dictionary = {
 	# --- Main menu ---
-	"app_title":           {"en": "NIGHTSEED\nSURVIVOR", "ko": "밤의 씨앗\n서바이버"},
+	"app_title":           {"en": "NIGHTSEED\nSURVIVOR", "ko": "잔불의\n밤"},
 	"app_subtitle":        {"en": "5-Minute Survival Action", "ko": "5분 생존 액션"},
 	"label_gold":          {"en": "Gold:  %d", "ko": "골드:  %d"},
 	"label_status":        {"en": "%s  ·  %s  ·  %s", "ko": "%s  ·  %s  ·  %s"},
@@ -227,7 +227,7 @@ const STRINGS: Dictionary = {
 	"btn_resume":           {"en": "Resume", "ko": "계속하기"},
 	"btn_quit_to_menu":     {"en": "Quit to Menu", "ko": "메인 메뉴로"},
 	"pause_save_hint":      {"en": "Progress is saved — you can continue later.", "ko": "진행 상태가 저장됩니다 — 나중에 이어할 수 있습니다."},
-	"quit_confirm_title":   {"en": "Quit Nightseed Survivor?", "ko": "Nightseed Survivor 를 종료할까요?"},
+	"quit_confirm_title":   {"en": "Quit Nightseed Survivor?", "ko": "잔불의 밤을 종료할까요?"},
 	"btn_quit_app":         {"en": "Quit", "ko": "종료"},
 	"btn_cancel":           {"en": "Cancel", "ko": "취소"},
 
