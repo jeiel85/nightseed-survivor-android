@@ -1,5 +1,31 @@
 # HISTORY.md
 
+## 2026-05-25 (v0.34.1 — 스토리 화면 스크롤 안정화)
+
+- 날짜: 2026-05-25
+- 작업: StoryUI 상세 장문 카드가 모바일에서 자연스럽게 스크롤되도록 입력 전달과 스크롤 표시 정책을 보강.
+- 변경 파일:
+  - `godot/scripts/ui/StoryUI.gd`
+  - `godot/export_presets.cfg`
+  - `CHANGELOG.md`
+  - `docs/releases/v0.34.1.md`
+  - `play_store/release_notes/v0.34.1.txt`
+  - `.agent/tasks.md`
+  - `.agent/progress.md`
+  - `HISTORY.md`
+- 구현:
+  - StoryUI `ScrollContainer`의 가로 스크롤을 비활성화하고 세로 스크롤바를 항상 표시.
+  - 스토리 카드 내부의 읽기 전용 컨트롤이 터치 입력을 독점하지 않고 스크롤 컨테이너까지 전달되도록 재귀 설정 추가.
+  - Android / Android AAB preset `versionCode` 38 → 39.
+  - Android / Android AAB preset `versionName` 0.34.0 → 0.34.1.
+- 검증:
+  - Godot headless 풀 프로젝트 로드에서 스크립트 에러 없음. 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환.
+  - StoryUI 단독 로드에서 스크립트 에러 없음. 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환.
+- 결과:
+  - 장문 스토리 화면에서 터치 드래그 가능성이 높아지고, 사용자에게 스크롤 가능한 화면임을 명확히 알림.
+- 후속 작업:
+  - v0.34.1 CI 산출물 또는 Play Console 업로드본으로 폰 실기에서 StoryUI 드래그 스크롤 확인.
+
 ## 2026-05-21 (v0.34.0 — 스토리 화면 폴리시)
 
 - 날짜: 2026-05-21

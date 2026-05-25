@@ -1,5 +1,38 @@
 # Progress
 
+## 2026-05-25 — v0.34.1 스토리 화면 스크롤 안정화
+
+### Status
+
+사용자 피드백에 따라 StoryUI 상세 장문 카드가 스크롤 가능한 화면임을 더 명확히 하고, 모바일 터치 드래그가 카드 내부 컨트롤에 막히지 않도록 입력 전달을 보강했다.
+
+### Completed
+
+- `StoryUI.gd`
+  - `ScrollContainer` 가로 스크롤 비활성화
+  - 세로 스크롤바 항상 표시
+  - 카드 내부 읽기 전용 컨트롤에 `MOUSE_FILTER_PASS` 재귀 적용
+- `godot/export_presets.cfg`
+  - Android / Android AAB `versionCode` 38 → 39
+  - Android / Android AAB `versionName` 0.34.0 → 0.34.1
+- `CHANGELOG.md`, `HISTORY.md`, `.agent/tasks.md` 갱신
+- `docs/releases/v0.34.1.md`, `play_store/release_notes/v0.34.1.txt` 작성
+
+### Verification
+
+- `Godot_v4.2.2-stable_win64_console.exe --headless --path godot --quit`
+  - 스크립트 에러 없음
+  - 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환
+- `Godot_v4.2.2-stable_win64_console.exe --headless --path godot res://scenes/ui/StoryUI.tscn --quit-after 5`
+  - 스크립트 에러 없음
+  - 종료 시 기존과 같은 ObjectDB leak 경고로 exit code 1 반환
+
+### Next
+
+- 커밋 / main push / 태그 v0.34.1 push
+- GitHub Actions 성공 및 GitHub Release 산출물 확인
+- 폰 실기에서 StoryUI 터치 드래그 스크롤 확인
+
 ## 2026-05-21 — v0.34.0 스토리 화면 폴리시 + 릴리즈
 
 ### Status

@@ -1,0 +1,14 @@
+<ko-KR>
+스토리 화면 스크롤 개선
+
+• 긴 스토리 카드에서 터치 드래그가 더 안정적으로 동작하도록 수정
+• 세로 스크롤바를 항상 표시해 아래 내용이 있음을 더 쉽게 알 수 있게 개선
+• 가로 스크롤은 비활성화해 장문 읽기 흐름을 정리
+</ko-KR>
+<en-US>
+Story screen scroll fix
+
+• Improved touch dragging on long story cards
+• Vertical scrollbar now stays visible so extra content is easier to notice
+• Horizontal scrolling disabled for a cleaner reading flow
+</en-US>

@@ -57,6 +57,7 @@ var _stage_panels: Dictionary = {}
 
 func _ready() -> void:
 	AudioManager.play_bgm("menu")
+	_configure_scroll_area()
 	_apply_header_panel_style()
 	_apply_book_icon()
 	_apply_wood_button(btn_back)
@@ -66,6 +67,11 @@ func _ready() -> void:
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
 	_refresh()
+
+func _configure_scroll_area() -> void:
+	scroll_container.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll_container.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
+	stage_list.mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _apply_header_panel_style() -> void:
 	# Simple darkened plaque with a gold underline at the bottom. The portrait
@@ -200,12 +206,21 @@ func _build_stage_entry(stage_id: String) -> PanelContainer:
 	_add_card_header(vbox, stage_id, unlocked)
 	if not unlocked:
 		_add_locked_body(vbox, stage_id)
+		_allow_touch_scroll(panel)
 		return panel
 
 	_append_chapter_summary(vbox, stage_id)
 	_append_chapter_sections(vbox, stage_id)
 	_append_battle_records(vbox, stage_id)
+	_allow_touch_scroll(panel)
 	return panel
+
+func _allow_touch_scroll(node: Node) -> void:
+	if node is Control and not node is Button:
+		var control := node as Control
+		control.mouse_filter = Control.MOUSE_FILTER_PASS
+	for child in node.get_children():
+		_allow_touch_scroll(child)
 
 func _add_card_header(vbox: VBoxContainer, stage_id: String, unlocked: bool) -> void:
 	var row := HBoxContainer.new()

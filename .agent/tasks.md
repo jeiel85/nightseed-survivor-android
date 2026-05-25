@@ -4,6 +4,19 @@
 > Phase 1~4 로드맵을 작업 단위로 풀어 놓은 운영 목록입니다. 코드 상태를
 > 기준으로 한 마지막 동기화는 v0.23.0 작업 시작 시점입니다.
 
+## 2026-05-25 완료 (v0.34.1 — 스토리 화면 스크롤 안정화)
+
+### fix: StoryUI 터치 스크롤 입력 보강
+- [x] StoryUI 스크롤 구조 확인
+- [x] 긴 카드 내부 읽기 전용 컨트롤의 터치 입력 전달 보강
+- [x] 세로 스크롤바 항상 표시 / 가로 스크롤 비활성화
+- [x] `export_presets.cfg` versionCode 38 → 39, versionName 0.34.0 → 0.34.1
+- [x] `CHANGELOG.md`, `HISTORY.md`, `.agent/progress.md` 기록
+- [x] `docs/releases/v0.34.1.md`, `play_store/release_notes/v0.34.1.txt` 작성
+- [x] Godot headless 풀 프로젝트 / StoryUI 단독 로드 검증
+- [ ] 커밋 / push / 태그 push
+- [ ] GitHub Actions 성공 확인 및 Release 산출물 확인
+
 ## 2026-05-21 완료 (v0.34.0 — 스토리 화면 폴리시)
 
 ### feat: StoryUI 폴리시 + 점프 탭

@@ -1,5 +1,22 @@
 # CHANGELOG.md
 
+## v0.34.1 - 2026-05-25 (스토리 화면 스크롤 안정화)
+
+### Fixed — StoryUI Scroll
+
+- 긴 스토리 카드에서 모바일 터치 드래그가 카드 내부 읽기 전용 컨트롤에 막히지 않도록, 카드 내부 컨트롤의 입력 전달을 보강했습니다.
+- 스토리 화면의 세로 스크롤바를 항상 표시해 아래로 더 읽을 내용이 있음을 명확히 했습니다.
+- 가로 스크롤은 비활성화해 Story Chronicle 화면을 세로 장문 읽기 흐름에 맞췄습니다.
+
+### Build / CI
+
+- Android / Android AAB `versionCode`를 38 → 39로 올렸습니다.
+- Android / Android AAB `versionName`을 0.34.0 → 0.34.1로 올렸습니다.
+
+### Verification
+
+- Godot headless 풀 프로젝트 / StoryUI 단독 로드 모두 스크립트 에러 없음. 단, 기존과 같은 ObjectDB leak 경고로 exit code 1이 반환되었습니다.
+
 ## v0.34.0 - 2026-05-21 (스토리 화면 폴리시 — 잠금 안내·스포일러 가림·점프 탭)
 
 ### Changed — StoryUI 잠금 안내 / 스포일러 가림 / 가독성
