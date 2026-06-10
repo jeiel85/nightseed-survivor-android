@@ -1,5 +1,30 @@
 # Progress
 
+## 2026-06-11 — v0.35.0 전투 UI 폴리시와 앱 용량 다이어트
+
+### Status
+
+미연결 상태로 보관 중이던 AI 픽셀아트 UI 자산을 결과 화면·HUD·조이스틱·메인메뉴에 일괄 배선하고 (Phase UI-5 완료), 오버스펙 스토리/배경 PNG를 표시 크기 기준으로 다운스케일해 자산 13.4MB → 2.3MB. v0.35.0 (vc40) 릴리즈.
+
+### Completed
+
+- 결과 화면: 승리 트로피 배너 + 석판 패널 + 골드 강조 행 (`GameRoot.tscn` / `GameRoot.gd`)
+- HUD 타이머/처치 아이콘, 조이스틱 텍스처, 메인메뉴 타이틀 장식 + 설정 기어
+- 자산 다운스케일 (인장 256², 체인 1024×256, 배경 양자화) + `shop_warriors_might` 삭제
+- `docs/ASSET_GUIDE.md` 현행화 (크기 규율 박제)
+- `tests/verify_ui_wiring.gd` / `tests/screenshot_result_panel.gd` 검증 도구 추가
+- v0.35.0 버전 bump + 릴리즈 노트 (GitHub/Play) + 태그 푸시
+
+### Verification
+
+- verify_ui_wiring headless ALL OK, 결과 화면 캡처 (승리/패배), 메인메뉴·인게임 윈도우 캡처
+
+### Next
+
+- Play Console internal testing에 v0.35.0 AAB + mapping.txt 업로드 (사용자)
+- 폰 실기에서 조이스틱 텍스처·결과 화면·HUD 아이콘 확인
+- `bg_battle_floor` 전투 바닥 적용 여부는 실기 가독성 보고 판단
+
 ## 2026-05-25 — v0.34.1 스토리 화면 스크롤 안정화
 
 ### Status

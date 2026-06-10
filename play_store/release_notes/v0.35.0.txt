@@ -1,0 +1,24 @@
+<ko-KR>
+🌙 화면 새 단장 & 가벼워진 앱
+
+새로워진 모습
+• 승리 화면: 트로피 현수막과 더 또렷해진 획득 골드 표시
+• 전투 화면: 남은 시간·처치 수 전용 아이콘
+• 이동 조이스틱이 달빛 링 디자인으로 교체
+• 메인 화면 제목 주변 달빛 장식
+
+개선
+• 앱 용량과 메모리 사용량 감소
+</ko-KR>
+<en-US>
+🌙 Visual polish & a lighter app
+
+What's new
+• Victory screen: trophy banner and a clearer gold reward
+• Battle HUD: dedicated timer and kill-count icons
+• The move joystick now wears a moonlit ring design
+• Moonlight ornament around the main-menu title
+
+Improvements
+• Smaller app size and lower memory use
+</en-US>

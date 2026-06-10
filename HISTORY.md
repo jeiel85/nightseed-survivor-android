@@ -1,5 +1,30 @@
 # HISTORY.md
 
+## 2026-06-11 (v0.35.0 — 전투 UI 폴리시와 앱 용량 다이어트)
+
+- 날짜: 2026-06-11
+- 작업: 미연결 보관 중이던 AI 픽셀아트 UI 자산 일괄 배선 (Phase UI-5 완료) + 오버스펙 PNG 다운스케일 (13.4MB → 2.3MB) + v0.35.0 릴리즈.
+- 변경 파일:
+  - `godot/scenes/main/GameRoot.tscn`, `godot/scripts/core/GameRoot.gd` — 결과 화면 (승리 배너/석판 패널/골드 강조 행)
+  - `godot/scenes/main/HUD.tscn`, `godot/scripts/ui/HUD.gd` — 타이머/처치 아이콘
+  - `godot/scripts/ui/VirtualJoystick.gd` — 달빛 링/썸 텍스처 + fallback
+  - `godot/scenes/ui/MainMenu.tscn`, `godot/scripts/ui/MainMenu.gd` — 타이틀 장식, 설정 기어
+  - `godot/assets/sprites/ui/story/*`, `ui/bg/*` — 다운스케일/양자화 (인장·책 256², 체인 1024×256)
+  - `godot/assets/sprites/shop_warriors_might.png` 삭제 (미참조 레거시)
+  - `godot/tests/verify_ui_wiring.gd`, `godot/tests/screenshot_result_panel.gd` 신규
+  - `scripts/export-play-store-release.ps1` 신규 (500자 검증 박제 포함 export 파이프라인)
+  - `docs/ASSET_GUIDE.md` 현행화, `godot/export_presets.cfg` (vc 39→40, 0.34.1→0.35.0)
+  - `CHANGELOG.md`, `docs/releases/v0.35.0.md`, `play_store/release_notes/v0.35.0.txt`, `.agent/progress.md`, `HISTORY.md`
+- 검증:
+  - `tests/verify_ui_wiring.gd` headless ALL OK (씬 로드 + @onready 노드 경로 + 텍스처 로드).
+  - `tests/screenshot_result_panel.gd`로 승리/패배 결과 화면 강제 표시 캡처 확인 (메타 진행 미커밋 경로).
+  - 메인메뉴/인게임 HUD 윈도우 캡처로 아이콘 표시 확인. 다운스케일 자산 시각 품질 열화 없음.
+  - 에디터 2-pass import 수행. 종료 시 기존과 같은 Game Services Error 7 / ObjectDB leak 경고로 exit code 1 (알려진 quirk).
+- 결과:
+  - UI 로드맵 Phase UI-1~5 완료 상태. 남은 항목은 UI-6 (하위 화면 톤 맞추기) 일부와 `bg_battle_floor` 적용 판단.
+- 후속 작업:
+  - Play Console internal testing에 v0.35.0 AAB + mapping.txt 업로드 후 폰 실기 확인.
+
 ## 2026-05-25 (v0.34.1 — 스토리 화면 스크롤 안정화)
 
 - 날짜: 2026-05-25
