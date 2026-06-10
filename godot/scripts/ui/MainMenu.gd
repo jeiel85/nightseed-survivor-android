@@ -10,6 +10,8 @@ extends Control
 const BG_MENU_HERO_LINEUP_PATH := "res://assets/sprites/ui/bg/bg_menu_hero_lineup.png"
 const BG_MENU_NIGHT_SKY_PATH   := "res://assets/sprites/ui/bg/bg_menu_night_sky.png"
 const ICON_GOLD_PATH           := "res://assets/sprites/ui/icon_top/icon_gold_coin.png"
+const ICON_SETTINGS_PATH       := "res://assets/sprites/ui/icon_top/icon_settings_gear.png"
+const TITLE_GLOW_PATH          := "res://assets/sprites/ui/bg/bg_logo_glow_ornament.png"
 const TITLE_KO_PATH            := "res://assets/logo/title_ko.png"
 const TITLE_EN_PATH            := "res://assets/logo/title_en.png"
 const NAV_ICON_PATHS := {
@@ -23,7 +25,8 @@ const NAV_ICON_PATHS := {
 
 @onready var background_image: TextureRect = $BackgroundImage
 @onready var menu_backdrop: Control = $MenuBackdrop
-@onready var title_image: TextureRect = $VBox/TitleImage
+@onready var title_image: TextureRect = $VBox/TitleWrap/TitleImage
+@onready var title_glow: TextureRect = $VBox/TitleWrap/TitleGlow
 @onready var subtitle_label: Label = $VBox/Subtitle
 @onready var status_card: PanelContainer = $VBox/StatusCard
 @onready var gold_coin_icon: TextureRect = $VBox/StatusCard/StatusVBox/GoldRow/GoldCoinIcon
@@ -112,10 +115,25 @@ func _refresh_title_texture() -> void:
 		if tex is Texture2D:
 			title_image.texture = tex
 			title_image.visible = true
+			_refresh_title_glow(true)
 			return
 	# Fallback: keep TitleImage hidden if textures missing — Subtitle alone
 	# still labels the screen well enough for early dev.
 	title_image.visible = false
+	_refresh_title_glow(false)
+
+# Moonlit vine ornament behind the logo — decorative only, so it renders only
+# when both the ornament asset and a title logo are present.
+func _refresh_title_glow(title_visible: bool) -> void:
+	if not is_instance_valid(title_glow):
+		return
+	if title_visible and ResourceLoader.exists(TITLE_GLOW_PATH):
+		var glow := load(TITLE_GLOW_PATH)
+		if glow is Texture2D:
+			title_glow.texture = glow
+			title_glow.visible = true
+			return
+	title_glow.visible = false
 
 func _apply_background() -> void:
 	# Prefer the hero-lineup background when present; the five heroes already
@@ -164,6 +182,7 @@ func _apply_button_icons() -> void:
 	_set_button_icon(btn_shop,        String(NAV_ICON_PATHS["shop"]))
 	_set_button_icon(btn_codex,       String(NAV_ICON_PATHS["story"]))
 	_set_button_icon(btn_leaderboard, String(NAV_ICON_PATHS["leaderboard"]))
+	_set_button_icon(btn_settings,    ICON_SETTINGS_PATH)
 	# Gold coin icon next to the gold counter — pixel-art accent in the status
 	# strip so the gold number doesn't sit on a bare text label.
 	if ResourceLoader.exists(ICON_GOLD_PATH):

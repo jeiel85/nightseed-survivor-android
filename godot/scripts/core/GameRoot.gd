@@ -3,6 +3,12 @@ extends Node2D
 const XP_GEM_SCENE := preload("res://scenes/pickups/XPGem.tscn")
 const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 
+# Result-panel artwork (Phase UI-5). Loaded with the same graceful-fallback
+# idiom as LevelUpUI/MainMenu: missing texture → the procedural look stays.
+const RESULT_BANNER_PATH     := "res://assets/sprites/ui/panel/banner_stage_clear.png"
+const RESULT_PANEL_TEX_PATH  := "res://assets/sprites/ui/panel/panel_card_dark.9.png"
+const RESULT_GOLD_ICON_PATH  := "res://assets/sprites/ui/icon_reward/icon_reward_coins.png"
+
 @onready var player: Player = $Player
 @onready var hud: HUD = $HUD
 @onready var enemy_spawner: EnemySpawner = $EnemySpawner
@@ -13,9 +19,13 @@ const GOLD_COIN_SCENE := preload("res://scenes/pickups/GoldCoin.tscn")
 @onready var ground_tiler: BackgroundTiler = $GroundTiler
 @onready var result_panel: CanvasLayer = $ResultPanel
 @onready var result_backdrop: ColorRect = $ResultPanel/Backdrop
-@onready var result_title: Label = $ResultPanel/Panel/VBox/Title
+@onready var result_panel_box: PanelContainer = $ResultPanel/Panel
+@onready var result_title: Label = $ResultPanel/Panel/VBox/TitleWrap/Title
+@onready var result_title_banner: TextureRect = $ResultPanel/Panel/VBox/TitleWrap/TitleBanner
 @onready var result_subtitle: Label = $ResultPanel/Panel/VBox/Subtitle
 @onready var result_stats: Label = $ResultPanel/Panel/VBox/Stats
+@onready var result_gold_icon: TextureRect = $ResultPanel/Panel/VBox/GoldRow/GoldIcon
+@onready var result_gold_label: Label = $ResultPanel/Panel/VBox/GoldRow/GoldLabel
 @onready var result_next_goal: Label = $ResultPanel/Panel/VBox/NextGoal
 @onready var result_achievements: Label = $ResultPanel/Panel/VBox/Achievements
 @onready var btn_revive: Button = $ResultPanel/Panel/VBox/BtnRevive
@@ -92,6 +102,7 @@ func _ready() -> void:
 
 	result_panel.visible = false
 	result_subtitle.text = ""
+	_apply_result_panel_art()
 
 	hud.set_hp(player.current_hp, player.max_hp)
 	hud.set_time(_total_time)
@@ -257,6 +268,10 @@ func _show_result(victory: bool) -> void:
 	_refresh_ad_buttons(victory)
 	if is_instance_valid(result_backdrop):
 		result_backdrop.color = Color(0.22, 0.12, 0.04, 0.82) if victory else Color(0.18, 0.04, 0.04, 0.84)
+	# Victory shows the trophy banner behind the title; defeat keeps the bare
+	# red title so the two states read differently at a glance.
+	if is_instance_valid(result_title_banner):
+		result_title_banner.visible = victory and result_title_banner.texture != null
 	if victory:
 		result_title.text = Localization.tr_key("result_victory")
 		result_title.modulate = Color(0.95, 0.9, 0.2)
@@ -273,12 +288,9 @@ func _show_result(victory: bool) -> void:
 		AudioManager.play("defeat", 0.0)
 	_play_title_pop()
 	var tm := int(_survival_time)
-	var base_lines: Array = [
-		Localization.tr_key("result_survived_fmt") % [tm / 60, tm % 60],
-		Localization.tr_key("result_kills_fmt") % player.kill_count,
-		Localization.tr_key("result_gold_fmt") % 0,
-	]
-	result_stats.text = "\n".join(base_lines)
+	_render_stats_with_gold(0, tm)
+	if is_instance_valid(result_gold_icon):
+		result_gold_icon.visible = result_gold_icon.texture != null
 	_start_gold_count_up(player.session_gold, tm)
 	result_next_goal.text = _result_next_goal_text()
 	result_achievements.text = _format_result_extras()
@@ -289,6 +301,33 @@ func _show_result(victory: bool) -> void:
 	ButtonStyles.apply(btn_menu, ButtonStyles.NEUTRAL)
 	ButtonStyles.apply(btn_revive, ButtonStyles.REWARD_AD)
 	ButtonStyles.apply(btn_double_gold, ButtonStyles.REWARD_AD)
+
+# Stone-tablet panel + banner/coin textures for the result screen. Falls back
+# to the plain PanelContainer / text-only look when assets aren't imported.
+func _apply_result_panel_art() -> void:
+	if is_instance_valid(result_panel_box) and ResourceLoader.exists(RESULT_PANEL_TEX_PATH):
+		var tex := load(RESULT_PANEL_TEX_PATH)
+		if tex is Texture2D:
+			var sb := StyleBoxTexture.new()
+			sb.texture = tex
+			# Same 14px corner spec as the LevelUpUI stone tablets (128×160 src).
+			sb.texture_margin_left = 14
+			sb.texture_margin_right = 14
+			sb.texture_margin_top = 14
+			sb.texture_margin_bottom = 14
+			sb.content_margin_left = 20
+			sb.content_margin_right = 20
+			sb.content_margin_top = 16
+			sb.content_margin_bottom = 16
+			result_panel_box.add_theme_stylebox_override("panel", sb)
+	if is_instance_valid(result_title_banner) and ResourceLoader.exists(RESULT_BANNER_PATH):
+		var banner := load(RESULT_BANNER_PATH)
+		if banner is Texture2D:
+			result_title_banner.texture = banner
+	if is_instance_valid(result_gold_icon) and ResourceLoader.exists(RESULT_GOLD_ICON_PATH):
+		var coins := load(RESULT_GOLD_ICON_PATH)
+		if coins is Texture2D:
+			result_gold_icon.texture = coins
 
 # Quick scale-pop on the result title so victory/defeat reads as an event, not
 # a static label. Runs even while the tree is paused.
@@ -321,9 +360,11 @@ func _render_stats_with_gold(g: int, time_seconds: int) -> void:
 	var lines: Array = [
 		Localization.tr_key("result_survived_fmt") % [time_seconds / 60, time_seconds % 60],
 		Localization.tr_key("result_kills_fmt") % player.kill_count,
-		Localization.tr_key("result_gold_fmt") % g,
 	]
 	result_stats.text = "\n".join(lines)
+	# Gold lives on its own emphasized row (coin icon + gold-tinted label) so
+	# the run's reward is the most prominent stat — UI roadmap Phase UI-5.
+	result_gold_label.text = Localization.tr_key("result_gold_fmt") % g
 
 # How much more gold is needed for the cheapest unmaxed permanent upgrade.
 # Result-panel call site shows a *projected* total (current bank + this

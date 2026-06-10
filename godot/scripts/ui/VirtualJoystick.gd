@@ -9,14 +9,29 @@ class_name VirtualJoystick
 @export var handle_color: Color = Color(1, 1, 1, 0.45)
 @export var handle_outline: Color = Color(1, 1, 1, 0.85)
 
+# Moonlight ring/thumb artwork. Missing textures (fresh checkout before the
+# editor import pass) fall back to the original procedural circles.
+const BASE_TEX_PATH  := "res://assets/sprites/ui/icon_hud/icon_hud_joystick_base.png"
+const THUMB_TEX_PATH := "res://assets/sprites/ui/icon_hud/icon_hud_joystick_thumb.png"
+
 var _active_touch_id: int = -1
 var _origin: Vector2 = Vector2.ZERO
 var _handle_pos: Vector2 = Vector2.ZERO
+var _base_tex: Texture2D = null
+var _thumb_tex: Texture2D = null
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	_base_tex = _try_load_texture(BASE_TEX_PATH)
+	_thumb_tex = _try_load_texture(THUMB_TEX_PATH)
+
+static func _try_load_texture(path: String) -> Texture2D:
+	if not ResourceLoader.exists(path):
+		return null
+	var res := load(path)
+	return res if res is Texture2D else null
 
 func _input(event: InputEvent) -> void:
 	var paused := get_tree().paused
@@ -86,7 +101,15 @@ func _notification(what: int) -> void:
 func _draw() -> void:
 	if _active_touch_id == -1:
 		return
-	draw_circle(_origin, max_radius, ring_color)
-	draw_arc(_origin, max_radius, 0.0, TAU, 64, ring_outline, 3.0, true)
-	draw_circle(_handle_pos, handle_radius, handle_color)
-	draw_arc(_handle_pos, handle_radius, 0.0, TAU, 32, handle_outline, 2.0, true)
+	if _base_tex != null:
+		var base_size := Vector2(max_radius, max_radius) * 2.0
+		draw_texture_rect(_base_tex, Rect2(_origin - base_size * 0.5, base_size), false, Color(1, 1, 1, 0.72))
+	else:
+		draw_circle(_origin, max_radius, ring_color)
+		draw_arc(_origin, max_radius, 0.0, TAU, 64, ring_outline, 3.0, true)
+	if _thumb_tex != null:
+		var thumb_size := Vector2(handle_radius, handle_radius) * 2.0
+		draw_texture_rect(_thumb_tex, Rect2(_handle_pos - thumb_size * 0.5, thumb_size), false, Color(1, 1, 1, 0.88))
+	else:
+		draw_circle(_handle_pos, handle_radius, handle_color)
+		draw_arc(_handle_pos, handle_radius, 0.0, TAU, 32, handle_outline, 2.0, true)

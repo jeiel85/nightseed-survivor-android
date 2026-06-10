@@ -72,8 +72,25 @@ offset_right = 360.0
 offset_bottom = -32.0
 theme_override_constants/separation = 12
 
-[node name="TitleImage" type="TextureRect" parent="VBox"]
+[node name="TitleWrap" type="Control" parent="VBox"]
 custom_minimum_size = Vector2(0, 184)
+mouse_filter = 2
+
+[node name="TitleGlow" type="TextureRect" parent="VBox/TitleWrap"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -12.0
+offset_bottom = 12.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+texture_filter = 1
+modulate = Color(1, 1, 1, 0.55)
+
+[node name="TitleImage" type="TextureRect" parent="VBox/TitleWrap"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
