@@ -89,9 +89,9 @@ jobs:
         env:
           KEYSTORE_BASE64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_BASE64 }}
         run: |
-          mkdir -p secrets
-          echo "$KEYSTORE_BASE64" | base64 -d > secrets/release.keystore
-          ls -la secrets/release.keystore
+          mkdir -p .keystore
+          echo "$KEYSTORE_BASE64" | base64 -d > .keystore/release.keystore
+          ls -la .keystore/release.keystore
 
       - name: Restore Android build template libs (regenerable, not committed)
         run: |
@@ -135,7 +135,7 @@ jobs:
 
       - name: Build release APK
         env:
-          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/secrets/release.keystore
+          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/.keystore/release.keystore
           GODOT_ANDROID_KEYSTORE_RELEASE_USER: nightseed
           GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD }}
         run: |
@@ -157,7 +157,7 @@ jobs:
 
       - name: Build release AAB (Android App Bundle for Play Store)
         env:
-          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/secrets/release.keystore
+          GODOT_ANDROID_KEYSTORE_RELEASE_PATH: ${{ github.workspace }}/.keystore/release.keystore
           GODOT_ANDROID_KEYSTORE_RELEASE_USER: nightseed
           GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEYSTORE_PASSWORD }}
         run: |

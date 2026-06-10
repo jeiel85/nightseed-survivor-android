@@ -24,6 +24,7 @@ godot/android/build/assetPacks/*/src/
 *.aab
 
 # Secrets (keystores, passwords) - upload to GitHub Secrets instead
+.keystore/
 secrets/
 *.keystore
 *.jks

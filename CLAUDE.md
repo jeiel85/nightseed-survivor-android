@@ -37,8 +37,8 @@
 ## 빌드/배포
 
 - **이미 푸시된 태그를 다시 빌드할 일 X** — `gh release create` 수동 호출 금지. 태그 push 한 번이면 CI가 4 플랫폼 (APK / AAB / EXE / Linux) + 웹 GitHub Pages 자동 배포.
-- 키스토어: `secrets/release.keystore`, 비밀번호는 사용자가 보관 (커밋된 적 없음)
-- secrets/ 절대 commit X
+- 키스토어: `.keystore/release.keystore`, 비밀번호는 사용자가 보관 (커밋된 적 없음)
+- .keystore/ 절대 commit X (gitignored)
 - `.gitignore`: `/build/` (선행 슬래시 중요 — `godot/android/build/` 보호)
 
 ## 보안/시크릿
