@@ -1,0 +1,24 @@
+<ko-KR>
+🌙 더 팽팽해진 전투 & 새 단장한 화면
+
+전투
+• 난이도 전면 재조정 — 도망만 다녀도 살아남던 허점을 막았습니다
+• 시간이 흐를수록 적이 더 빠르고 매섭게 몰아붙입니다
+• 레벨업 카드에 등급 테두리가 표시됩니다
+
+화면
+• 상점·캐릭터·스테이지·설정 화면을 같은 분위기로 새 단장
+• 글자가 장식과 겹쳐 보이던 문제 수정
+</ko-KR>
+<en-US>
+🌙 Tighter battles & a unified look
+
+Combat
+• Difficulty rebalanced — running away is no longer a winning strategy
+• Enemies push harder and faster as time goes on
+• Level-up cards now show their rarity frames
+
+Screens
+• Shop, heroes, stages and settings share one polished theme
+• Fixed text overlapping decorative borders
+</en-US>

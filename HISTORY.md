@@ -1,5 +1,26 @@
 # HISTORY.md
 
+## 2026-06-11 (v0.36.0 — 난이도 리워크와 화면 통일)
+
+- 날짜: 2026-06-11
+- 작업: 난이도 리워크(봇 측정 기반) + 하위 화면 UI 통일(UIKit) + 카드 텍스트 겹침 수정 → v0.36.0 릴리즈.
+- 변경 파일:
+  - `godot/scripts/enemies/EnemySpawner.gd` — 적 재배치 스윕 (circle-kiting 차단)
+  - `godot/scripts/core/Difficulty.gd`, `godot/scripts/enemies/EnemyBase.gd`, `godot/scripts/player/Player.gd`, `godot/scripts/weapons/WeaponBase.gd` — 난이도 수치
+  - `godot/scripts/ui/UIKit.gd` 신규 + Shop/CharacterSelect/StageSelect/SettingsUI 적용
+  - `godot/scripts/ui/LevelUpUI.gd` — 글로우 미렌더 버그 수정 + draw 시그널 방식 통일
+  - `godot/assets/sprites/ui/panel/panel_card_dark.9.png` — 투명 거터 크롭 (128×160→96×160)
+  - `godot/tests/sim_afk_run.gd`, `godot/tests/screenshot_scene.gd` 신규
+  - `docs/BALANCE.md` §12, `godot/export_presets.cfg` (vc 40→41, 0.35.0→0.36.0)
+  - `CHANGELOG.md`, `docs/releases/v0.36.0.md`, `play_store/release_notes/v0.36.0.txt`, `.agent/progress.md`, `HISTORY.md`
+- 검증:
+  - 봇 측정 (Normal): 단순 도주 봇 — 리워크 전 상한 악용 시 사실상 무한 생존 → 후 73s 사망. Hard 57s.
+  - `tests/verify_ui_wiring.gd` ALL OK, 시뮬 런 스크립트 에러 0.
+  - 상점/캐릭터/스테이지/설정 720p 캡처로 테마 통일·겹침 해소 확인.
+- 후속 작업:
+  - 실기 플레이로 숙련자 체감 난이도 검증 — 과하면 EnemyBase 시간 스케일 계수부터 롤백.
+  - 레벨업 카드 등급 프레임 실기 확인 (이번에 처음 표시됨).
+
 ## 2026-06-11 (v0.35.0 — 전투 UI 폴리시와 앱 용량 다이어트)
 
 - 날짜: 2026-06-11
