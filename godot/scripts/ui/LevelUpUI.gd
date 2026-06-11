@@ -156,7 +156,7 @@ func _generate_options() -> void:
 		if WEAPON_DATA.has(wname):
 			var wd2: Dictionary = WEAPON_DATA[wname]
 			var current_dmg: int = w.get_damage()
-			var next_dmg: int = int(int(w.base_damage * 1.25) * w.damage_multiplier)
+			var next_dmg: int = int(int(w.base_damage * WeaponBase.UPGRADE_DAMAGE_MULT) * w.damage_multiplier)
 			var current_cd: float = w.get_display_cooldown()
 			var next_cd: float = w.get_display_next_cooldown()
 			pool.append({
@@ -385,7 +385,12 @@ func _apply_card_glow(card: PanelContainer, kind: String) -> void:
 		glow.draw_center = false
 		# 144×176 source asset; 24 px corner gives the rounded glow halo
 		# room to stretch without distorting the corner curve.
-		glow.set_patch_margin_all(24)
+		# NinePatchRect has no set_patch_margin_all() in Godot 4.2 — the old
+		# call raised a script error every level-up, so the glow never showed.
+		glow.patch_margin_left = 24
+		glow.patch_margin_right = 24
+		glow.patch_margin_top = 24
+		glow.patch_margin_bottom = 24
 		# PanelContainer expects a single layout child; the glow as an extra
 		# child with anchors=FULL_RECT just paints over the panel rect and
 		# does not affect VBox layout. Z-order: drawn after the stylebox.
