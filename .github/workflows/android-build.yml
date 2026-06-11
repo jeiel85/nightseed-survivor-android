@@ -19,22 +19,22 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
         with:
           packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
       - name: Cache Godot binary + templates
         id: cache-godot
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/godot-bin
@@ -42,7 +42,7 @@ jobs:
           key: godot-${{ env.GODOT_VERSION }}
 
       - name: Cache Gradle dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ~/.gradle/caches
@@ -149,7 +149,7 @@ jobs:
           $APKSIGNER verify --verbose --print-certs build/nightseed-survivor-release.apk
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightseed-survivor-apk
           path: build/nightseed-survivor-release.apk
@@ -180,7 +180,7 @@ jobs:
           fi
 
       - name: Upload AAB artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightseed-survivor-aab
           path: |
@@ -194,7 +194,7 @@ jobs:
           ls -la build/nightseed-survivor.exe
 
       - name: Upload Windows artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightseed-survivor-windows
           path: build/nightseed-survivor.exe
@@ -207,7 +207,7 @@ jobs:
           ls -la build/nightseed-survivor.x86_64
 
       - name: Upload Linux artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightseed-survivor-linux
           path: build/nightseed-survivor.x86_64
@@ -249,7 +249,7 @@ jobs:
           ls -la build/gh-pages-root/live/
 
       - name: Upload Web artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: nightseed-survivor-web
           path: build/gh-pages-root/
@@ -284,7 +284,7 @@ jobs:
 
       - name: Create / update GitHub Release on tag push
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
