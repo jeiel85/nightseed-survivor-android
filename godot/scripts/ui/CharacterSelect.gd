@@ -12,6 +12,9 @@ func _ready() -> void:
 	if title_label:
 		title_label.text = Localization.tr_key("choose_character")
 	btn_back.text = Localization.tr_key("btn_back")
+	UIKit.apply_screen_chrome(self, title_label, btn_back)
+	if gold_label:
+		gold_label.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
 	_build_cards()
 	_refresh_gold()
 
@@ -29,6 +32,8 @@ func _make_card(key: String) -> PanelContainer:
 	card.name = "Card_" + key
 	card.custom_minimum_size = Vector2(0, 240)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", UIKit.card_style(data["color"]))
+	UIKit.set_card_glow(card, selected)
 
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 14)
@@ -46,6 +51,7 @@ func _make_card(key: String) -> PanelContainer:
 	var name_lbl := Label.new()
 	name_lbl.text = Characters.display_name(key)
 	name_lbl.add_theme_font_size_override("font_size", 28)
+	name_lbl.add_theme_color_override("font_color", UIKit.TITLE_GOLD if selected else UIKit.TEXT_PRIMARY)
 	info.add_child(name_lbl)
 
 	var desc_lbl := Label.new()
@@ -200,13 +206,16 @@ func _setup_button(btn: Button, key: String, data: Dictionary) -> void:
 		var cost: int = int(data["unlock_cost"])
 		btn.text = Localization.tr_key("btn_unlock_fmt") % cost
 		btn.disabled = GameData.gold < cost
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.LEADERBOARD)
 		btn.pressed.connect(func(): _on_unlock_pressed(key, cost))
 	elif GameData.selected_character == key:
 		btn.text = Localization.tr_key("btn_selected")
 		btn.disabled = true
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.LEADERBOARD)
 	else:
 		btn.text = Localization.tr_key("btn_select")
 		btn.disabled = false
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.CHARACTER)
 		btn.pressed.connect(func(): _on_select_pressed(key))
 
 func _on_unlock_pressed(key: String, cost: int) -> void:

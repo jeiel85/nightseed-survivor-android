@@ -46,6 +46,9 @@ func _ready() -> void:
 	if title_label:
 		title_label.text = Localization.tr_key("shop_title")
 	btn_back.text = Localization.tr_key("btn_back")
+	UIKit.apply_screen_chrome(self, title_label, btn_back)
+	if gold_label:
+		gold_label.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
 	_build_rows()
 	_refresh_gold()
 
@@ -59,6 +62,7 @@ func _make_row(key: String) -> PanelContainer:
 	card.name = "Row_" + key
 	card.custom_minimum_size = Vector2(0, 160)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", UIKit.card_style(UPGRADE_COLORS.get(key, Color.WHITE)))
 
 	# Outer HBox: icon thumb on the left, info VBox on the right
 	var outer := HBoxContainer.new()
@@ -95,23 +99,27 @@ func _make_row(key: String) -> PanelContainer:
 	var header := HBoxContainer.new()
 	vbox.add_child(header)
 
+	# 이름은 본문색으로 통일 — 강화별 정체성 색은 아이콘 배경 틴트가 담당한다.
+	# (다섯 줄이 전부 다른 원색이던 "무지개 리스트"가 조잡함의 주범이었음)
 	var name_lbl := Label.new()
 	name_lbl.text = Localization.tr_key(UPGRADE_NAME_KEYS[key])
 	name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_lbl.add_theme_font_size_override("font_size", 26)
-	name_lbl.add_theme_color_override("font_color", UPGRADE_COLORS.get(key, Color.WHITE))
+	name_lbl.add_theme_color_override("font_color", UIKit.TEXT_PRIMARY)
 	header.add_child(name_lbl)
 
 	var level_lbl := Label.new()
 	level_lbl.name = "LevelLbl"
 	level_lbl.text = Localization.tr_key("label_lv_fmt") % GameData.permanent_upgrades.get(key, 0)
 	level_lbl.add_theme_font_size_override("font_size", 24)
+	level_lbl.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
 	header.add_child(level_lbl)
 
 	var desc_lbl := Label.new()
 	desc_lbl.text = Localization.tr_key(UPGRADE_DESC_KEYS[key])
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_lbl.add_theme_font_size_override("font_size", 20)
+	desc_lbl.add_theme_color_override("font_color", UIKit.TEXT_MUTED)
 	vbox.add_child(desc_lbl)
 
 	var footer := HBoxContainer.new()
@@ -125,6 +133,7 @@ func _make_row(key: String) -> PanelContainer:
 	cost_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	cost_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	cost_lbl.add_theme_font_size_override("font_size", 22)
+	cost_lbl.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
 	footer.add_child(cost_lbl)
 
 	var btn := Button.new()
@@ -133,6 +142,7 @@ func _make_row(key: String) -> PanelContainer:
 	btn.custom_minimum_size = Vector2(160, 70)
 	btn.disabled = cost <= 0 or GameData.gold < cost
 	btn.add_theme_font_size_override("font_size", 24)
+	ButtonStyles.apply_stone_texture(btn, ButtonStyles.LEADERBOARD)
 	btn.pressed.connect(func(): _on_buy(key))
 	footer.add_child(btn)
 

@@ -25,6 +25,30 @@ func _ready() -> void:
 	btn_back.pressed.connect(_on_back_pressed)
 	if Localization:
 		Localization.language_changed.connect(_on_language_changed)
+	UIKit.apply_screen_chrome(self, title_label, btn_back)
+	_style_slider(bgm_slider)
+	_style_slider(sfx_slider)
+	for value_lbl in [bgm_value, sfx_value]:
+		value_lbl.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
+
+# Moonlight slider: dark recessed groove + pale fill so the settings screen
+# shares the HUD/menu palette instead of the default gray theme.
+func _style_slider(slider: HSlider) -> void:
+	var groove := StyleBoxFlat.new()
+	groove.bg_color = Color(0.08, 0.10, 0.16, 0.95)
+	groove.border_color = Color(0.30, 0.36, 0.48, 0.8)
+	groove.set_border_width_all(1)
+	groove.set_corner_radius_all(4)
+	groove.content_margin_top = 6
+	groove.content_margin_bottom = 6
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = ButtonStyles.MOON_PRIMARY.darkened(0.12)
+	fill.set_corner_radius_all(4)
+	fill.content_margin_top = 6
+	fill.content_margin_bottom = 6
+	slider.add_theme_stylebox_override("slider", groove)
+	slider.add_theme_stylebox_override("grabber_area", fill)
+	slider.add_theme_stylebox_override("grabber_area_highlight", fill)
 
 func _apply_localized_text() -> void:
 	title_label.text = Localization.tr_key("settings_title")

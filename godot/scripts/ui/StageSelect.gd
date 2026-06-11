@@ -12,6 +12,9 @@ func _ready() -> void:
 	if title_label:
 		title_label.text = Localization.tr_key("choose_stage")
 	btn_back.text = Localization.tr_key("btn_back")
+	UIKit.apply_screen_chrome(self, title_label, btn_back)
+	if gold_label:
+		gold_label.add_theme_color_override("font_color", UIKit.TITLE_GOLD)
 	_build_cards()
 	_refresh_gold()
 
@@ -39,6 +42,8 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 	card.name = "Card_" + stage_id
 	card.custom_minimum_size = Vector2(0, 220)
 	card.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	card.add_theme_stylebox_override("panel", UIKit.card_style(stage_color))
+	UIKit.set_card_glow(card, selected)
 
 	var hbox := HBoxContainer.new()
 	hbox.add_theme_constant_override("separation", 14)
@@ -56,12 +61,14 @@ func _make_card(stage: Dictionary) -> PanelContainer:
 	var name_lbl := Label.new()
 	name_lbl.text = Stages.display_name(stage_id)
 	name_lbl.add_theme_font_size_override("font_size", 28)
+	name_lbl.add_theme_color_override("font_color", UIKit.TITLE_GOLD if selected else UIKit.TEXT_PRIMARY)
 	info.add_child(name_lbl)
 
 	var desc_lbl := Label.new()
 	desc_lbl.text = Stages.display_desc(stage_id)
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_lbl.add_theme_font_size_override("font_size", 18)
+	desc_lbl.add_theme_color_override("font_color", UIKit.TEXT_MUTED)
 	info.add_child(desc_lbl)
 
 	var time_lbl := Label.new()
@@ -191,13 +198,16 @@ func _setup_button(btn: Button, stage_id: String, stage: Dictionary) -> void:
 		var cost: int = int(stage.get("unlock_cost", 0))
 		btn.text = Localization.tr_key("btn_unlock_fmt") % cost
 		btn.disabled = GameData.gold < cost
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.LEADERBOARD)
 		btn.pressed.connect(func(): _on_unlock_pressed(stage_id, cost))
 	elif GameData.selected_stage == stage_id:
 		btn.text = Localization.tr_key("btn_selected")
 		btn.disabled = true
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.LEADERBOARD)
 	else:
 		btn.text = Localization.tr_key("btn_select")
 		btn.disabled = false
+		ButtonStyles.apply_stone_texture(btn, ButtonStyles.STAGE)
 		btn.pressed.connect(func(): _on_select_pressed(stage_id))
 
 func _on_unlock_pressed(stage_id: String, cost: int) -> void:
