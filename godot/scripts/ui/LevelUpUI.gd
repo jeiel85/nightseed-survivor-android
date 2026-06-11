@@ -341,14 +341,14 @@ func _make_card_panel_style(tint: Color) -> StyleBox:
 		if tex is Texture2D:
 			var sb := StyleBoxTexture.new()
 			sb.texture = tex
-			# 128×160 source asset; 14 px corner keeps the tablet's rounded
-			# corner detail crisp at any card size.
-			sb.texture_margin_left = 14
-			sb.texture_margin_right = 14
-			sb.texture_margin_top = 14
-			sb.texture_margin_bottom = 14
-			sb.content_margin_left = 12
-			sb.content_margin_right = 12
+			# 96×160 source (좌우 투명 거터 크롭 완료본, 림 ~4px). 14px 마진은
+			# 거터 시절 값 — 림이 center로 새어 세로 띠로 늘어나던 원인.
+			sb.texture_margin_left = 8
+			sb.texture_margin_right = 8
+			sb.texture_margin_top = 8
+			sb.texture_margin_bottom = 8
+			sb.content_margin_left = 16
+			sb.content_margin_right = 16
 			sb.content_margin_top = 12
 			sb.content_margin_bottom = 12
 			# Subtle rarity-color modulate so the dark stone reads slightly
@@ -367,40 +367,11 @@ func _make_card_panel_style(tint: Color) -> StyleBox:
 	return sb_flat
 
 func _apply_card_glow(card: PanelContainer, kind: String) -> void:
+	# UIKit이 draw 시그널 기반으로 카드 테두리에 글로우를 그린다. 과거의
+	# NinePatchRect 자식 방식은 PanelContainer가 자식을 콘텐츠 영역에 강제
+	# 배치해 프레임 장식이 카드 제목 위로 올라오는 버그가 있었다.
 	var glow_path: String = String(GLOW_BY_KIND.get(kind, ""))
-	var glow: NinePatchRect = card.get_node_or_null("CardGlow") as NinePatchRect
-	if glow_path == "" or not ResourceLoader.exists(glow_path):
-		if glow:
-			glow.visible = false
-		return
-	if glow == null:
-		glow = NinePatchRect.new()
-		glow.name = "CardGlow"
-		glow.set_anchors_preset(Control.PRESET_FULL_RECT)
-		glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		glow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		# Skip the center stretch region entirely — only the corners + edges
-		# of the glow get drawn. Without this the (still partially opaque)
-		# asset center would overlay the card content as a solid sheet.
-		glow.draw_center = false
-		# 144×176 source asset; 24 px corner gives the rounded glow halo
-		# room to stretch without distorting the corner curve.
-		# NinePatchRect has no set_patch_margin_all() in Godot 4.2 — the old
-		# call raised a script error every level-up, so the glow never showed.
-		glow.patch_margin_left = 24
-		glow.patch_margin_right = 24
-		glow.patch_margin_top = 24
-		glow.patch_margin_bottom = 24
-		# PanelContainer expects a single layout child; the glow as an extra
-		# child with anchors=FULL_RECT just paints over the panel rect and
-		# does not affect VBox layout. Z-order: drawn after the stylebox.
-		card.add_child(glow)
-		card.move_child(glow, card.get_child_count() - 1)
-	glow.texture = load(glow_path)
-	# Force WHITE so PanelContainer.modulate (alpha 0→1 fade-in) doesn't tint
-	# the glow, and so it always shows the asset's native pixel color.
-	glow.self_modulate = Color.WHITE
-	glow.visible = true
+	UIKit.set_card_glow(card, glow_path != "", glow_path if glow_path != "" else UIKit.GLOW_GOLD_PATH)
 
 func _propagate_mouse_ignore(node: Node) -> void:
 	for child in node.get_children():

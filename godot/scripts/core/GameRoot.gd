@@ -310,11 +310,12 @@ func _apply_result_panel_art() -> void:
 		if tex is Texture2D:
 			var sb := StyleBoxTexture.new()
 			sb.texture = tex
-			# Same 14px corner spec as the LevelUpUI stone tablets (128×160 src).
-			sb.texture_margin_left = 14
-			sb.texture_margin_right = 14
-			sb.texture_margin_top = 14
-			sb.texture_margin_bottom = 14
+			# Same 8px corner spec as the LevelUpUI/UIKit stone tablets
+			# (96×160 src — 거터 크롭 완료본).
+			sb.texture_margin_left = 8
+			sb.texture_margin_right = 8
+			sb.texture_margin_top = 8
+			sb.texture_margin_bottom = 8
 			sb.content_margin_left = 20
 			sb.content_margin_right = 20
 			sb.content_margin_top = 16

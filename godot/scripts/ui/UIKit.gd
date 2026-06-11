@@ -54,14 +54,18 @@ static func card_style(accent: Color = Color(0.55, 0.62, 0.78)) -> StyleBox:
 		if tex is Texture2D:
 			var sb := StyleBoxTexture.new()
 			sb.texture = tex
-			sb.texture_margin_left = 14
-			sb.texture_margin_right = 14
-			sb.texture_margin_top = 14
-			sb.texture_margin_bottom = 14
-			sb.content_margin_left = 16
-			sb.content_margin_right = 16
-			sb.content_margin_top = 12
-			sb.content_margin_bottom = 12
+			# 96×160 source (투명 거터 크롭 완료본). 림 장식은 ~4px — 8px 마진이면
+			# 테두리 아트가 슬라이스에 온전히 들어가 center로 새지 않는다.
+			sb.texture_margin_left = 8
+			sb.texture_margin_right = 8
+			sb.texture_margin_top = 8
+			sb.texture_margin_bottom = 8
+			# 콘텐츠 여백은 림(4px) + 테두리에 걸치는 글로우 프레임 폭(가장자리
+			# ~12px)을 피해서 잡는다 — 글자가 테두리/글로우와 겹치지 않는 값.
+			sb.content_margin_left = 22
+			sb.content_margin_right = 22
+			sb.content_margin_top = 16
+			sb.content_margin_bottom = 16
 			sb.modulate_color = Color(1, 1, 1, 1).lerp(accent, 0.10)
 			return sb
 	var sb_flat := StyleBoxFlat.new()
@@ -72,29 +76,35 @@ static func card_style(accent: Color = Color(0.55, 0.62, 0.78)) -> StyleBox:
 	sb_flat.set_content_margin_all(12)
 	return sb_flat
 
-# Gold glow overlay marking the selected card (same look as the level-up
-# "upgrade" rarity frame). Pass on=false to remove.
-static func set_card_glow(card: PanelContainer, on: bool) -> void:
-	var glow: NinePatchRect = card.get_node_or_null("UIKitGlow") as NinePatchRect
-	if not on:
-		if glow != null:
-			glow.visible = false
-		return
-	if not ResourceLoader.exists(GLOW_GOLD_PATH):
-		return
-	if glow == null:
-		glow = NinePatchRect.new()
-		glow.name = "UIKitGlow"
-		glow.set_anchors_preset(Control.PRESET_FULL_RECT)
-		glow.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		glow.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		glow.draw_center = false
-		glow.patch_margin_left = 24
-		glow.patch_margin_right = 24
-		glow.patch_margin_top = 24
-		glow.patch_margin_bottom = 24
-		card.add_child(glow)
-		card.move_child(glow, card.get_child_count() - 1)
-	glow.texture = load(GLOW_GOLD_PATH)
-	glow.self_modulate = Color.WHITE
-	glow.visible = true
+# Gold glow frame marking the selected card (same look as the level-up
+# rarity frames). Drawn via the card's `draw` signal instead of a child
+# NinePatchRect — PanelContainer force-fits every Control child into its
+# CONTENT rect (anchors/offsets get stomped on sort), which pushed the ornate
+# frame edge right on top of the card title. Custom drawing bypasses layout
+# entirely and lets the frame straddle the card border with a small outset.
+const GLOW_OUTSET := 6.0
+
+static func set_card_glow(card: PanelContainer, on: bool, glow_path: String = GLOW_GOLD_PATH) -> void:
+	var box: StyleBox = null
+	if on and ResourceLoader.exists(glow_path):
+		var tex := load(glow_path)
+		if tex is Texture2D:
+			var sb := StyleBoxTexture.new()
+			sb.texture = tex
+			sb.draw_center = false
+			# 144×176 source; 24px slices keep the corner flourishes intact.
+			sb.texture_margin_left = 24
+			sb.texture_margin_right = 24
+			sb.texture_margin_top = 24
+			sb.texture_margin_bottom = 24
+			box = sb
+	card.set_meta("uikit_glow_box", box)
+	if not card.has_meta("uikit_glow_wired"):
+		card.set_meta("uikit_glow_wired", true)
+		card.draw.connect(func() -> void:
+			var b = card.get_meta("uikit_glow_box") if card.has_meta("uikit_glow_box") else null
+			if b is StyleBox:
+				var o := GLOW_OUTSET
+				card.draw_style_box(b, Rect2(Vector2(-o, -o), card.size + Vector2(o * 2.0, o * 2.0)))
+		)
+	card.queue_redraw()
