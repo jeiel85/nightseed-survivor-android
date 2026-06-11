@@ -38,15 +38,21 @@ func get_damage() -> int:
 func get_display_cooldown() -> float:
 	return maxf(base_cooldown * cooldown_multiplier, 0.15)
 
-# Cooldown the weapon will have after upgrade(). Mirrors the * 0.88 in upgrade().
+# Cooldown the weapon will have after upgrade(). Mirrors the * 0.90 in upgrade().
 # Subclasses that change cadence differently on upgrade should override too.
 func get_display_next_cooldown() -> float:
-	return maxf(maxf(base_cooldown * 0.88, 0.2) * cooldown_multiplier, 0.15)
+	return maxf(maxf(base_cooldown * UPGRADE_COOLDOWN_MULT, 0.2) * cooldown_multiplier, 0.15)
+
+# 2026-06 난이도 리워크: 레벨당 ×1.25/×0.88 복리는 5분 안에 적 시간 스케일을
+# 압도해 "자동사냥"이 가능했다. ×1.22/×0.90으로 스노볼을 다듬는다 (Lv5 기준
+# DPS 약 -15%). docs/BALANCE.md §9 참고.
+const UPGRADE_DAMAGE_MULT := 1.22
+const UPGRADE_COOLDOWN_MULT := 0.90
 
 func upgrade() -> void:
 	level += 1
-	base_damage = int(base_damage * 1.25)
-	base_cooldown = maxf(base_cooldown * 0.88, 0.2)
+	base_damage = int(base_damage * UPGRADE_DAMAGE_MULT)
+	base_cooldown = maxf(base_cooldown * UPGRADE_COOLDOWN_MULT, 0.2)
 
 func evolve() -> void:
 	evolved = true

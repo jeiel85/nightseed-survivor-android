@@ -11,6 +11,9 @@ signal died(xp: int, gold: int, pos: Vector2)
 @export var gold_drop_amount: int = 1
 @export var body_color: Color = Color(0.9, 0.2, 0.2, 1.0)
 @export var body_size: float = 12.0
+# 보스/미니보스처럼 재배치(EnemySpawner의 circle-kiting 차단 스윕)에서
+# 제외해야 하는 적은 씬에서 true로 설정한다.
+@export var recycle_exempt: bool = false
 
 var current_hp: int
 var target: Node2D
@@ -23,14 +26,14 @@ var _flash_timer: float = 0.0
 func _ready() -> void:
 	var d: Dictionary = Difficulty.get_data(GameData.difficulty)
 	# Time-based escalation: enemies grow stronger as the run progresses.
-	# Compressed for the 5-min stage length so the 5-min mark hits the
-	# same intensity the old 7-min runs reached at their finale.
-	# At 3 min: ~1.84x HP, 1.17x speed, 1.42x damage, 1.42x XP reward.
-	# At 5 min: ~2.40x HP, 1.28x speed, 1.70x damage, 1.70x XP reward.
+	# 2026-06 난이도 리워크: 무기 복리 성장이 적 성장을 추월해 후반이
+	# 자동사냥 수준으로 무력화되던 것을 계수 상향으로 보정.
+	# At 3 min: ~2.02x HP, 1.24x speed, 1.60x damage, 1.42x XP reward.
+	# At 5 min: ~2.70x HP, 1.40x speed, 2.00x damage, 1.70x XP reward.
 	var minutes: float = max(GameData.run_elapsed, 0.0) / 60.0
-	var hp_t: float = 1.0 + minutes * 0.28
-	var spd_t: float = 1.0 + minutes * 0.055
-	var dmg_t: float = 1.0 + minutes * 0.14
+	var hp_t: float = 1.0 + minutes * 0.34
+	var spd_t: float = 1.0 + minutes * 0.08
+	var dmg_t: float = 1.0 + minutes * 0.20
 	var xp_t: float = 1.0 + minutes * 0.14
 	max_hp = int(max_hp * float(d["hp_mult"]) * hp_t)
 	contact_damage = int(contact_damage * float(d["dmg_mult"]) * dmg_t)

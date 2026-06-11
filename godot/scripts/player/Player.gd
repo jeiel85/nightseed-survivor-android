@@ -10,7 +10,9 @@ signal kill_count_changed(count: int)
 
 @export var move_speed: float = 160.0
 @export var max_hp: int = 100
-@export var invincible_duration: float = 0.5
+# 2026-06 난이도 리워크: 0.5초 i-frame은 후반 스폰 간격(0.5초)과 맞물려
+# 군집 접촉 피해를 사실상 절반으로 깎아줬다. 0.35초로 단축.
+@export var invincible_duration: float = 0.35
 
 var current_hp: int
 var xp_radius: float = 80.0

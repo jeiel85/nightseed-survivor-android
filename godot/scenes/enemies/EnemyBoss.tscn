@@ -21,6 +21,7 @@ gold_drop_chance = 1.0
 gold_drop_amount = 100
 body_color = Color(0.6, 0.1, 0.9, 1)
 body_size = 40.0
+recycle_exempt = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("cs_body")
