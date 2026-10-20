@@ -85,7 +85,7 @@ theme_override_font_sizes/font_size = 26
 
 [node name="GameBody" type="Label" parent="VBox/Scroll/Body"]
 text = "Code & design: jeiel85
-Source: github.com/jeiel85/nightseed-survivor
+Source: github.com/jeiel85/nightseed-survivor-android
 
 Inspired by the survivor / horde-action genre."
 autowrap_mode = 3
