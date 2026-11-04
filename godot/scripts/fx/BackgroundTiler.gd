@@ -99,17 +99,14 @@ func _draw() -> void:
 				var iy: int = int(round(y / tile_size_px))
 				var h: int = _hash(ix, iy)
 				var tex: Texture2D = tile_textures[h % tile_textures.size()]
-				var src_size: Vector2 = tex.get_size()
-				var src_rect := Rect2(Vector2.ZERO, src_size)
 				var v: float = float(h % 1000) / 1000.0
 				var tint: Color = tile_modulate.lerp(tile_modulate * 1.45, v * 0.7)
 				tint.a = 1.0
 				var dst_rect := Rect2(Vector2(x, y), Vector2(tile_size_px, tile_size_px))
 				if (h >> 8) & 1:
-					var flipped_src := Rect2(Vector2(src_size.x, 0), Vector2(-src_size.x, src_size.y))
-					draw_texture_rect_region(tex, dst_rect, flipped_src, tint)
+					_draw_mirrored(tex, dst_rect, tint)
 				else:
-					draw_texture_rect_region(tex, dst_rect, src_rect, tint)
+					draw_texture_rect(tex, dst_rect, false, tint)
 				y += tile_size_px
 			x += tile_size_px
 
@@ -187,13 +184,20 @@ func _draw_decor(tex: Texture2D, px: float, py: float, rng: RandomNumberGenerato
 		draw_circle(Vector2(px, py - size.y * 0.15), glow_r * 0.55, torch_glow_color)
 		draw_texture_rect(tex, rect, false, decor_modulate.lerp(Color(1, 0.9, 0.7), 0.35))
 	else:
-		var src_rect := Rect2(Vector2.ZERO, tex.get_size())
 		# Subtle shadow under the rock
 		var shadow_r: float = size.x * 0.5625
 		draw_circle(Vector2(px, py + size.y * 0.35), shadow_r, Color(0, 0, 0, 0.30))
 		# Flip horizontally for variety
 		if rng.randi() % 2 == 0:
-			var flipped := Rect2(Vector2(src_rect.size.x, 0), Vector2(-src_rect.size.x, src_rect.size.y))
-			draw_texture_rect_region(tex, rect, flipped, decor_modulate)
+			_draw_mirrored(tex, rect, decor_modulate)
 		else:
-			draw_texture_rect_region(tex, rect, src_rect, decor_modulate)
+			draw_texture_rect(tex, rect, false, decor_modulate)
+
+# Horizontal mirror via the canvas transform. A negative-width source rect keeps
+# its origin, so Rect2(Vector2(w, 0), Vector2(-w, h)) sampled past the texture's
+# right edge and smeared its last column into stripes (invisible on the old flat
+# Kenney tiles, obvious on detailed ones).
+func _draw_mirrored(tex: Texture2D, rect: Rect2, modulate: Color) -> void:
+	draw_set_transform(Vector2(rect.position.x * 2.0 + rect.size.x, 0.0), 0.0, Vector2(-1.0, 1.0))
+	draw_texture_rect(tex, rect, false, modulate)
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
