@@ -173,12 +173,14 @@ func _draw() -> void:
 		dx += DECOR_CHUNK_PX
 
 func _draw_decor(tex: Texture2D, px: float, py: float, rng: RandomNumberGenerator, is_torch: bool) -> void:
-	var scale: float = rng.randf_range(2.4, 3.4)
+	# 38–54px wide on screen; glow and shadow follow the drawn width so they
+	# stay the same whether the texture is a 16px legacy tile or redrawn art.
+	var scale: float = SpriteArt.scale_for(tex, rng.randf_range(38.4, 54.4))
 	var size: Vector2 = tex.get_size() * scale
 	var rect := Rect2(Vector2(px - size.x * 0.5, py - size.y * 0.5), size)
 	if is_torch:
 		# Soft warm glow underneath
-		var glow_r: float = scale * 24.0
+		var glow_r: float = size.x * 1.5
 		var glow_color := torch_glow_color
 		glow_color.a = 0.20
 		draw_circle(Vector2(px, py - size.y * 0.15), glow_r, glow_color)
@@ -187,7 +189,7 @@ func _draw_decor(tex: Texture2D, px: float, py: float, rng: RandomNumberGenerato
 	else:
 		var src_rect := Rect2(Vector2.ZERO, tex.get_size())
 		# Subtle shadow under the rock
-		var shadow_r: float = scale * 9.0
+		var shadow_r: float = size.x * 0.5625
 		draw_circle(Vector2(px, py + size.y * 0.35), shadow_r, Color(0, 0, 0, 0.30))
 		# Flip horizontally for variety
 		if rng.randi() % 2 == 0:

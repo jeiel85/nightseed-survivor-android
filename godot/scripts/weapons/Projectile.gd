@@ -28,10 +28,13 @@ func launch(dir: Vector2, dmg: int, spd: float = 350.0, lifetime_max: float = 2.
 	pierce_count = pierce
 	rotation = direction.angle()
 
-func set_visual(texture: Texture2D, trail_color: Color = Color(0.95, 0.95, 0.5, 0.5), sprite_scale: float = 1.4) -> void:
+# display_px is the on-screen length along the flight direction. Redrawn
+# projectile textures point right (+X), since launch() rotates the node.
+func set_visual(texture: Texture2D, trail_color: Color = Color(0.95, 0.95, 0.5, 0.5), display_px: float = 22.4) -> void:
 	if _sprite:
 		_sprite.texture = texture
-		_sprite.scale = Vector2(sprite_scale, sprite_scale)
+		var s: float = SpriteArt.scale_for(texture, display_px)
+		_sprite.scale = Vector2(s, s)
 	if _trail:
 		_trail.default_color = trail_color
 

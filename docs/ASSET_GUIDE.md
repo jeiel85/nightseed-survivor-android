@@ -15,6 +15,8 @@ MVP 시절의 "도형 placeholder" 단계는 끝났다. 현재 자산 구성:
 
 구버전 가이드의 "최종 그래픽 애셋이 없다"는 더 이상 사실이 아니다.
 
+> 파일별 표시 크기·사용처·확인된 문제(2026-11 재조사)는 [ASSET_INVENTORY.md](ASSET_INVENTORY.md)에 정리돼 있다.
+
 ---
 
 ## 2. 크기 규율 (2026-06 박제 — 어기지 말 것)
@@ -100,6 +102,8 @@ Player/Enemy/Projectile/Pickup
 
 - `godot --headless --path godot -s tests/verify_ui_wiring.gd`
   — 리워크된 씬 로드 + @onready 노드 경로 + 텍스처 로드 일괄 검증
+- `godot --headless --path godot -s tests/verify_sprite_art.gd`
+  — 전투 스프라이트 배율 규칙(16px 레거시 배율 유지, 32px 캔버스 1:1 스냅, 투사체 fallback) 검증
 - `godot --path godot --resolution 540x960 -s tests/screenshot_result_panel.gd`
   — 결과 화면(승리/패배)을 강제 표시하고 `%TEMP%`에 스크린샷 저장 (메타 진행 미커밋)
 

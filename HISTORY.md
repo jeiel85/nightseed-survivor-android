@@ -1,5 +1,18 @@
 # HISTORY.md
 
+## 2026-11-04 (미릴리즈 — 그래픽 리프레시 준비: 32px 전환)
+
+- 날짜: 2026-11-04
+- 작업: 게임 내 그래픽 애셋 재조사 → 전투 스프라이트를 Kenney 16px에서 32px급으로 다시 그리기로 결정 → Codex 생성용 키트와 코드 쪽 크기 규칙 준비. 이미지는 아직 교체하지 않음.
+- 변경 파일:
+  - `docs/ASSET_INVENTORY.md` 신규 — 파일별 표시 크기·사용처·확인된 문제 (가짜 투명 배경 7개, 16px 6배 확대, 의미 불일치)
+  - `docs/SPRITE_REGEN_32PX.md` 신규 — 캔버스 크기·공통 스타일 블록·애셋별 프롬프트 40종
+  - `scripts/pixelize_sprite.py` 신규 — AI 생성본 → 네이티브 픽셀아트 (배경 flood fill, 체크무늬 거부, BOX 축소, 알파 이진화, 팔레트 제한, 타일 이음매 점수)
+  - `godot/scripts/core/SpriteArt.gd` 신규 + Player/EnemyBase/XPGem/GoldCoin/Projectile/MoonDagger/StarNeedle/ThornRing/SpiritOrb/EnemyProjectile/BackgroundTiler/LevelUpUI — "표시 px" 기준 배율, 16px는 기존 배율 유지, 큰 텍스처는 ±15% 안이면 1:1 스냅, 투사체 전용 파일 fallback, 레벨업 틴트는 16px 아이콘에만
+  - `godot/tests/verify_sprite_art.gd` 신규, `docs/ASSET_GUIDE.md`, `.gitignore`(`/art/`)
+- 검증 (로컬엔 Godot 4.7.2만 있어 작업 트리 복사본에서 실행, CI는 4.2.2): `verify_sprite_art`·`verify_ui_wiring` 통과, 캐릭터 5종 × (16px 원본 / 32px 모의 텍스처) 전투 시뮬레이션 10회 스크립트 오류 0, 스크린샷으로 크기 일치 확인. 실기기·에뮬레이터는 APK 빌드 경로(CI 4.2.2)가 필요해 미확인.
+- 참고: Godot 4.5+에는 엔진 내장 `VirtualJoystick` 클래스가 있어 `scripts/ui/VirtualJoystick.gd`의 `class_name`이 파싱 오류를 낸다. 엔진을 올릴 때 이름 변경 필요.
+
 ## 2026-06-11 (v0.36.0 — 난이도 리워크와 화면 통일)
 
 - 날짜: 2026-06-11

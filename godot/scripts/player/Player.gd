@@ -14,6 +14,8 @@ signal kill_count_changed(count: int)
 # 군집 접촉 피해를 사실상 절반으로 깎아줬다. 0.35초로 단축.
 @export var invincible_duration: float = 0.35
 
+const SPRITE_DISPLAY_PX := 32.0
+
 var current_hp: int
 var xp_radius: float = 80.0
 # Character signature passives (SoulEcho specifically) stamp a transient
@@ -45,6 +47,8 @@ func _ready() -> void:
 		var tex: Texture2D = load(String(ch["sprite"]))
 		if tex:
 			sprite_visual.texture = tex
+			var s: float = SpriteArt.scale_for(tex, SPRITE_DISPLAY_PX)
+			sprite_visual.scale = Vector2(s, s)
 	if aura:
 		var aura_c: Color = ch["color"]
 		aura_c.a = 0.18

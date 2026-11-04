@@ -46,7 +46,8 @@ func _ready() -> void:
 
 func _update_visual() -> void:
 	if is_instance_valid(visual_sprite):
-		var s: float = body_size / 7.0
+		# On-screen width is 16px * body_size / 7 (the original Kenney stretch).
+		var s: float = SpriteArt.scale_for(visual_sprite.texture, 16.0 * body_size / 7.0)
 		visual_sprite.scale = Vector2(s, s)
 		return
 	if not is_instance_valid(visual_body):

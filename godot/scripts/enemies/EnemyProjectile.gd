@@ -3,7 +3,12 @@ class_name EnemyProjectile
 
 ## Projectile fired by enemies (e.g., Caster). Damages the player on contact.
 
-const PROJ_TEX := preload("res://assets/sprites/proj_orb.png")
+const PROJ_TEX_PATH := "res://assets/sprites/proj_enemy.png"
+const LEGACY_PROJ_TEX := preload("res://assets/sprites/proj_orb.png")
+const SPRITE_DISPLAY_PX := 22.4
+
+# Resolved once — enemies fire these constantly.
+static var _proj_tex: Texture2D
 
 @export var damage: int = 8
 @export var speed: float = 240.0
@@ -30,9 +35,12 @@ func _ready() -> void:
 	halo.color = halo_color
 	add_child(halo)
 	# Sprite (tinted)
+	if _proj_tex == null:
+		_proj_tex = SpriteArt.load_or(PROJ_TEX_PATH, LEGACY_PROJ_TEX)
 	var sprite := Sprite2D.new()
-	sprite.texture = PROJ_TEX
-	sprite.scale = Vector2(1.4, 1.4)
+	sprite.texture = _proj_tex
+	var s: float = SpriteArt.scale_for(_proj_tex, SPRITE_DISPLAY_PX)
+	sprite.scale = Vector2(s, s)
 	sprite.modulate = color
 	add_child(sprite)
 	# Collision

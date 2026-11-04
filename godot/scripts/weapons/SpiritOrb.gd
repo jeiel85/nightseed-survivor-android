@@ -9,11 +9,17 @@ var _orbs: Array = []
 var _damage_timer: float = 0.0
 
 const DAMAGE_INTERVAL: float = 0.35
+const ORB_TEX_PATH := "res://assets/sprites/proj_spirit_orb.png"
+const LEGACY_ORB_TEX := preload("res://assets/sprites/proj_orb.png")
+const ORB_DISPLAY_PX := 25.6
+
+var _orb_tex: Texture2D
 
 func _ready() -> void:
 	weapon_name = "Spirit Orb"
 	base_damage = 8
 	base_cooldown = 9999.0
+	_orb_tex = SpriteArt.load_or(ORB_TEX_PATH, LEGACY_ORB_TEX)
 	_rebuild_orbs()
 
 func _rebuild_orbs() -> void:
@@ -25,8 +31,6 @@ func _rebuild_orbs() -> void:
 		var orb := _make_orb()
 		add_child(orb)
 		_orbs.append(orb)
-
-const ORB_TEX := preload("res://assets/sprites/proj_orb.png")
 
 func _make_orb() -> Node2D:
 	var node := Node2D.new()
@@ -41,8 +45,9 @@ func _make_orb() -> Node2D:
 	node.add_child(halo)
 	# Sprite
 	var sprite := Sprite2D.new()
-	sprite.texture = ORB_TEX
-	sprite.scale = Vector2(1.6, 1.6)
+	sprite.texture = _orb_tex
+	var s: float = SpriteArt.scale_for(_orb_tex, ORB_DISPLAY_PX)
+	sprite.scale = Vector2(s, s)
 	sprite.modulate = Color(0.6, 0.95, 1.1)
 	node.add_child(sprite)
 	return node
