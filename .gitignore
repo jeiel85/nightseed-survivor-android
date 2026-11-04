@@ -29,5 +29,8 @@ secrets/
 *.keystore
 *.jks
 
+# AI image generation workspace: raw sources, processed staging, previews (docs/SPRITE_REGEN_32PX.md)
+/art/
+
 # Claude Code local session artifacts (scheduled task locks, etc.)
 .claude/
