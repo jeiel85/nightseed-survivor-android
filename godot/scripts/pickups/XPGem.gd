@@ -10,6 +10,7 @@ var _attract_speed: float = 240.0
 const SPRITE := preload("res://assets/sprites/pickup_xp.png")
 const GLOW_COLOR := Color(0.35, 0.95, 1.0, 0.55)
 const GLOW_RADIUS := 14.0
+const SPRITE_DISPLAY_PX := 25.6
 
 var _vis: Sprite2D
 var _glow: Node2D
@@ -26,7 +27,8 @@ func _build_visual() -> void:
 	add_child(_glow)
 	_vis = Sprite2D.new()
 	_vis.texture = SPRITE
-	_vis.scale = Vector2(1.6, 1.6)
+	var s: float = SpriteArt.scale_for(SPRITE, SPRITE_DISPLAY_PX)
+	_vis.scale = Vector2(s, s)
 	add_child(_vis)
 
 func _start_idle_motion() -> void:

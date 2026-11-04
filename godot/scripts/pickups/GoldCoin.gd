@@ -10,6 +10,7 @@ var _attract_speed: float = 200.0
 const SPRITE := preload("res://assets/sprites/pickup_gold.png")
 const GLOW_COLOR := Color(1.0, 0.85, 0.25, 0.7)
 const GLOW_RADIUS := 14.0
+const SPRITE_DISPLAY_PX := 25.6
 
 var _vis: Sprite2D
 var _glow: Node2D
@@ -26,16 +27,18 @@ func _build_visual() -> void:
 	add_child(_glow)
 	_vis = Sprite2D.new()
 	_vis.texture = SPRITE
-	_vis.scale = Vector2(1.6, 1.6)
+	var s: float = SpriteArt.scale_for(SPRITE, SPRITE_DISPLAY_PX)
+	_vis.scale = Vector2(s, s)
 	add_child(_vis)
 
 func _start_idle_motion() -> void:
 	# Coins spin instead of bouncing, so the player can tell XP from gold
 	# at a glance without reading the icon.
+	var s: float = _vis.scale.y
 	var t := create_tween()
 	t.set_loops()
-	t.tween_property(_vis, "scale:x", -1.6, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	t.tween_property(_vis, "scale:x", 1.6, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_property(_vis, "scale:x", -s, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_property(_vis, "scale:x", s, 0.8).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	var g := create_tween()
 	g.set_loops()
 	g.tween_property(_glow, "modulate:a", 0.5, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)

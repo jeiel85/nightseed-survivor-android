@@ -278,12 +278,14 @@ func _setup_card(card: PanelContainer, opt: Dictionary, idx: int) -> void:
 	if icon_rect:
 		var icon_path: String = String(opt.get("icon", ""))
 		if icon_path != "":
-			icon_rect.texture = load(icon_path)
+			var icon_tex: Texture2D = load(icon_path)
+			icon_rect.texture = icon_tex
 			icon_rect.visible = true
 			# Brighten + tint with weapon color so weapon icons are clearly
 			# distinct from raw XP pickup icons (Kenney tile reuse — base
 			# sprites are all small potions, differentiated only by hue).
-			icon_rect.self_modulate = color.lightened(0.25)
+			# Redrawn icons carry their own colors and are left untinted.
+			icon_rect.self_modulate = color.lightened(0.25) if SpriteArt.is_legacy(icon_tex) else Color.WHITE
 		else:
 			icon_rect.texture = null
 			icon_rect.visible = false

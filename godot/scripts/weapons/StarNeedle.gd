@@ -10,7 +10,8 @@ class_name StarNeedle
 # "sweeping shot" rather than a tight beam.
 
 const PROJ_SCENE := preload("res://scenes/weapons/Projectile.tscn")
-const PROJ_TEX := preload("res://assets/sprites/icon_star_needle.png")
+const PROJ_TEX_PATH := "res://assets/sprites/proj_star_needle.png"
+const LEGACY_PROJ_TEX := preload("res://assets/sprites/icon_star_needle.png")
 const CLUSTER_RADIUS: float = 360.0
 const PER_NEEDLE_SPREAD: float = 0.14
 const MIN_SPREAD_TOTAL: float = 0.32
@@ -19,11 +20,13 @@ const MAX_SPREAD_TOTAL: float = 1.1
 var needle_count: int = 3
 var proj_speed: float = 520.0
 var _last_dir: Vector2 = Vector2.RIGHT
+var _proj_tex: Texture2D
 
 func _ready() -> void:
 	weapon_name = "Star Needle"
 	base_damage = 8
 	base_cooldown = 0.75
+	_proj_tex = SpriteArt.load_or(PROJ_TEX_PATH, LEGACY_PROJ_TEX)
 
 func fire() -> void:
 	var base_dir := _pick_base_dir()
@@ -40,7 +43,7 @@ func fire() -> void:
 		var proj := PROJ_SCENE.instantiate() as Projectile
 		get_tree().current_scene.add_child(proj)
 		proj.global_position = player.global_position
-		proj.set_visual(PROJ_TEX, Color(0.95, 0.85, 0.4, 0.45), 1.5)
+		proj.set_visual(_proj_tex, Color(0.95, 0.85, 0.4, 0.45), 24.0)
 		proj.launch(dir, get_damage(), proj_speed, 1.5, 1)
 
 func _pick_base_dir() -> Vector2:

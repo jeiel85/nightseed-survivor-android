@@ -2,12 +2,16 @@ extends WeaponBase
 class_name MoonDagger
 
 const PROJ_SCENE := preload("res://scenes/weapons/Projectile.tscn")
-const PROJ_TEX := preload("res://assets/sprites/icon_moon_dagger.png")
+const PROJ_TEX_PATH := "res://assets/sprites/proj_moon_dagger.png"
+const LEGACY_PROJ_TEX := preload("res://assets/sprites/icon_moon_dagger.png")
+
+var _proj_tex: Texture2D
 
 func _ready() -> void:
 	weapon_name = "Moon Dagger"
 	base_damage = 12
 	base_cooldown = 1.2
+	_proj_tex = SpriteArt.load_or(PROJ_TEX_PATH, LEGACY_PROJ_TEX)
 
 func fire() -> void:
 	var target := find_nearest_enemy()
@@ -25,5 +29,5 @@ func _fire_dagger(dir: Vector2) -> void:
 	var proj := PROJ_SCENE.instantiate() as Projectile
 	get_tree().current_scene.add_child(proj)
 	proj.global_position = player.global_position
-	proj.set_visual(PROJ_TEX, Color(0.7, 0.85, 1.0, 0.5), 1.8)
+	proj.set_visual(_proj_tex, Color(0.7, 0.85, 1.0, 0.5), 28.8)
 	proj.launch(dir, get_damage(), 460.0, 2.0, 1)
