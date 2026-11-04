@@ -164,7 +164,7 @@ play_store/                # 스토어 등록정보와 릴리즈 노트
 ## 라이선스 / 자산
 
 - 엔진: [Godot Engine 4.2.2](https://godotengine.org/) (MIT)
-- 스프라이트: [Kenney Tiny Dungeon](https://kenney.nl/assets/tiny-dungeon) (CC0 1.0)
+- 스프라이트: Codex(OpenAI) 이미지 생성으로 제작한 픽셀아트 (2026-11). 투사체 fallback 1장만 [Kenney Tiny Dungeon](https://kenney.nl/assets/tiny-dungeon) (CC0 1.0)
 - 폰트: [Galmuri](https://github.com/quiple/galmuri) (OFL), [Pretendard](https://github.com/orioncactus/pretendard) (OFL)
 - Play Games Services 플러그인: [godot-sdk-integrations/godot-play-game-services](https://github.com/godot-sdk-integrations/godot-play-game-services) (MIT)
 - AdMob 플러그인: [poing-studios/godot-admob-plugin](https://github.com/poing-studios/godot-admob-plugin)

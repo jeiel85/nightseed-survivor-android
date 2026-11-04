@@ -3,6 +3,14 @@
 2026-11-04 결정: 전투 스프라이트를 Kenney 16×16에서 **32px급 픽셀아트**로 다시 그린다 (`ASSET_INVENTORY.md` §5의 (b)안).
 이 문서는 Codex(또는 다른 이미지 생성 도구)에 그대로 넣을 수 있는 애셋별 프롬프트와, 생성본을 게임용 PNG로 바꾸는 절차를 담는다.
 
+> **2026-11-04 반영 완료:** §4의 41장을 Codex CLI 이미지 생성(`image_generation`)으로 그려 게임에 넣었다. 실제로 쓴 프롬프트는 `scripts/codex_generate_sprites.py`의 `TEMPLATES`·`ASSETS`가 원본이다(§3 블록도 그것과 같음). 마음에 안 드는 것만 다시 그리려면:
+>
+> ```powershell
+> python scripts\codex_generate_sprites.py enemy_caster --regen   # 다시 그려서 게임 경로에 바로 반영
+> ```
+>
+> 생성 원본은 `art/raw/`(git 제외)에 남아 있어 후처리만 다시 돌리는 것도 된다(`--regen` 없이 실행).
+
 ---
 
 ## 1. 규칙 — 전장에서는 1 텍셀 = 1 논리 px
@@ -32,10 +40,12 @@
 → python scripts/pixelize_sprite.py ... → 미리보기 확인 → 실패면 재생성
 ```
 
+`scripts/codex_generate_sprites.py`가 이 흐름 전체를 돌린다 (Codex 동시 5개 생성 → `art/raw/` → `pixelize_sprite.py` → 게임 경로 + `art/preview/`). 손으로 할 때는 아래 명령을 쓴다.
+
 `art/raw/`(생성 원본), `art/preview/`(8배 미리보기)는 `.gitignore`의 `/art/`로 제외돼 있다. 원본은 1~2MB라 저장소에 넣지 않는다. `godot/` 밖이라 APK에도 들어가지 않는다.
 
 ```powershell
-# 스프라이트: 배경 제거 → 피사체 크롭 → 캔버스 크기로 면적 평균 축소 → 알파 이진화 → 팔레트 24색
+# 스프라이트: 배경 제거 → 피사체 크롭 → 팔레트 24색 → 캔버스 크기로 최빈색 축소 → 알파 이진화
 python scripts\pixelize_sprite.py art\raw\char_vagrant.png godot\assets\sprites\char_vagrant.png --size 32 --preview art\preview\char_vagrant.png --force
 
 # 바닥 타일: 이음매 점수 출력, 채도를 빼서 스테이지 틴트가 먹게
@@ -46,10 +56,10 @@ python scripts\pixelize_sprite.py art\raw\ground_tile.png godot\assets\sprites\g
 
 스크립트가 하는 일과 막아 주는 것:
 
-- 배경이 진짜 투명이면 알파를 그대로 쓰고, 아니면 테두리 단색(보통 `#FF00FF`)을 테두리에서부터 flood fill로 지운다. 피사체 안의 비슷한 색은 남는다.
-- **테두리가 단색이 아니면 에러로 멈춘다** — 체크무늬를 그려 넣은 "가짜 투명"이 다시 들어오지 않는다. 현재 UI 아이콘 7개는 불투명 흰 배경·체크무늬가 그대로 커밋된 상태다.
+- 배경이 진짜 투명이면 알파를 그대로 쓰고, 아니면 테두리 단색(보통 `#FF00FF`)을 테두리에서부터 flood fill로 지운다. 피사체 안의 비슷한 색은 남는다. 닫힌 구멍(고리 안쪽, 새장 창살 사이)은 배경색과 거의 같은 픽셀만 지운다.
+- **테두리가 단색이 아니면 에러로 멈춘다** — 체크무늬를 그려 넣은 "가짜 투명"이 다시 들어오지 않는다 (2026-11-04 이전 UI 아이콘 7개가 이렇게 망가졌었다).
 - 흰색·회색 배경은 경고한다(밝은 피사체 가장자리가 같이 지워질 수 있음).
-- 축소는 면적 평균(BOX)이다. 기존 `generate_missing_ui_assets.py`는 NEAREST로 1024→32 축소해서 32픽셀 중 1픽셀만 집어 오느라 지저분했다.
+- 축소 기본값은 **최빈색(`--resample mode`)**: 목표 픽셀이 덮는 영역에서 가장 많은 팔레트 색을 고른다. Codex는 "32×32"라고 해도 64px급 격자로 그리기 때문에, 면적 평균(`--resample box`)으로 줄이면 색이 섞여 뭉개진다. 기존 `generate_missing_ui_assets.py`의 NEAREST 축소는 32픽셀 중 1픽셀만 집어 와서 지저분했다.
 - 결과 알파는 0/255 두 값뿐이다(반투명 가장자리 없음).
 
 옵션: `--height`(직사각 캔버스), `--anchor bottom`, `--colors N`, `--outline 1A1424`(외곽선을 스크립트로 추가, `--pad 1` 필요), `--key RRGGBB`, `--tolerance`.
@@ -60,22 +70,26 @@ python scripts\pixelize_sprite.py art\raw\ground_tile.png godot\assets\sprites\g
 
 ## 3. 공통 스타일 블록
 
-Codex 세션 처음에 한 번 보내고, 이후 요청마다 "같은 스타일 블록 적용"이라고 붙인다. 세션이 바뀌면 다시 보낸다.
-같은 그룹(캐릭터 5종, 적 9종 …)은 **한 세션에서 연달아** 만들어야 톤이 맞는다. 첫 결과가 마음에 들면 그 이미지를 참조로 붙여 "match this sprite's style, palette and outline"이라고 지시한다.
+한 장씩 독립 세션(`codex exec`)으로 만들어도 톤이 맞도록, 매 요청에 아래 블록 전체를 넣는다. 첫 줄의 종류 문장은 그룹마다 다르다 (`codex_generate_sprites.py`의 `TEMPLATES`: char / enemy / icon / proj / tile / ui).
 
 ```text
-STYLE BLOCK — Nightseed Survivor sprites
-- Pixel art game sprite for a dark-fantasy night survival game. Moonlit, melancholic, ember-lit.
-- Strict {N}x{N} pixel grid: draw the whole image as if it were {N}x{N} pixels scaled up,
-  every pixel a crisp square block. No anti-aliasing, no gradients, no blur, no soft glow,
-  no sub-pixel detail, no dithering noise.
-- Limited palette (about 16-24 colors). Anchor colors: deep navy #0B0E17, pale moonlight #DDEBFF,
-  ember gold #F2C66A. Mid-value base colors; strongest highlights only on small spots.
-- 1-pixel dark outline (#1A1424) around the whole silhouette. Light from the top-left.
-- Single subject, centered, filling about 90% of the frame. Readable silhouette at tiny size.
-- Background: one flat solid pure magenta #FF00FF color everywhere outside the subject.
-  No checkerboard, no transparency pattern, no ground shadow, no scenery, no frame, no text, no letters.
+Use your image generation tool to create exactly one image. Do not write code or run shell commands.
+
+A 16-bit era RPG character sprite that is exactly {N}x{N} pixels, displayed enlarged with nearest-neighbor
+scaling (every original pixel becomes a large crisp square). Style like a classic overworld sprite: cute chibi
+proportions with a large head, readable at its tiny native size, very limited detail. Front-facing, full body,
+centered.
+- Max 16 colors, flat shading with one highlight and one shadow tone per material, 1-pixel dark outline
+  (#1A1424) around the silhouette, light from the top-left.
+- Keep colors mid-to-light so it stands out on a dark battlefield; no large near-black areas.
+- Dark-fantasy night world palette accents: pale moonlight #DDEBFF, ember gold #F2C66A.
+- Subject: {§4 표의 프롬프트}
+- Background: one flat solid pure magenta #FF00FF everywhere outside the subject. No checkerboard, no
+  transparency pattern, no shadow, no scenery, no frame, no text, no letters.
+- Square image.
 ```
+
+**시행착오 기록 (2026-11-04)**: 처음 쓴 "Strict 32x32 pixel grid, draw as if 32x32 scaled up" 문구는 Codex가 무시하고 사실적 비율의 128px급 그림을 그렸다. 32px로 줄이면 어두운 덩어리가 돼 못 쓴다. "16-bit era RPG sprite + chibi proportions + mid-to-light colors"로 바꾸자 64px급 격자의 굵은 형태로 나와 32px에서도 읽혔다. 어두운 회색 적(사냥개 1차)은 배경과 섞여 "light blue-gray fur, strong contrast, few large shapes"로 다시 그렸다.
 
 `{N}x{N}`은 §4 표의 캔버스 크기로 바꾼다(직사각 캔버스는 `28x12`처럼). 투사체·타일·UI 아이콘처럼 규칙이 다른 그룹은 해당 절에 추가 지시가 있다.
 
@@ -111,7 +125,7 @@ STYLE BLOCK — Nightseed Survivor sprites
 | `enemy_bat.png` | 24 | `--size 24` | A small night bat facing the viewer with wings spread wide, purple-gray fur, tiny fangs, two glowing pale eyes. |
 | `enemy_caster.png` | 28 | `--size 28` | A hooded cultist caster in tattered dark violet robes, face hidden in shadow except two glowing eyes, holding a short crooked staff topped with a violet orb. |
 | `enemy_dasher.png` | 32 | `--size 32` | A wild horned shadow boar lowering its head to charge, three-quarter front view, dark brown bristly hide, two curved tusks, red glowing eyes. |
-| `enemy_hound.png` | 36 | `--size 36` | A gaunt shadow hound running toward the viewer, lean body, dark gray fur with ragged edges, glowing ember-orange eyes, bared teeth. (가장 빠른 적) |
+| `enemy_hound.png` | 36 | `--size 36` | A shadow hound charging toward the viewer, chunky simple body with big paws, light blue-gray fur with a pale belly and dark outline, big glowing ember-orange eyes, bared white teeth. Strong contrast, few large shapes. (가장 빠른 적) |
 | `enemy_splitter.png` | 36 | `--size 36` | A large bloated slime, same moss green as the small slime, with two smaller slime blobs visibly budding off its sides, cracked surface, two eyes. (죽으면 작은 슬라임으로 분열) |
 | `enemy_knight.png` | 48 | `--size 48` | A hollow cursed knight in dented dark iron plate armor, tall tower shield in front, broken sword, empty helmet visor with a faint violet glow inside. Heavy and slow. |
 | `enemy_miniboss.png` | 56 | `--size 56` | A large wraith specter in a ragged dark shroud, long clawed arms reaching forward, cold pale-cyan light glowing from inside the hood, wispy lower body with no legs. |
