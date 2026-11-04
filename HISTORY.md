@@ -16,7 +16,7 @@
   - `scripts/pixelize_sprite.py` 신규 — AI 생성본 → 네이티브 픽셀아트 (배경 flood fill, 체크무늬 거부, BOX 축소, 알파 이진화, 팔레트 제한, 타일 이음매 점수)
   - `godot/scripts/core/SpriteArt.gd` 신규 + Player/EnemyBase/XPGem/GoldCoin/Projectile/MoonDagger/StarNeedle/ThornRing/SpiritOrb/EnemyProjectile/BackgroundTiler/LevelUpUI — "표시 px" 기준 배율, 16px는 기존 배율 유지, 큰 텍스처는 ±15% 안이면 1:1 스냅, 투사체 전용 파일 fallback, 레벨업 틴트는 16px 아이콘에만
   - `godot/tests/verify_sprite_art.gd` 신규, `scripts/codex_generate_sprites.py` 신규, `docs/ASSET_GUIDE.md`, `README.md`·`CLAUDE.md`(자산 라이선스), `.gitignore`(`/art/`)
-- 검증 (로컬엔 Godot 4.7.2만 있어 작업 트리 복사본에서 실행, CI는 4.2.2): `verify_sprite_art`·`verify_ui_wiring` 통과, 캐릭터 5종 × (16px 원본 / 32px 모의 / 실제 새 애셋) 전투 시뮬레이션 15회 스크립트 오류 0, 전투·캐릭터 선택·상점·스테이지 화면 전후 스크린샷 확인. CI(4.2.2) 빌드 성공. 에뮬레이터는 Windows가 TCP 5533–5732를 예약해 콘솔 포트(5554–5682)를 못 잡아 실행 불가, 실기기 미연결 → 모바일 실행 미확인.
+- 검증 (로컬엔 Godot 4.7.2만 있어 작업 트리 복사본에서 실행, CI는 4.2.2): `verify_sprite_art`·`verify_ui_wiring` 통과, 캐릭터 5종 × (16px 원본 / 32px 모의 / 실제 새 애셋) 전투 시뮬레이션 15회 스크립트 오류 0, 전투·캐릭터 선택·상점·스테이지 화면 전후 스크린샷 확인. CI(4.2.2) 빌드 + 헤드리스 스모크 성공. 에뮬레이터(`nightseed-phone-api36`, API 36 x86_64, ARM64 번역)에 CI 릴리즈 APK 설치 → 메뉴·전투·레벨업 카드(틴트 없는 새 아이콘)·가상 조이스틱(흰 박스 없음)·정령의 구 확인, 게임 쪽 오류/크래시/ANR 없음. (처음엔 Windows가 TCP 5533–5732를 예약해 에뮬레이터가 못 떴고, 사용자가 winnat 재시작으로 해제.)
 - 참고: Godot 4.5+에는 엔진 내장 `VirtualJoystick` 클래스가 있어 `scripts/ui/VirtualJoystick.gd`의 `class_name`이 파싱 오류를 낸다. 엔진을 올릴 때 이름 변경 필요.
 
 ## 2026-06-11 (v0.36.0 — 난이도 리워크와 화면 통일)
