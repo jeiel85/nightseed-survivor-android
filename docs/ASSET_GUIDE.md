@@ -1,16 +1,16 @@
 # ASSET_GUIDE
 
-## 1. Current Asset Status (2026-06 현행화)
+## 1. Current Asset Status (2026-11 현행화)
 
 MVP 시절의 "도형 placeholder" 단계는 끝났다. 현재 자산 구성:
 
 | 범주 | 상태 | 출처/파이프라인 |
 |---|---|---|
-| 게임플레이 스프라이트 (캐릭터/적/투사체/픽업/타일) | 16×16 픽셀아트, 전 슬롯 채움 | Kenney Tiny Dungeon (CC0) 기반 — `assets/sprites/KENNEY_LICENSE.txt` |
+| 게임플레이 스프라이트 (캐릭터/적/투사체/픽업/타일/데코/상점 아이콘) | 32px급 픽셀아트, 캔버스 = 화면 크기 (2026-11-04 교체) | Codex 이미지 생성 → `scripts/codex_generate_sprites.py` + `pixelize_sprite.py` ([SPRITE_REGEN_32PX.md](SPRITE_REGEN_32PX.md)). `proj_orb.png`만 Kenney(CC0) — 투사체 fallback용 |
 | UI 키트 (패널/버튼/아이콘/배경) | AI 생성 픽셀아트, 대부분 연결 완료 | `scripts/generate_missing_ui_assets.py` (OpenAI Images API) |
 | 스토리 화면 자산 (인장/체인/책/챔버 배경) | 연결 완료, 표시 크기 기준으로 다운스케일 완료 | AI 생성 (v0.32.0), 2026-06 최적화 |
 | 로고 | `assets/logo/title_ko.png` / `title_en.png` 언어별 분기 | — |
-| 폰트 | Pretendard (SIL OFL) | — |
+| 폰트 | Galmuri 11 (SIL OFL, 게임 전역 테마 폰트) | `Pretendard-Regular.otf`도 들어 있으나 코드에서 참조하지 않음 |
 | 사운드/음악 | 절차 합성 (외부 자산 0) | `AudioManager.gd` |
 
 구버전 가이드의 "최종 그래픽 애셋이 없다"는 더 이상 사실이 아니다.
@@ -87,9 +87,12 @@ Player/Enemy/Projectile/Pickup
 
 | Asset | Size |
 |---|---|
-| 게임플레이 스프라이트 (캐릭터/적/타일) | 16×16 원본, 씬에서 2× 스케일 |
-| 무기/패시브 아이콘 | 16×16 |
-| HUD 아이콘 | 32×32 |
+| 캐릭터 | 32×32, 전장 1:1 (선택 화면 96px = 3×) |
+| 적 | 24~96, 전장 1:1 — 종류별 캔버스는 [SPRITE_REGEN_32PX.md](SPRITE_REGEN_32PX.md) §4.2 |
+| 무기/패시브 아이콘 | 54×54 (레벨업 108px = 2×, 상점 54px = 1×) |
+| 투사체·픽업 | 20~28 (투사체는 오른쪽을 향함) |
+| 바닥 타일 / 데코 | 64×64 무채색 / 48×48 |
+| HUD 아이콘 | 40~44 (조이스틱 128 / 52) |
 | 상단/코너 아이콘 | 24×24 |
 | 보상 아이콘 | 48×48 |
 | 9-slice 패널 | 96~224px급 (마진 스펙은 각 스크립트 상수 참고) |

@@ -89,8 +89,8 @@
 
 ## 자산 라이선스 (커밋 메시지/릴리즈 노트 작성 시 참고)
 
-- 스프라이트: Kenney Tiny Dungeon (CC0)
-- 폰트: Pretendard (SIL OFL)
+- 스프라이트: Codex(OpenAI) 이미지 생성 픽셀아트 (2026-11, `scripts/codex_generate_sprites.py`). `proj_orb.png`만 Kenney Tiny Dungeon (CC0)
+- 폰트: Galmuri 11 (SIL OFL) — 게임 전역 폰트. Pretendard(OFL)는 저장소에만 있고 미사용
 - PGS 플러그인: godot-sdk-integrations/godot-play-game-services v3.1.0 (MIT)
 - COI service worker: gzuidhof/coi-serviceworker (MIT)
 - 사운드/음악: 절차 합성 (자산 0)

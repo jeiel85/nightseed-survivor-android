@@ -1,16 +1,22 @@
 # HISTORY.md
 
-## 2026-11-04 (미릴리즈 — 그래픽 리프레시 준비: 32px 전환)
+## 2026-11-04 (미릴리즈 — 그래픽 리프레시: Codex로 32px 스프라이트 교체)
 
 - 날짜: 2026-11-04
-- 작업: 게임 내 그래픽 애셋 재조사 → 전투 스프라이트를 Kenney 16px에서 32px급으로 다시 그리기로 결정 → Codex 생성용 키트와 코드 쪽 크기 규칙 준비. 이미지는 아직 교체하지 않음.
+- 작업: 게임 내 그래픽 애셋 재조사 → 전투 스프라이트를 Kenney 16px에서 32px급으로 다시 그리기로 결정 → 코드 쪽 크기 규칙 준비 → Codex CLI 이미지 생성으로 41장 생성·후처리·반영.
+- 애셋 교체 (AI 생성, ASSET_GUIDE §7 기록):
+  - 도구: Codex CLI 0.162.1 `codex exec` + `image_generation`. 프롬프트 원문은 `scripts/codex_generate_sprites.py` (`TEMPLATES` × `ASSETS`), 시행착오는 `docs/SPRITE_REGEN_32PX.md` §3.
+  - 교체 36장: 캐릭터 5, 적 9, 무기 아이콘 5, 패시브 아이콘 5, 픽업 2, 바닥 타일 3, 데코 2, HUD/보상 아이콘 5(가짜 투명 배경 문제 해소). 신규 5장: `proj_moon_dagger` / `proj_star_needle` / `proj_thorn` / `proj_spirit_orb` / `proj_enemy` (+ `.import`).
+  - 이유: 16px 원본 6배 확대로 뭉개짐, Kenney 타일 재사용으로 의미 불일치(금화=나무통, 패시브=물약 등), 투사체 방향 오류.
+  - `pixelize_sprite.py` 보강: 최빈색 축소(`--resample mode`, 기본) — Codex는 64px급 격자로 그려서 면적 평균으론 뭉개짐. 닫힌 구멍 안의 배경색 제거(새장·고리).
+- 버그 수정: `BackgroundTiler` 좌우 반전이 음수 폭 소스 영역으로 텍스처 바깥을 샘플링해 마지막 세로줄이 가로 줄무늬로 번지던 문제 → 캔버스 변환으로 반전. 무늬 없는 Kenney 타일에서는 안 보였다.
 - 변경 파일:
   - `docs/ASSET_INVENTORY.md` 신규 — 파일별 표시 크기·사용처·확인된 문제 (가짜 투명 배경 7개, 16px 6배 확대, 의미 불일치)
   - `docs/SPRITE_REGEN_32PX.md` 신규 — 캔버스 크기·공통 스타일 블록·애셋별 프롬프트 40종
   - `scripts/pixelize_sprite.py` 신규 — AI 생성본 → 네이티브 픽셀아트 (배경 flood fill, 체크무늬 거부, BOX 축소, 알파 이진화, 팔레트 제한, 타일 이음매 점수)
   - `godot/scripts/core/SpriteArt.gd` 신규 + Player/EnemyBase/XPGem/GoldCoin/Projectile/MoonDagger/StarNeedle/ThornRing/SpiritOrb/EnemyProjectile/BackgroundTiler/LevelUpUI — "표시 px" 기준 배율, 16px는 기존 배율 유지, 큰 텍스처는 ±15% 안이면 1:1 스냅, 투사체 전용 파일 fallback, 레벨업 틴트는 16px 아이콘에만
-  - `godot/tests/verify_sprite_art.gd` 신규, `docs/ASSET_GUIDE.md`, `.gitignore`(`/art/`)
-- 검증 (로컬엔 Godot 4.7.2만 있어 작업 트리 복사본에서 실행, CI는 4.2.2): `verify_sprite_art`·`verify_ui_wiring` 통과, 캐릭터 5종 × (16px 원본 / 32px 모의 텍스처) 전투 시뮬레이션 10회 스크립트 오류 0, 스크린샷으로 크기 일치 확인. 실기기·에뮬레이터는 APK 빌드 경로(CI 4.2.2)가 필요해 미확인.
+  - `godot/tests/verify_sprite_art.gd` 신규, `scripts/codex_generate_sprites.py` 신규, `docs/ASSET_GUIDE.md`, `README.md`·`CLAUDE.md`(자산 라이선스), `.gitignore`(`/art/`)
+- 검증 (로컬엔 Godot 4.7.2만 있어 작업 트리 복사본에서 실행, CI는 4.2.2): `verify_sprite_art`·`verify_ui_wiring` 통과, 캐릭터 5종 × (16px 원본 / 32px 모의 / 실제 새 애셋) 전투 시뮬레이션 15회 스크립트 오류 0, 전투·캐릭터 선택·상점·스테이지 화면 전후 스크린샷 확인. CI(4.2.2) 빌드 성공. 에뮬레이터는 Windows가 TCP 5533–5732를 예약해 콘솔 포트(5554–5682)를 못 잡아 실행 불가, 실기기 미연결 → 모바일 실행 미확인.
 - 참고: Godot 4.5+에는 엔진 내장 `VirtualJoystick` 클래스가 있어 `scripts/ui/VirtualJoystick.gd`의 `class_name`이 파싱 오류를 낸다. 엔진을 올릴 때 이름 변경 필요.
 
 ## 2026-06-11 (v0.36.0 — 난이도 리워크와 화면 통일)
