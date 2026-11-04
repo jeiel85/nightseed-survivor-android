@@ -6,16 +6,18 @@ docs/SPRITE_REGEN_32PX.md is the workflow this script belongs to.
 sprite mode (default)
   1. Background: uses the real alpha channel when the image has one. Otherwise
      the background is the solid color of the image border (or --key), removed
-     by flood fill from the border so same-colored pixels inside the subject
-     survive. A non-uniform border (e.g. a painted checkerboard "fake
+     by flood fill from the border so similar colors inside the subject survive;
+     enclosed holes are cleared only where they are almost exactly a saturated
+     key color (ring centers, between cage bars). A non-uniform border (e.g. a painted checkerboard "fake
      transparency") is rejected instead of being baked into the asset.
   2. Crops to the subject, fits it into the canvas minus --pad, keeps aspect.
-  3. Area-averages down to the canvas (premultiplied, so no background fringe),
-     makes alpha binary and limits the palette to --colors.
+  3. Limits the palette to --colors and reduces to the canvas: by default each
+     target pixel takes the most common color of the area it covers (crisp);
+     --resample box area-averages instead. Alpha ends up binary.
 
 tile mode
-  Full-bleed seamless texture: center-crop to aspect, area-average down,
-  limit palette. Prints a seam score so non-tileable results are caught.
+  Full-bleed seamless texture: center-crop to aspect, reduce the same way.
+  Prints a seam score so non-tileable results are caught.
 
 Never overwrites an existing output unless --force is given.
 """
@@ -34,7 +36,9 @@ WORK_MAX_SIDE = 512          # bg removal runs at this resolution (fast, still 8
 BORDER_RING_PX = 4
 UNIFORM_BORDER_SPREAD = 0.5  # 85th-pct border distance to the bg color must stay under tolerance * this
 LIGHT_KEY_SATURATION = 60    # max-min channel spread below this = gray/white key, risky for light subjects
+INTERIOR_KEY_FRACTION = 0.5  # enclosed pixels this close to a saturated key (x tolerance) are background too
 TILE_SEAM_WARN = 1.5         # opposite-edge diff vs. the texture's own 90th-pct neighbour diff
+MODE_SAMPLES = 8             # samples per target-pixel edge for --resample mode
 
 
 def parse_hex(value: str) -> tuple[int, int, int]:
@@ -98,6 +102,10 @@ def remove_background(img: Image.Image, key: tuple[int, int, int] | None, tolera
               "may be cut. Prefer a #FF00FF background.")
     dist = color_distance(rgb, key_rgb)
     bg = flood_from_border(dist <= tolerance)
+    if key_rgb.max() - key_rgb.min() >= LIGHT_KEY_SATURATION:
+        # Enclosed holes (inside a ring, between cage bars) can't be reached from the
+        # border. A saturated key color practically never appears in the art itself.
+        bg |= dist <= tolerance * INTERIOR_KEY_FRACTION
     # Eat the anti-aliased halo (subject blended with the key color) touching the background.
     halo = dist <= tolerance * 2.0
     for _ in range(2):
@@ -171,6 +179,39 @@ def center_crop_to_aspect(img: Image.Image, width: int, height: int) -> Image.Im
     return img.crop((0, top, img.width, top + h))
 
 
+def mode_downscale(img: Image.Image, size: tuple[int, int], colors: int, alpha_threshold: int) -> tuple[Image.Image, int]:
+    """Each target pixel takes the most common palette color of the source area it
+    covers (transparent if most of the area is). Unlike averaging, this keeps
+    edges and outlines crisp when the source's own pixel grid doesn't line up
+    with the target grid — typical for AI 'pixel art' drawn at ~60px per side."""
+    w, h = size
+    k = MODE_SAMPLES
+    paletted, _ = limit_palette(img, colors, alpha_threshold)
+    sampled = np.asarray(paletted.resize((w * k, h * k), Image.Resampling.NEAREST)).astype(np.uint32)
+    packed = (sampled[..., 0] << 24) | (sampled[..., 1] << 16) | (sampled[..., 2] << 8) | sampled[..., 3]
+    keys, inverse = np.unique(packed.ravel(), return_inverse=True)
+    cells = inverse.reshape(h, k, w, k).transpose(0, 2, 1, 3).reshape(h * w, k * k)
+    counts = np.zeros((h * w, len(keys)), dtype=np.int32)
+    np.add.at(counts, (np.repeat(np.arange(h * w), k * k), cells.ravel()), 1)
+    opaque_key = (keys & 0xFF) > 0
+    opaque_votes = counts[:, opaque_key].sum(axis=1)
+    counts[:, ~opaque_key] = -1
+    winner = keys[counts.argmax(axis=1)]
+    out = np.stack([(winner >> 24) & 0xFF, (winner >> 16) & 0xFF, (winner >> 8) & 0xFF,
+                    np.full_like(winner, 255)], axis=-1).astype(np.uint8)
+    out[opaque_votes * 2 < k * k] = 0
+    used = len(np.unique(out[out[:, 3] > 0][:, :3], axis=0))
+    return Image.fromarray(out.reshape(h, w, 4), "RGBA"), used
+
+
+def reduce(img: Image.Image, size: tuple[int, int], args: argparse.Namespace, alpha_threshold: int) -> tuple[Image.Image, int]:
+    if args.desaturate > 0:
+        img = desaturate(img, args.desaturate)
+    if args.resample == "mode":
+        return mode_downscale(img, size, args.colors, alpha_threshold)
+    return limit_palette(area_downscale(img, size), args.colors, alpha_threshold)
+
+
 def process_sprite(src: Image.Image, args: argparse.Namespace) -> Image.Image:
     work = src.convert("RGBA")
     if max(work.size) > WORK_MAX_SIDE:
@@ -184,10 +225,7 @@ def process_sprite(src: Image.Image, args: argparse.Namespace) -> Image.Image:
     inner_w, inner_h = args.size - 2 * args.pad, args.height - 2 * args.pad
     scale = min(inner_w / subject.width, inner_h / subject.height)
     fit = (max(1, round(subject.width * scale)), max(1, round(subject.height * scale)))
-    small = area_downscale(subject, fit)
-    if args.desaturate > 0:
-        small = desaturate(small, args.desaturate)
-    small, used = limit_palette(small, args.colors, args.alpha_threshold)
+    small, used = reduce(subject, fit, args, args.alpha_threshold)
     canvas = Image.new("RGBA", (args.size, args.height), (0, 0, 0, 0))
     x = (args.size - fit[0]) // 2
     y = (args.height - fit[1]) if args.anchor == "bottom" else (args.height - fit[1]) // 2
@@ -204,10 +242,7 @@ def process_sprite(src: Image.Image, args: argparse.Namespace) -> Image.Image:
 
 def process_tile(src: Image.Image, args: argparse.Namespace) -> Image.Image:
     cropped = center_crop_to_aspect(src.convert("RGBA"), args.size, args.height)
-    small = area_downscale(cropped, (args.size, args.height))
-    if args.desaturate > 0:
-        small = desaturate(small, args.desaturate)
-    small, used = limit_palette(small, args.colors, 0)
+    small, used = reduce(cropped, (args.size, args.height), args, 0)
     seam = tile_seam_ratio(np.asarray(small).astype(np.int32)[..., :3])
     print(f"  tile: {args.size}x{args.height}, {used} colors, seam ratio {seam:.2f}")
     if seam > TILE_SEAM_WARN:
@@ -248,6 +283,9 @@ def parse_args() -> argparse.Namespace:
                              "the exact target grid - any shrink resamples the grid and softens it")
     parser.add_argument("--anchor", choices=("center", "bottom"), default="center", help="subject placement (sprite mode)")
     parser.add_argument("--colors", type=int, default=24, help="max palette size")
+    parser.add_argument("--resample", choices=("mode", "box"), default="mode",
+                        help="mode: most common color per target pixel (crisp, for pixel-art sources); "
+                             "box: area average (smoother, for painted sources)")
     parser.add_argument("--key", type=parse_hex, help="background color RRGGBB (default: detected from the border)")
     parser.add_argument("--tolerance", type=float, default=70.0, help="RGB distance counted as background")
     parser.add_argument("--alpha-threshold", type=int, default=128, help="alpha cut for binary transparency")
